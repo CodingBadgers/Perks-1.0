@@ -6,6 +6,7 @@ import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
+import org.getspout.spoutapi.event.input.KeyReleasedEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class PerksPlayerListener extends PlayerListener {
@@ -57,9 +58,6 @@ public class PerksPlayerListener extends PlayerListener {
     	
     	SpoutPlayer p = event.getPlayer();
     	PerkPlayer player = perkPlayers.getPlayer(p);
-    	
-    	player.setJumping(false);
-    	player.setSneaking(false);
 		
 	    if (event.getKey() == p.getJumpKey()) {
 	    	player.setJumping(true);
@@ -70,6 +68,21 @@ public class PerksPlayerListener extends PlayerListener {
 	    }
 	    
     }
+    
+    public void onKeyReleasedEvent(KeyReleasedEvent event) {
+	
+    	SpoutPlayer p = event.getPlayer();
+    	PerkPlayer player = perkPlayers.getPlayer(p);
+		
+	    if (event.getKey() == p.getJumpKey()) {
+	    	player.setJumping(false);
+	    }
+	    
+	    if (event.getKey() == p.getSneakKey()) {
+	    	player.setSneaking(false);
+	    }
+    	
+	}
     
 
 }

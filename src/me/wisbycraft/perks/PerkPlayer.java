@@ -9,8 +9,8 @@ public class PerkPlayer {
 	private SpoutPlayer m_spoutPlayer = null;
 	
 	private boolean m_flying = true;
-	private boolean m_jumping = true;
-	private boolean m_sneaking = true;
+	private boolean m_jumping = false;
+	private boolean m_sneaking = false;
 		
 	public PerkPlayer(Player player) {
 		m_player = player;

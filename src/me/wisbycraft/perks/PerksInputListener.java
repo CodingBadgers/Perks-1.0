@@ -2,6 +2,7 @@ package me.wisbycraft.perks;
 
 import org.getspout.spoutapi.event.input.InputListener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
+import org.getspout.spoutapi.event.input.KeyReleasedEvent;
 
 public class PerksInputListener extends InputListener {
 	
@@ -13,10 +14,15 @@ public class PerksInputListener extends InputListener {
 		m_plugin = plugin;
 		m_playerListener = playerListener;
 	}
-
+	
 	@Override
 	public void onKeyPressedEvent(KeyPressedEvent event) {
 		m_playerListener.onKeyPressedEvent(event);	
+	}
+	
+	@Override
+	public void onKeyReleasedEvent(KeyReleasedEvent event) {
+		m_playerListener.onKeyReleasedEvent(event);	
 	}
 	
 }
