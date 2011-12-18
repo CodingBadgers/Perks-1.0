@@ -8,7 +8,7 @@ public class PerkPlayer {
 	private Player m_player = null;
 	private SpoutPlayer m_spoutPlayer = null;
 	
-	private boolean m_flying = true;
+	private boolean m_flying = false;
 	private boolean m_jumping = false;
 	private boolean m_sneaking = false;
 		
@@ -26,6 +26,11 @@ public class PerkPlayer {
 	}
 	
 	public void setFlying(boolean flying) {
+		if (flying)
+			m_player.sendMessage("[Perks] Fly mode is now enabled.");
+		else
+			m_player.sendMessage("[Perks] Fly mode is now disabled.");
+		
 		m_flying = flying;
 	}
 	

@@ -2,3 +2,17 @@ name: Perks
 main: me.wisbycraft.perks.Perks
 version: 1.00
 depend: [Spout]
+
+commands:
+   fly:
+      description: Turns fly mode on.
+      usage: /<command>
+      
+   land:
+      description: Turns fly mode off.
+      usage: /<command>
+      
+   flytoggle:
+      description: Toggles fly mode.
+      usage: /<command>
+

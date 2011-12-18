@@ -1,5 +1,8 @@
 package me.wisbycraft.perks;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +29,21 @@ public class Perks extends JavaPlugin {
 		
 		// Input Listener
 		pm.registerEvent(Event.Type.CUSTOM_EVENT, inputListener, Event.Priority.Normal, this);
-		
 	}
+	
+	@Override
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+
+		PerkPlayer player = playerListener.findPlayer((Player)sender);
+		if (player == null)
+			return false;
+		
+		if(PerkFlying.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+    	return false; 
+    }
+
+
 
 }

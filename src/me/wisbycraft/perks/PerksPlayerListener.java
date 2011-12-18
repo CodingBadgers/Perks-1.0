@@ -1,5 +1,6 @@
 package me.wisbycraft.perks;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -82,6 +83,10 @@ public class PerksPlayerListener extends PlayerListener {
 	    	player.setSneaking(false);
 	    }
     	
+	}
+
+	public PerkPlayer findPlayer(Player player) {
+		return perkPlayers.getPlayer(player);
 	}
     
 
