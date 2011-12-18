@@ -16,9 +16,10 @@ public class Perks extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		PluginManager pm = this.getServer().getPluginManager();
-		
+		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_KICK, playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
-		
 	}
 
 }
