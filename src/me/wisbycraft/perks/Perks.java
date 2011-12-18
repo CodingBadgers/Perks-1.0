@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Perks extends JavaPlugin {
 	
 	private final PerksPlayerListener playerListener = new PerksPlayerListener(this);
-	private final PerksInputListener inputListener = new PerksInputListener(this);
+	private final PerksInputListener inputListener = new PerksInputListener(this, playerListener);
 
 	@Override
 	public void onDisable() {

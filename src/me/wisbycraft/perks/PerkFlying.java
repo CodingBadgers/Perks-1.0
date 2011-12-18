@@ -21,8 +21,9 @@ public class PerkFlying {
 	    	// effect gravity based upon keyboard input
 	    	
 	    	// need to hook into spoutcraft keyboard
-	    	
-	    	if (spoutPlayer.isSneaking())
+	    	if (player.isJumping())
+	    		spoutPlayer.setGravityMultiplier(-0.2f);
+	    	else if (player.isSneaking())
 	    		spoutPlayer.setGravityMultiplier(0.2f);
 	    	else
 	    		spoutPlayer.setGravityMultiplier(0);

@@ -2,26 +2,21 @@ package me.wisbycraft.perks;
 
 import org.getspout.spoutapi.event.input.InputListener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class PerksInputListener extends InputListener {
 	
 	@SuppressWarnings("unused")
 	private Perks m_plugin = null;
+	private PerksPlayerListener m_playerListener = null;
 	
-	public PerksInputListener(Perks plugin) {
+	public PerksInputListener(Perks plugin, PerksPlayerListener playerListener) {
 		m_plugin = plugin;
+		m_playerListener = playerListener;
 	}
 
 	@Override
 	public void onKeyPressedEvent(KeyPressedEvent event) {
-
-		SpoutPlayer p = event.getPlayer();
-		
-	    if (event.getKey() == p.getJumpKey()) {
-	        p.sendMessage("Jumping!");
-	    }
-	    
+		m_playerListener.onKeyPressedEvent(event);	
 	}
 	
 }
