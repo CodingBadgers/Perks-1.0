@@ -28,10 +28,11 @@ public class PerkFlying {
     		    	
 	    	// turn on flying to stop them getting kicked
     		spoutPlayer.setCanFly(true);
+    		
+    		// set the fall distance to 0 to stop players dying when they land
+    		spoutPlayer.setFallDistance(0.0f);
 	    		    	
 	    	// effect gravity based upon keyboard input
-	    	
-	    	// need to hook into spoutcraft keyboard
 	    	if (player.isJumping())
 	    		spoutPlayer.setGravityMultiplier(-0.2f);
 	    	else if (player.isSneaking())
