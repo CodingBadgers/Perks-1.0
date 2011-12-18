@@ -25,22 +25,16 @@ public class PerksPlayerListener extends PlayerListener {
     public void onPlayerJoin(PlayerJoinEvent event) {
     	PerkPlayer player = new PerkPlayer(event.getPlayer());
     	perkPlayers.add(player);
-    	
-    	System.out.println("[Perks] Added player to perks array");
     }
 
     @Override
     public void onPlayerQuit(PlayerQuitEvent event) {
     	perkPlayers.removePlayer(event.getPlayer());
-    	
-    	System.out.println("[Perks] Removed player from perks array");
     }
 
     @Override
     public void onPlayerKick(PlayerKickEvent event) {
     	perkPlayers.removePlayer(event.getPlayer());
-    	
-    	System.out.println("[Perks] Removed player from perks array");
     }
     
     @Override
@@ -51,7 +45,8 @@ public class PerksPlayerListener extends PlayerListener {
     	if (player == null)
     		return;
     	    	
-    	PerkFlying.fly(player);
+    	// handle flying...
+    	PerkFlying.fly(player, event);
     		
     }
     

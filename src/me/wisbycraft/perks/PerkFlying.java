@@ -1,13 +1,14 @@
 package me.wisbycraft.perks;
 
 import org.bukkit.command.Command;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class PerkFlying {
 	
 	private static double m_defaultGravity = 0.0f;
 		
-	public static void fly(PerkPlayer player) {
+	public static void fly(PerkPlayer player, PlayerMoveEvent event) {
 		
 		SpoutPlayer spoutPlayer = player.getSpoutPlayer();
 						
@@ -43,6 +44,15 @@ public class PerkFlying {
 	    	// speed up through the air
 	    	spoutPlayer.setAirSpeedMultiplier(2);
     	}
+    	else
+    	{
+    		if (!player.isFlying()) {
+    			player.getMagicCarpet().destroy();
+    			return;
+    		}
+
+    		player.getMagicCarpet().positionAndShow(event.getTo());    		
+    	}
 		
 	}
 	
@@ -71,5 +81,4 @@ public class PerkFlying {
     	
 		return false;
 	}
-
 }
