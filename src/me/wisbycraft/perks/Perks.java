@@ -13,6 +13,8 @@ public class Perks extends JavaPlugin {
 			this);
 	private final PerksInputListener inputListener = new PerksInputListener(
 			this, playerListener);
+        private final PerksEntityListener entityListener = new PerksEntityListener(
+			this);
 
 	@Override
 	public void onDisable() {
@@ -32,6 +34,8 @@ public class Perks extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener,
 				Event.Priority.Normal, this);
+                pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener,
+                                Event.Priority.Normal, this);
 
 		// Input Listener
 		pm.registerEvent(Event.Type.CUSTOM_EVENT, inputListener,
