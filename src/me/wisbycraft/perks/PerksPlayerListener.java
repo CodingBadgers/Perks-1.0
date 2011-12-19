@@ -52,6 +52,7 @@ public class PerksPlayerListener extends PlayerListener {
 
 	}
 
+	// spout only
 	public void onKeyPressedEvent(KeyPressedEvent event) {
 
 		SpoutPlayer p = event.getPlayer();
@@ -67,6 +68,7 @@ public class PerksPlayerListener extends PlayerListener {
 
 	}
 
+	// spout only
 	public void onKeyReleasedEvent(KeyReleasedEvent event) {
 
 		SpoutPlayer p = event.getPlayer();
@@ -82,6 +84,7 @@ public class PerksPlayerListener extends PlayerListener {
 
 	}
 
+	// returns a PerkPlayer from a given Bukkit Player
 	public PerkPlayer findPlayer(Player player) {
 		return perkPlayers.getPlayer(player);
 	}

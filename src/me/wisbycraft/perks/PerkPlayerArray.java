@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 public class PerkPlayerArray extends ArrayList<PerkPlayer> {
 
-	private static final long serialVersionUID = 1847806522351967601L;
+	private static final long serialVersionUID = 1847806522351967601L; //!< auto generated UID
 
 	public boolean removePlayer(Player player) {
 
