@@ -17,8 +17,6 @@ public class PerksPlayerListener extends PlayerListener {
 	private Perks m_plugin = null; // were gonna need it at some point... and
 									// the warning was annoying me
 
-	private PerkPlayerArray perkPlayers = new PerkPlayerArray();
-
 	public PerksPlayerListener(Perks plugin) {
 		m_plugin = plugin;
 	}
@@ -26,23 +24,23 @@ public class PerksPlayerListener extends PlayerListener {
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		PerkPlayer player = new PerkPlayer(event.getPlayer());
-		perkPlayers.add(player);
+		PerkUtils.perkPlayers.add(player);
 	}
 
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		perkPlayers.removePlayer(event.getPlayer());
+		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
 
 	@Override
 	public void onPlayerKick(PlayerKickEvent event) {
-		perkPlayers.removePlayer(event.getPlayer());
+		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
 
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event) {
 
-		PerkPlayer player = perkPlayers.getPlayer(event.getPlayer());
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
 
 		if (player == null)
 			return;
@@ -56,7 +54,7 @@ public class PerksPlayerListener extends PlayerListener {
 	public void onKeyPressedEvent(KeyPressedEvent event) {
 
 		SpoutPlayer p = event.getPlayer();
-		PerkPlayer player = perkPlayers.getPlayer(p);
+		PerkPlayer player = PerkUtils.getPlayer(p);
 
 		if (event.getKey() == p.getJumpKey()) {
 			player.setJumping(true);
@@ -65,14 +63,13 @@ public class PerksPlayerListener extends PlayerListener {
 		if (event.getKey() == p.getSneakKey()) {
 			player.setSneaking(true);
 		}
-
 	}
 
 	// spout only
 	public void onKeyReleasedEvent(KeyReleasedEvent event) {
 
 		SpoutPlayer p = event.getPlayer();
-		PerkPlayer player = perkPlayers.getPlayer(p);
+		PerkPlayer player = PerkUtils.getPlayer(p);
 
 		if (event.getKey() == p.getJumpKey()) {
 			player.setJumping(false);
@@ -86,7 +83,7 @@ public class PerksPlayerListener extends PlayerListener {
 
 	// returns a PerkPlayer from a given Bukkit Player
 	public PerkPlayer findPlayer(Player player) {
-		return perkPlayers.getPlayer(player);
+		return PerkUtils.getPlayer(player);
 	}
 
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
