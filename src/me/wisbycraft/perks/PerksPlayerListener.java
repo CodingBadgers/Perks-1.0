@@ -85,11 +85,29 @@ public class PerksPlayerListener extends PlayerListener {
         public PerkPlayer findPlayer(Player player) {
                 return perkPlayers.getPlayer(player);
         }
-    public void onFoodLevelChange(FoodLevelChangeEvent event) {
         
+        public void onFoodLevelChange(FoodLevelChangeEvent event) {
+            
+        if (event.getFoodLevel() == 20) {
+            event.setCancelled(true);
+        }    
+            
+        // i think the max is 20
         if (event.getFoodLevel() < 20) {
             event.setFoodLevel(20);
         }
-    }
+        
+        // once permissions are in this will come into play    
+        //        
+        //        if (event.getFoodLevel() < 15) {
+        //            event.setFoodLevel(15);
+        //        }
+        //        
+        //        if (event.getFoodLevel() < 10) {
+        //            event.setFoodLevel(10);
+        //        }
+
+        
+        }   
 
 }
