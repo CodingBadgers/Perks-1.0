@@ -2,8 +2,11 @@ package me.wisbycraft.perks;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class PerkFlying {
 
@@ -60,19 +63,27 @@ public class PerkFlying {
 
 	public static boolean onCommand(PerkPlayer player, Command cmd,
 			String commandLabel, String[] args) {
-
+                PermissionManager permissions = PermissionsEx.getPermissionManager();
+                Player p_player = (Player) player.getPlayer();
+                
 		if (cmd.getName().equalsIgnoreCase("fly")) {
+                    if (permissions.has(p_player, "perks.fly")) {
 			player.setFlying(true);
 			return true;
+                    }
 		}
 
 		if (cmd.getName().equalsIgnoreCase("land")) {
+                    if (permissions.has(p_player, "perks.fly")) {
 			player.setFlying(false);
 			return true;
+                    } else {
+                        
+                    }
 		}
 
 		if (cmd.getName().equalsIgnoreCase("flytoggle")) {
-
+                    if (permissions.has(p_player, "perks.fly")) {
 			if (player.isFlying()) {
 				player.setFlying(false);
 			} else {
@@ -80,6 +91,7 @@ public class PerkFlying {
 			}
 
 			return true;
+                    }
 		}
 
 		return false;

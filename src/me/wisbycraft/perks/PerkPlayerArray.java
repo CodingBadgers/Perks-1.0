@@ -9,29 +9,29 @@ public class PerkPlayerArray extends ArrayList<PerkPlayer> {
 
 	private static final long serialVersionUID = 1847806522351967601L; //!< auto generated UID
 
-	public boolean removePlayer(Player player) {
+        public boolean removePlayer(Player player) {
 
-		PerkPlayer perkPlayer = getPlayer(player);
-		if (perkPlayer != null) {
-			perkPlayer.remove();
-			remove(perkPlayer);
-			return true;
-		}
+                PerkPlayer perkPlayer = getPlayer(player);
+                if (perkPlayer != null) {
+                        perkPlayer.remove();
+                        remove(perkPlayer);
+                        return true;
+                }
 
-		return false;
-	}
+                return false;
+        }
 
-	public PerkPlayer getPlayer(Player player) {
+        public PerkPlayer getPlayer(Player player) {
 
-		Iterator<PerkPlayer> itr = iterator();
-		while (itr.hasNext()) {
-			PerkPlayer currentPlayer = itr.next();
-			if (currentPlayer.getPlayer().equals(player)) {
-				return currentPlayer;
-			}
-		}
+                Iterator<PerkPlayer> itr = iterator();
+                while (itr.hasNext()) {
+                        PerkPlayer currentPlayer = itr.next();
+                        if (currentPlayer.getPlayer().equals(player)) {
+                                return currentPlayer;
+                        }
+                }
 
-		return null;
-	}
+                return null;
+        }
 
 }
