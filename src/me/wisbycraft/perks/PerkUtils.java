@@ -7,6 +7,6 @@ public class PerkUtils {
 	}
 
 	static public void OutputToPlayer(PerkPlayer player, String messsage) {
-		player.getPlayer().sendMessage("[Perks] " + messsage + ".");
+		player.getPlayer().sendMessage("\247b[Perks] \247f" + messsage + ".");
 	}
 }
