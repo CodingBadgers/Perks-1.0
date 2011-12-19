@@ -3,79 +3,90 @@ package me.wisbycraft.perks;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+
 public class PerkPlayer {
 
-        private Player m_player = null;
-        private SpoutPlayer m_spoutPlayer = null;
+	private Player m_player = null;
+	private SpoutPlayer m_spoutPlayer = null;
 
 	private boolean m_flying = false;
 	private boolean m_jumping = false;
 	private boolean m_sneaking = false;
 	private PerkMagicCarpet m_magicCarpet = null;
 
-        public PerkPlayer(Player player) {
-                m_player = player;
-                m_spoutPlayer = (SpoutPlayer) player;
+	public PerkPlayer(Player player) {
+		m_player = player;
+		m_spoutPlayer = (SpoutPlayer) player;
 
 		if (!m_spoutPlayer.isSpoutCraftEnabled()) {
 			m_magicCarpet = new PerkMagicCarpet();
 		}
 	}
 
-        // called when a player is kicked or leaves...
-        // all cleanups should be done in here
-        public void remove() {
-                if (m_magicCarpet != null) {
-                        m_magicCarpet.destroy();
-                }
-        }
+	// called when a player is kicked or leaves...
+	// all cleanups should be done in here
+	public void remove() {
+		if (m_magicCarpet != null) {
+			m_magicCarpet.destroy();
+		}
+	}
 
-        public Player getPlayer() {
-                return m_player;
-        }
+	public Player getPlayer() {
+		return m_player;
+	}
 
-        public SpoutPlayer getSpoutPlayer() {
-                return m_spoutPlayer;
-        }
+	public SpoutPlayer getSpoutPlayer() {
+		return m_spoutPlayer;
+	}
 
-        public void setFlying(boolean flying) {
-                if (flying)
-                        PerkUtils.OutputToPlayer(this, "Fly mode is now enabled");
-                else
-                        PerkUtils.OutputToPlayer(this, "Fly mode is now disabled");
+	public void setFlying(boolean flying) {
+		if (flying)
+			PerkUtils.OutputToPlayer(this, "Fly mode is now enabled");
+		else
+			PerkUtils.OutputToPlayer(this, "Fly mode is now disabled");
 
-                if (!m_spoutPlayer.isSpoutCraftEnabled()) {
-                        if (flying)
-                                m_magicCarpet.create(m_player);
-                        else
-                                m_magicCarpet.destroy();
-                }
+		if (!m_spoutPlayer.isSpoutCraftEnabled()) {
+			if (flying)
+				m_magicCarpet.create(m_player);
+			else
+				m_magicCarpet.destroy();
+		}
 
-                m_flying = flying;
-        }
+		m_flying = flying;
+	}
 
-        public boolean isFlying() {
-                return m_flying;
-        }
+	public boolean isFlying() {
+		return m_flying;
+	}
 
-        public boolean isJumping() {
-                return m_jumping;
-        }
+	public boolean isJumping() {
+		return m_jumping;
+	}
 
-        public void setJumping(boolean jumping) {
-                m_jumping = jumping;
-        }
+	public void setJumping(boolean jumping) {
+		m_jumping = jumping;
+	}
 
-        public boolean isSneaking() {
-                return m_sneaking;
-        }
+	public boolean isSneaking() {
+		return m_sneaking;
+	}
 
-        public void setSneaking(boolean sneaking) {
-                m_sneaking = sneaking;
-        }
+	public void setSneaking(boolean sneaking) {
+		m_sneaking = sneaking;
+	}
 
 	public PerkMagicCarpet getMagicCarpet() {
 		return m_magicCarpet;
+	}
+
+	public boolean hasPermission(String permission) {
+		PermissionManager permissions = PermissionsEx.getPermissionManager();
+		if (permissions.has(m_player, permission) || m_player.isOp())
+			return true;
+
+		return false;
 	}
 
 }
