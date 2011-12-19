@@ -53,6 +53,7 @@ public class Perks extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_KICK, playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
+                pm.registerEvent(Event.Type.FOOD_LEVEL_CHANGE, playerListener, Event.Priority.Normal, this);
 		
 		// Input Listener
 		pm.registerEvent(Event.Type.CUSTOM_EVENT, inputListener, Event.Priority.Normal, this);
@@ -70,7 +71,6 @@ public class Perks extends JavaPlugin {
 		
 		if(PerkFlying.onCommand(player, cmd, commandLabel, args))
 			return true;
-		
     	return false; 
     }
 

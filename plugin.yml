@@ -1,6 +1,9 @@
 name: Perks
+authors: [wman2, N3wton]
 main: me.wisbycraft.perks.Perks
 version: 1.00
+website: wisbycraft.com
+description: A plugin containing all the donnator perks for our server
 depend: [Spout]
 
 commands:
