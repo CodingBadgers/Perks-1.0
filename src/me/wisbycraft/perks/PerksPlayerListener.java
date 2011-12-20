@@ -85,10 +85,11 @@ public class PerksPlayerListener extends PlayerListener {
 
     public void onFoodLevelChange(FoodLevelChangeEvent event){
         
+    	
+    	//RULE ONE OF PROGRAMMING... NEVER NAME FUNCTIONS WITH BLAH1, BLAH2, BLAH3 ect...
+    	//FUCNTION NAMES SHOULD STATE WHAT THE FUNCTION DOES.
         PerkHunger.HungerLevel1(event);
-        
         PerkHunger.HungerLevel2(event);
-        
         PerkHunger.HungerLevel3(event);
     }
 
