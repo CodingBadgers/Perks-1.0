@@ -83,35 +83,13 @@ public class PerksPlayerListener extends PlayerListener {
 		return PerkUtils.getPlayer(player);
 	}
 
-    public void onFoodLevelChange(FoodLevelChangeEvent event) {
-
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
+    public void onFoodLevelChange(FoodLevelChangeEvent event){
         
-        PerkPlayer player = (PerkPlayer) event.getEntity();
+        PerkHunger.HungerLevel1(event);
         
-        if (event.getFoodLevel() == 20) {
-                event.setCancelled(true);
-        }
+        PerkHunger.HungerLevel2(event);
         
-        // hunger level 3
-        if (player.hasPermission("perk.hunger.3")) {
-            if (event.getFoodLevel() < 20) {
-                event.setFoodLevel(20);
-            }
-        }
-        // hunger level 2
-        if (player.hasPermission("perk.hunger.2")) {
-            if (event.getFoodLevel() < 15) {
-                event.setFoodLevel(15);
-            }
-        }
-        // hunger level 1
-        if (player.hasPermission("perk.hunger.1"))
-            if (event.getFoodLevel() < 10) {
-                event.setFoodLevel(10);
-            }
+        PerkHunger.HungerLevel3(event);
     }
 
 }
