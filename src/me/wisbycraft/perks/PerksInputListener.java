@@ -4,6 +4,8 @@ import org.getspout.spoutapi.event.input.InputListener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
 
+// spout only
+
 public class PerksInputListener extends InputListener {
 	
 	@SuppressWarnings("unused")

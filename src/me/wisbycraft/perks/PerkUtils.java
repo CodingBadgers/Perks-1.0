@@ -12,6 +12,10 @@ public class PerkUtils {
 	static public void DebugConsole(String messsage) {
 		log.log(Level.INFO, "[Perks] " + messsage + ".");
 	}
+	
+	static public void ErrorConsole(String messsage) {
+		log.log(Level.SEVERE, "[Perks] " + messsage + ".");
+	}
 
 	static public void OutputToPlayer(PerkPlayer player, String messsage) {
 		player.getPlayer().sendMessage("\247b[Perks] \247f" + messsage + ".");

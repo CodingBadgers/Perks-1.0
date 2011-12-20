@@ -45,14 +45,20 @@ public class PerkFlying {
 			// speed up through the air
 			spoutPlayer.setAirSpeedMultiplier(2);
 		} else {
+			
+			// this is the magic carpet version... laggier and poo.
+			
+			// make sure the person is flying...
 			if (!player.isFlying()) {
 				return;
 			}
 
+			// get where they are going to. if there sneaking go down one.
 			Location to = event.getTo();
 			if (player.getPlayer().isSneaking())
 				to.setY(to.getY() - 1);
 
+			// update the magic carpet
 			player.getMagicCarpet().positionAndShow(event.getTo());
 		}
 
@@ -64,16 +70,19 @@ public class PerkFlying {
 		if (!player.hasPermission("perks.fly"))
 			return false;
 		
+		// turns fly on
 		if (cmd.getName().equalsIgnoreCase("fly")) {
 			player.setFlying(true);
 			return true;
 		}
 
+		// turns fly off
 		if (cmd.getName().equalsIgnoreCase("land")) {
 			player.setFlying(false);
 			return true;
 		}
 
+		// toggles flying
 		if (cmd.getName().equalsIgnoreCase("flytoggle")) {
 			if (player.isFlying()) {
 				player.setFlying(false);

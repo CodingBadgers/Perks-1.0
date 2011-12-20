@@ -1,7 +1,6 @@
 package me.wisbycraft.perks;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -82,15 +81,5 @@ public class PerksPlayerListener extends PlayerListener {
 	public PerkPlayer findPlayer(Player player) {
 		return PerkUtils.getPlayer(player);
 	}
-
-    public void onFoodLevelChange(FoodLevelChangeEvent event){
-        
-    	
-    	//RULE ONE OF PROGRAMMING... NEVER NAME FUNCTIONS WITH BLAH1, BLAH2, BLAH3 ect...
-    	//FUCNTION NAMES SHOULD STATE WHAT THE FUNCTION DOES.
-        PerkHunger.HungerLevel1(event);
-        PerkHunger.HungerLevel2(event);
-        PerkHunger.HungerLevel3(event);
-    }
 
 }

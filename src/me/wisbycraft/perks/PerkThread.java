@@ -29,7 +29,7 @@ public class PerkThread extends Thread {
 			
 		    int weekday = calendar.get(Calendar.DAY_OF_WEEK);
 		    if (weekday == FRIDAY) {
-		    	// if its midday on friday pay bitches
+		    	// if its midday on Friday pay bitches
 		    	
 		    	if (date.getMinutes() == 0 && date.getHours() == 12) {
 		    		// pay them

@@ -2,6 +2,7 @@ package me.wisbycraft.perks;
 
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 class PerksEntityListener extends EntityListener {
 
@@ -13,9 +14,14 @@ class PerksEntityListener extends EntityListener {
 		m_plugin = plugin;
 	}
 
+	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
-		
 		PerkUnlimitedAir.drown( event);
-		
 	}
+	
+	@Override
+    public void onFoodLevelChange(FoodLevelChangeEvent event){
+        PerkHunger.onHungerLevelChange(event);
+    }
+	
 }
