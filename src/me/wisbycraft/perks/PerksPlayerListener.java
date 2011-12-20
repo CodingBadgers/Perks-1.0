@@ -85,24 +85,33 @@ public class PerksPlayerListener extends PlayerListener {
 
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
 
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        
+        PerkPlayer player = (PerkPlayer) event.getEntity();
+        
         if (event.getFoodLevel() == 20) {
                 event.setCancelled(true);
         }
-
-        // i think the max is 20
-        if (event.getFoodLevel() < 20) {
+        
+        // hunger level 3
+        if (player.hasPermission("perk.hunger.3")) {
+            if (event.getFoodLevel() < 20) {
                 event.setFoodLevel(20);
+            }
         }
-
-        // once permissions are in this will come into play
-        //
-        // if (event.getFoodLevel() < 15) {
-        // event.setFoodLevel(15);
-        // }
-        //
-        // if (event.getFoodLevel() < 10) {
-        // event.setFoodLevel(10);
-        // }
+        // hunger level 2
+        if (player.hasPermission("perk.hunger.2")) {
+            if (event.getFoodLevel() < 15) {
+                event.setFoodLevel(15);
+            }
+        }
+        // hunger level 1
+        if (player.hasPermission("perk.hunger.1"))
+            if (event.getFoodLevel() < 10) {
+                event.setFoodLevel(10);
+            }
     }
 
 }
