@@ -9,8 +9,18 @@ import org.bukkit.entity.Player;
 
 public class PerkMagicCarpet {
 	
-	ArrayList<Location> m_blocks = new ArrayList<Location>();
-	Location m_location = null;
+	class CarpetBlock {
+		public Location loc;
+		public boolean placed = false;
+		
+		public CarpetBlock(Location loc, boolean placed) {
+			this.loc = loc;
+			this.placed = placed;
+		}
+	}
+	
+	private ArrayList<CarpetBlock> m_blocks = new ArrayList<CarpetBlock>();
+	private Location m_location = null;
 
 	public void create(Player player) {
 
@@ -28,7 +38,10 @@ public class PerkMagicCarpet {
 						loc.getX() + x,
 						loc.getY(), 
 						loc.getZ() + z);
-				m_blocks.add(l);
+				
+				CarpetBlock cb = new CarpetBlock(l, false);
+				
+				m_blocks.add(cb);
 			}
 		}
 	}
@@ -36,10 +49,12 @@ public class PerkMagicCarpet {
 	public void destroy() {
 
 		// set back to air and remove from our block of memory
-		Iterator<Location> itr = m_blocks.iterator();
+		Iterator<CarpetBlock> itr = m_blocks.iterator();
 		while (itr.hasNext()) {
-			Location l = itr.next();
-			l.getBlock().setType(Material.AIR);
+			CarpetBlock cb = itr.next();
+			if (cb.placed) {
+				cb.loc.getBlock().setType(Material.AIR);
+			}
 		}
 
 		m_blocks.clear();
@@ -48,11 +63,12 @@ public class PerkMagicCarpet {
 	public void remove() {
 
 		// Set all blocks back to air
-		Iterator<Location> itr = m_blocks.iterator();
+		Iterator<CarpetBlock> itr = m_blocks.iterator();
 		while (itr.hasNext()) {
-			Location l = itr.next();
-			if (l.getBlock().getType() == Material.GLASS) {
-				l.getBlock().setType(Material.AIR);
+			CarpetBlock cb = itr.next();
+			if (cb.placed) {
+				cb.loc.getBlock().setType(Material.AIR);
+				cb.placed = false;
 			}
 		}
 	}
@@ -69,20 +85,20 @@ public class PerkMagicCarpet {
 		
 		remove();
 
-		Iterator<Location> itr = m_blocks.iterator();
+		Iterator<CarpetBlock> itr = m_blocks.iterator();
 
 		for (int z = -1; z < 2; z++) {
 			for (int x = -1; x < 2; x++) {
-				Location l = itr.next();
-				l.setX(loc.getX() + x);
-				l.setY(loc.getY());
-				l.setZ(loc.getZ() + z);
+				CarpetBlock cb = itr.next();
+				cb.loc.setX(loc.getX() + x);
+				cb.loc.setY(loc.getY());
+				cb.loc.setZ(loc.getZ() + z);
 
-				if (l.getBlock().getTypeId() == 0) {
-					l.getBlock().setType(Material.GLASS);
+				if (cb.loc.getBlock().getTypeId() == 0) {
+					cb.loc.getBlock().setType(Material.GLASS);
+					cb.placed = true;
 				}
 			}
 		}
-
 	}
 }
