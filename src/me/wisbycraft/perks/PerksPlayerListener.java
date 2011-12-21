@@ -12,12 +12,13 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class PerksPlayerListener extends PlayerListener {
 
-    @SuppressWarnings("unused")
-    private Perks m_plugin = null; // were gonna need it at some point... and
-                                                                    // the warning was annoying me
-    public PerksPlayerListener(Perks plugin) {
-            m_plugin = plugin;
-    }
+	@SuppressWarnings("unused")
+	private Perks m_plugin = null; // were gonna need it at some point... and
+									// the warning was annoying me
+
+	public PerksPlayerListener(Perks plugin) {
+		m_plugin = plugin;
+	}
 
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
@@ -35,47 +36,47 @@ public class PerksPlayerListener extends PlayerListener {
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
 
-    @Override
-    public void onPlayerMove(PlayerMoveEvent event) {
+	@Override
+	public void onPlayerMove(PlayerMoveEvent event) {
 
-	PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
 
-            if (player == null)
-                    return;
+		if (player == null)
+			return;
 
-            // handle flying...
-            PerkFlying.fly(player, event);
+		// handle flying...
+		PerkFlying.fly(player, event);
 
-    }
-
+	}
+	
 	// spout only
-	public void onKeyPressedEvent(KeyPressedEvent event) {            
-        
+	public void onKeyPressedEvent(KeyPressedEvent event) {
+
 		SpoutPlayer p = event.getPlayer();
 		PerkPlayer player = PerkUtils.getPlayer(p);
 
-        if (event.getKey() == p.getJumpKey()) {
-                player.setJumping(true);
-        }
+		if (event.getKey() == p.getJumpKey()) {
+			player.setJumping(true);
+		}
 
-        if (event.getKey() == p.getSneakKey()) {
-                player.setSneaking(true);
-        }
-    }
+		if (event.getKey() == p.getSneakKey()) {
+			player.setSneaking(true);
+		}
+	}
 
 	// spout only
 	public void onKeyReleasedEvent(KeyReleasedEvent event) {
-	SpoutPlayer p = event.getPlayer();
-	PerkPlayer player = PerkUtils.getPlayer(p);
+		SpoutPlayer p = event.getPlayer();
+		PerkPlayer player = PerkUtils.getPlayer(p);
 
-        if (event.getKey() == p.getJumpKey()) {
-                player.setJumping(false);
-        }
+		if (event.getKey() == p.getJumpKey()) {
+			player.setJumping(false);
+		}
 
-        if (event.getKey() == p.getSneakKey()) {
-                player.setSneaking(false);
-        }
-    }
+		if (event.getKey() == p.getSneakKey()) {
+			player.setSneaking(false);
+		}
+	}
 
 	// returns a PerkPlayer from a given Bukkit Player
 	public PerkPlayer findPlayer(Player player) {

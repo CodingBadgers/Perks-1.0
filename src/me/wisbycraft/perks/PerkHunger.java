@@ -17,7 +17,7 @@ public class PerkHunger {
         
         
         // do they have the huger permission?
-        if (!player.hasPermission("Perk.hunger")) 
+        if (!player.hasPermission("Perk.hunger", false)) 
         	return;
         
         // if the player should ignore the hunger event cancel the event

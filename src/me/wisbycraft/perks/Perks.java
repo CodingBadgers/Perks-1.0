@@ -23,6 +23,9 @@ public class Perks extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		
+		PerkUtils.plugin = this;
+		
 		PluginManager pm = this.getServer().getPluginManager();
 
 		// Player listeners
@@ -30,6 +33,7 @@ public class Perks extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_KICK, playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
+		
         pm.registerEvent(Event.Type.FOOD_LEVEL_CHANGE, entityListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Event.Priority.Normal, this);
 
@@ -50,6 +54,10 @@ public class Perks extends JavaPlugin {
 
 		// handle fly commands
 		if (PerkFlying.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handle tp commands
+		if (PerkTeleport.onCommand(player, cmd, commandLabel, args))
 			return true;
 
 		return false;

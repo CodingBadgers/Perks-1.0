@@ -14,7 +14,7 @@ public class PerkUnlimitedAir {
 
 		PerkPlayer player = PerkUtils.getPlayer((Player) event.getEntity());
 
-		if (!player.hasPermission("perks.water"))
+		if (!player.hasPermission("perks.water", false))
 			return;
 
 		if (event.getCause() == DamageCause.DROWNING) {

@@ -22,6 +22,10 @@ public class PerkPlayer {
 	private float m_hungerRate = 0.25f;				//!< means hunger goes down at 1/4 the normal rate <- will load from config when thats done
 	private float m_hungerCounter = 0.0f;			//!< stores the last hunger counter, if this is equal to 1.0 (100%) let a hunger event work as normal
 	// end hunger related members //
+	
+	// tp related members //
+	private PerkPlayerArray tpRequest = new PerkPlayerArray();	
+	// end tp related members //
 
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -99,11 +103,15 @@ public class PerkPlayer {
 
 	// checks whether a player has permission to do something or not
 	// uses PEX
-	public boolean hasPermission(String permission) {
+	public boolean hasPermission(String permission, boolean reportError) {
 		PermissionManager permissions = PermissionsEx.getPermissionManager();
 		if (permissions.has(m_player, permission) || m_player.isOp())
 			return true;
 
+		if (reportError)
+			PerkUtils.OutputToPlayer(this, "You do not have permission to use that command");
+		
+		
 		return false;
 	}
 
@@ -121,6 +129,47 @@ public class PerkPlayer {
 		
 		// cancel the hunger event
 		return false;
+	}
+
+	public void sendTpRequest(PerkPlayer player) {		
+		
+		if (tpRequest.getPlayer(player.getPlayer()) != null) {
+			PerkUtils.OutputToPlayer(player, "Your have already sent a request to " + m_player.getName());
+		}
+		
+		tpRequest.add(player);
+		
+		PerkUtils.OutputToPlayer(this, player.getPlayer().getName() + " have sent you a tp request");
+		PerkUtils.OutputToPlayer(this, "Type /tpa '" + player.getPlayer().getName() + "' to accept there request");
+		
+		PerkUtils.OutputToPlayer(player, "Your tp request has been sent to " + m_player.getName());
+	}
+
+	public void acceptTpRequest(PerkPlayer player) {
+		
+		if (tpRequest.getPlayer(player.getPlayer()) == null) {
+			PerkUtils.OutputToPlayer(this, "You have not recieved a tp request from that player");
+			return;
+		}
+		
+		PerkUtils.OutputToPlayer(player, m_player.getName() + " has accepted your tp request");
+		player.getPlayer().teleport(m_player);
+		
+		tpRequest.removePlayer(player.getPlayer());
+		
+	}
+
+	public void declineTpRequest(PerkPlayer player) {
+		
+		if (tpRequest.getPlayer(player.getPlayer()) == null) {
+			PerkUtils.OutputToPlayer(this, "You have not recieved a tp request from that player");
+			return;
+		}
+		
+		PerkUtils.OutputToPlayer(player, m_player.getName() + " has declined your tp request");
+		
+		tpRequest.removePlayer(player.getPlayer());
+		
 	}
 
 }

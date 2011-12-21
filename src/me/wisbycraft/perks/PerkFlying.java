@@ -67,7 +67,7 @@ public class PerkFlying {
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		// all the following commands require this permission
-		if (!player.hasPermission("perks.fly"))
+		if (!player.hasPermission("perks.fly", true))
 			return false;
 		
 		// turns fly on

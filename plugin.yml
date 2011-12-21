@@ -19,3 +19,10 @@ commands:
       description: Toggles fly mode.
       usage: /<command>
 
+   tpr:
+      decription: Request to be teleported to player
+      usage: /<command> <player>
+      
+   tpa:
+      decription: Accept a players teleport request
+      usage: /<command> <player>

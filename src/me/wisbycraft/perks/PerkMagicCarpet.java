@@ -13,6 +13,7 @@ public class PerkMagicCarpet {
 	class CarpetBlock {
 		public Location loc;				//!< location of the block
 		public boolean placed = false;		//!< whether or not this block is placed
+		public Material material = Material.GLASS;
 		
 		// default constructor
 		public CarpetBlock(Location loc, boolean placed) {
@@ -90,7 +91,7 @@ public class PerkMagicCarpet {
 		loc.setY(loc.getY()-1);
 		
 		// we havn't moved so don't update...
-		if (m_location.equals(loc))
+		if (m_location.getBlock() == loc.getBlock())
 			return;
 		
 		// store our new loaction
@@ -109,7 +110,7 @@ public class PerkMagicCarpet {
 
 				// if the block is empty set it to glass and mark as placed
 				if (cb.loc.getBlock().getTypeId() == 0) {
-					cb.loc.getBlock().setType(Material.GLASS);
+					cb.loc.getBlock().setType(cb.material);
 					cb.placed = true;
 				}
 			}
