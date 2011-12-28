@@ -71,31 +71,20 @@ public class Perks extends JavaPlugin {
 			}
 			
 			Location eye = player.getPlayer().getTargetBlock(null, 100).getLocation().add(0.0f, 1.0f, 0.0f);
-            if(eye.getBlock().isEmpty()) {
-                eye.getWorld().spawn(eye, org.bukkit.entity.EnderCrystal.class);
-                PerkUtils.OutputToPlayer(player, "Spawned an ender crystal");
-            } else {
-                PerkUtils.OutputToPlayer(player, "Something is blocking to block you are looking at");
-            }
-            return true;		
+                        if(eye.getBlock().isEmpty()) {
+                            eye.getWorld().spawn(eye, org.bukkit.entity.EnderCrystal.class);
+                            PerkUtils.OutputToPlayer(player, "Spawned an ender crystal");
+                        } else {
+                            PerkUtils.OutputToPlayer(player, "Something is blocking to block you are looking at");
+                        }
+                        return true;		
 		}
 		*/
 		
-		// needs moving
-		if (cmd.getName().equalsIgnoreCase("gmtoggle")) {
-			if (player.hasPermission("perks.gamemode.toggle", true)) {
-				
-				if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
-					PerkUtils.OutputToPlayer(player, "Now in Survival Mode");
-					player.getPlayer().setGameMode(GameMode.SURVIVAL);
-				} else {
-					PerkUtils.OutputToPlayer(player, "Now in Creative Mode");
-					player.getPlayer().setGameMode(GameMode.CREATIVE);
-				}
-				
-				return true;
-			}
-		}
+		// handles gamemode cmds
+		if (PerkGameMode.onCommand(player, cmd, commandLabel, args)) {
+                    return true;
+                }
 
 		return false;
 	}
