@@ -2,7 +2,7 @@ name: Perks
 authors: [N3wton, wman2]
 main: me.wisbycraft.perks.Perks
 version: 1.00
-website: wisbycraft.com
+website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for our server
 depend: [Spout]
 
@@ -18,11 +18,19 @@ commands:
    flytoggle:
       description: Toggles fly mode.
       usage: /<command>
+      
+   gmtoggle:
+      description: Toggles a players gamemode
+      usage: /<command>
 
    tpr:
-      decription: Request to be teleported to player
+      description: Request to be teleported to player
       usage: /<command> <player>
       
    tpa:
-      decription: Accept a players teleport request
-      usage: /<command> <player>
+      description: Accept a players teleport request
+      usage: /<command> [player]
+      
+   tpd:
+      description: Accept a players teleport request
+      usage: /<command> [player]

@@ -16,7 +16,11 @@ class PerksEntityListener extends EntityListener {
 
 	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
-		PerkUnlimitedAir.drown( event);
+
+		PerkUnlimitedAir.drown(event);
+		
+		PerkTheEnd.dragonHurt(event);
+		
 	}
 	
 	@Override

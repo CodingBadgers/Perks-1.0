@@ -1,11 +1,14 @@
 package me.wisbycraft.perks;
 
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -46,6 +49,36 @@ public class PerksPlayerListener extends PlayerListener {
 
 		// handle flying...
 		PerkFlying.fly(player, event);
+	}
+	
+	@Override
+	public void onPlayerTeleport(PlayerTeleportEvent event) {
+
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+
+		if (player == null)
+			return;
+
+		Location from = event.getFrom();
+		Location to = event.getTo();
+		
+		// stop people changing worlds without permission
+		if (from.getWorld() != to.getWorld()) {
+			String permission = "perks.changeworld." + to.getWorld().getName();
+			if (!player.hasPermission(permission, false)) {
+				PerkUtils.OutputToPlayer(player, "You don't have permission to enter that world");
+				event.setCancelled(true);
+				return;
+			}
+			
+			Player bukkitPlayer = player.getPlayer();
+			
+			// if in creative, wipe inventory
+			if (bukkitPlayer.getGameMode() == GameMode.CREATIVE) {
+				bukkitPlayer.getInventory().clear();
+				bukkitPlayer.setGameMode(GameMode.SURVIVAL);
+			}
+		}
 
 	}
 	

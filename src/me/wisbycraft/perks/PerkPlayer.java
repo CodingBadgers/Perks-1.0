@@ -26,6 +26,8 @@ public class PerkPlayer {
 	// tp related members //
 	private PerkPlayerArray tpRequest = new PerkPlayerArray();	
 	// end tp related members //
+	
+	private int m_damageToDragon = 0;
 
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -133,12 +135,10 @@ public class PerkPlayer {
 
 	public void sendTpRequest(PerkPlayer player) {		
 		
-		if (tpRequest.getPlayer(player.getPlayer()) != null) {
-			PerkUtils.OutputToPlayer(player, "Your have already sent a request to " + m_player.getName());
+		if (tpRequest.getPlayer(player.getPlayer()) == null) {
+			tpRequest.add(player);
 		}
-		
-		tpRequest.add(player);
-		
+				
 		PerkUtils.OutputToPlayer(this, player.getPlayer().getName() + " have sent you a tp request");
 		PerkUtils.OutputToPlayer(this, "Type /tpa '" + player.getPlayer().getName() + "' to accept there request");
 		
@@ -146,6 +146,17 @@ public class PerkPlayer {
 	}
 
 	public void acceptTpRequest(PerkPlayer player) {
+		
+		// if they havn't specified a player, get the last one from the array
+		if (player == null) {
+			
+			if (tpRequest.size() == 0) {
+				PerkUtils.OutputToPlayer(this, "You have not recieved a tp request from any players");
+				return;
+			}			
+			
+			player = tpRequest.get(tpRequest.size() - 1);
+		}
 		
 		if (tpRequest.getPlayer(player.getPlayer()) == null) {
 			PerkUtils.OutputToPlayer(this, "You have not recieved a tp request from that player");
@@ -161,6 +172,17 @@ public class PerkPlayer {
 
 	public void declineTpRequest(PerkPlayer player) {
 		
+		// if they havn't specified a player, get the last one from the array
+		if (player == null) {
+			
+			if (tpRequest.size() == 0) {
+				PerkUtils.OutputToPlayer(this, "You have not recieved a tp request from any players");
+				return;
+			}			
+			
+			player = tpRequest.get(tpRequest.size() - 1);
+		}
+		
 		if (tpRequest.getPlayer(player.getPlayer()) == null) {
 			PerkUtils.OutputToPlayer(this, "You have not recieved a tp request from that player");
 			return;
@@ -170,6 +192,12 @@ public class PerkPlayer {
 		
 		tpRequest.removePlayer(player.getPlayer());
 		
+	}
+
+	public void causedDamageToDragon(int damage) {
+		m_damageToDragon += damage;
+		
+		PerkUtils.OutputToPlayer(this, "You have caused " + m_damageToDragon + " units of damage to the Dragon");
 	}
 
 }
