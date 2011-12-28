@@ -73,10 +73,12 @@ public class PerksPlayerListener extends PlayerListener {
 			
 			Player bukkitPlayer = player.getPlayer();
 			
-			// if in creative, wipe inventory
+                        // if in creative and DOES NOT have permissions to keep inventory, wipe inventory
 			if (bukkitPlayer.getGameMode() == GameMode.CREATIVE) {
+                            if (player.hasPermission("perk.worldclear", true)) {
 				bukkitPlayer.getInventory().clear();
 				bukkitPlayer.setGameMode(GameMode.SURVIVAL);
+                            }
 			}
 		}
 
