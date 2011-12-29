@@ -23,6 +23,17 @@ commands:
       description: Toggles a players gamemode
       usage: /<command>
 
+   gm:
+      description: Lets you see a players gamemode
+      usage: /<command>
+   
+   creative:
+      description: puts you into creative mode
+      usage: /<command>
+
+   survival:
+      description: puts you into survival mode
+      usage: /<command>
    tpr:
       description: Request to be teleported to player
       usage: /<command> <player>
