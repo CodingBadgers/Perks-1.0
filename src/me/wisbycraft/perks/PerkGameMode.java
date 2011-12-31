@@ -13,7 +13,7 @@ public class PerkGameMode {
         
         // toggles the plays gamemode
         if (cmd.getName().equalsIgnoreCase("gmtoggle")) {
-		if (player.hasPermission("perks.gamemode.toggle", true)) {
+		if (!player.hasPermission("perks.gamemode.toggle", false)) {
 				
 			if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
 				PerkUtils.OutputToPlayer(player, "Now in Survival Mode");

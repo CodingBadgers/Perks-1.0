@@ -1,5 +1,9 @@
 package me.wisbycraft.perks;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -24,7 +28,8 @@ public class PerkPlayer {
 	// end hunger related members //
 	
 	// tp related members //
-	private PerkPlayerArray tpRequest = new PerkPlayerArray();	
+	private PerkPlayerArray tpRequest = new PerkPlayerArray();
+	private ArrayList<Long> tpRequestTime = new ArrayList<Long>();
 	// end tp related members //
 	
 	private int m_damageToDragon = 0;
@@ -135,12 +140,36 @@ public class PerkPlayer {
 
 	public void sendTpRequest(PerkPlayer player) {		
 		
+		boolean newRequest = false;
+		Calendar cal = Calendar.getInstance();
+		
 		if (tpRequest.getPlayer(player.getPlayer()) == null) {
 			tpRequest.add(player);
+			tpRequestTime.add(cal.getTimeInMillis());
+			newRequest = true;
+		}
+		
+		// if were requesting to a player we've requested to before check times
+		if (!newRequest) {
+			for (int i = 0; i < tpRequest.size(); ++i) {
+				if (tpRequest.get(i) == player) {
+					// see if 30 seconds have passed, if not tell them to fuck off.
+					Long timeSinceLastReguest = cal.getTimeInMillis() - tpRequestTime.get(i);
+					if(timeSinceLastReguest < 30000) {
+						PerkUtils.OutputToPlayer(player, "Please wait another " + Float.valueOf((new DecimalFormat("##.##").format(30-(timeSinceLastReguest/1000))))  + " seconds before sending another tp request to " + m_player.getName());
+						return;
+					}
+					else
+					{
+						// update the time so that they have to wait another 30 seconds.
+						tpRequestTime.set(i, cal.getTimeInMillis());
+					}
+				}
+			}
 		}
 				
 		PerkUtils.OutputToPlayer(this, player.getPlayer().getName() + " have sent you a tp request");
-		PerkUtils.OutputToPlayer(this, "Type /tpa '" + player.getPlayer().getName() + "' to accept there request");
+		PerkUtils.OutputToPlayer(this, "Type '/tpa " + player.getPlayer().getName() + "' to accept there request");
 		
 		PerkUtils.OutputToPlayer(player, "Your tp request has been sent to " + m_player.getName());
 	}

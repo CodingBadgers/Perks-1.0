@@ -22,7 +22,7 @@ public class PerkHunger {
         
         // if the player should ignore the hunger event cancel the event
         if (!player.shouldLowerHunger()) {
-        	event.setCancelled(true);
+        	event.setFoodLevel(event.getFoodLevel() + 1);
         }   
     }
 }

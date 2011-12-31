@@ -16,8 +16,6 @@ public class PerkThread extends Thread {
 	public void run() {	
 		while (m_running) {
 					
-			PerkTeleport.ThreadCall();
-			
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {

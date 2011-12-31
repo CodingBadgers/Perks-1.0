@@ -7,6 +7,9 @@ description: A plugin containing all the Donator perks for our server
 depend: [Spout]
 
 commands:
+   perks:
+      description: Lists all player perks.
+      usage: /<command>
    fly:
       description: Turns fly mode on.
       usage: /<command>

@@ -1,6 +1,5 @@
 package me.wisbycraft.perks;
 
-import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -55,6 +54,17 @@ public class Perks extends JavaPlugin {
 		if (player == null)
 			return false;
 
+		if (cmd.getName().equalsIgnoreCase("perks")) {
+			
+			PerkUtils.OutputToPlayer(player, "Perks consists of the following perks...");
+			player.getPlayer().sendMessage("1 - /fly, /land and /flytoggle - If you're using spout you will fly, else a magic carpet will be created.");
+			player.getPlayer().sendMessage("2 - /tpr <name> - Sends a teleport request to a player.");
+			player.getPlayer().sendMessage("3 - Unlimited air under water when wearing a gold helmet.");
+			player.getPlayer().sendMessage("4 - You're hunger decreases at a much slower rate.");
+			
+			return true;
+		}
+		
 		// handle fly commands
 		if (PerkFlying.onCommand(player, cmd, commandLabel, args))
 			return true;

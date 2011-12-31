@@ -4,24 +4,8 @@ import org.bukkit.command.Command;
 
 public class PerkTeleport {
 	
-	private static boolean m_threadLock = false; 	//!< Still wont be strictly thread safe, but will stop the majority of potential memory access write violations
-	
-	public static void ThreadCall() {
-		
-		if (m_threadLock)
-			return;
-		
-		
-		
-		
-		
-		
-	}
-
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
-				
-		m_threadLock = true;
-		
+
 		PerkPlayer toPlayer = null;
 		
 		if (args.length == 1) {
@@ -30,7 +14,6 @@ public class PerkTeleport {
 			
 			if (toPlayer == null) {
 				PerkUtils.OutputToPlayer(player, playerName + " isn't online.");
-				m_threadLock = false;
 				return false;
 			}
 		}
@@ -39,18 +22,15 @@ public class PerkTeleport {
 			
 			if (args.length != 1) {
 				PerkUtils.OutputToPlayer(player, "In correct usage of command");
-				m_threadLock = false;
 				return true;
 			}
 			
 			if (!player.hasPermission("perks.teleport.tpr", true)) {
-				m_threadLock = false;
 				return true;
 			}
 			
 			toPlayer.sendTpRequest(player);
 			
-			m_threadLock = false;
 			return true;
 		}
 		
@@ -60,7 +40,6 @@ public class PerkTeleport {
 			
 			player.acceptTpRequest(toPlayer);
 			
-			m_threadLock = false;
 			return true;
 		}
 		
@@ -68,11 +47,9 @@ public class PerkTeleport {
 			
 			player.declineTpRequest(toPlayer);
 			
-			m_threadLock = false;
 			return true;
 		}
-		
-		m_threadLock = false;
+
 		return false;
 	}
 	
