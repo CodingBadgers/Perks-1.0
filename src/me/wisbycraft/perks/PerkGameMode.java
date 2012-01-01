@@ -38,7 +38,7 @@ public class PerkGameMode {
 			} else if (args.length == 1) {
 				if (player.hasPermission("perks.gamemode.check.other", true)) {
 					// this will check another players gamemode.
-					Player otherPlayer = PerkUtils.plugin.getServer().getPlayer(args[0]);
+					Player otherPlayer = PerkUtils.server().getPlayer(args[0]);
 					if (otherPlayer == null) {
 						PerkUtils.OutputToPlayer(player, "Could not find a player with the name " + args[0]);
 						return true;
@@ -54,8 +54,12 @@ public class PerkGameMode {
 		// change to creative mode
 		if (cmd.getName().equalsIgnoreCase("creative")) {
 			if (player.hasPermission("perks.gamemode.creative", true)) {
+                            if (!(player.getPlayer().getGameMode() == GameMode.CREATIVE)) {
 				player.getPlayer().setGameMode(GameMode.CREATIVE);
 				PerkUtils.OutputToPlayer(player, "Now in creative mode");
+                            } else {
+                                PerkUtils.OutputToPlayer(player, "You are already in creative mode");
+                            }
 				return true;
 			}
 		}
@@ -63,9 +67,13 @@ public class PerkGameMode {
 		// change to survival mode
 		if (cmd.getName().equalsIgnoreCase("survival")) {
 			if (player.hasPermission("perks.gamemode.survival", true)) {
+                            if (!(player.getPlayer().getGameMode() == GameMode.SURVIVAL)) {
 				player.getPlayer().setGameMode(GameMode.SURVIVAL);
 				PerkUtils.OutputToPlayer(player, "Now in survial mode");
 				return true;
+                            } else {
+                                PerkUtils.OutputToPlayer(player, "You are already in survival mode");
+                            }
 			}
 		}
 
