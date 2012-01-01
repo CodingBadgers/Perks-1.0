@@ -50,7 +50,7 @@ public class PerksPlayerListener extends PlayerListener {
 		// handle flying...
 		PerkFlying.fly(player, event);
 	}
-	
+
 	@Override
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 
@@ -61,7 +61,7 @@ public class PerksPlayerListener extends PlayerListener {
 
 		Location from = event.getFrom();
 		Location to = event.getTo();
-		
+
 		// stop people changing worlds without permission
 		if (from.getWorld() != to.getWorld()) {
 			String permission = "perks.changeworld." + to.getWorld().getName();
@@ -70,20 +70,21 @@ public class PerksPlayerListener extends PlayerListener {
 				event.setCancelled(true);
 				return;
 			}
-			
+
 			Player bukkitPlayer = player.getPlayer();
-			
-                        // if in creative and DOES NOT have permissions to keep inventory, wipe inventory
+
+			// if in creative and DOES NOT have permissions to keep inventory,
+			// wipe inventory
 			if (bukkitPlayer.getGameMode() == GameMode.CREATIVE) {
-                            if (player.hasPermission("perk.worldclear", true)) {
-				bukkitPlayer.getInventory().clear();
-				bukkitPlayer.setGameMode(GameMode.SURVIVAL);
-                            }
+				if (!player.hasPermission("perks.keepinventonworldchange", false)) {
+					bukkitPlayer.getInventory().clear();
+					bukkitPlayer.setGameMode(GameMode.SURVIVAL);
+				}
 			}
 		}
 
 	}
-	
+
 	// spout only
 	public void onKeyPressedEvent(KeyPressedEvent event) {
 
