@@ -13,6 +13,10 @@ public class PerkUnlimitedAir {
 			return;
 
 		PerkPlayer player = PerkUtils.getPlayer((Player) event.getEntity());
+		
+		if (player == null) {
+			return; // sanity check
+		}
 
 		if (!player.hasPermission("perks.water", false))
 			return;

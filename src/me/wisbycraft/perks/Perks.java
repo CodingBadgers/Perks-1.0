@@ -10,10 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Perks extends JavaPlugin {
 
 	private final PerksPlayerListener playerListener = new PerksPlayerListener(this);
-	private final PerksInputListener inputListener = new PerksInputListener(this, playerListener);
     private final PerksEntityListener entityListener = new PerksEntityListener(this);
     
-    @SuppressWarnings("unused")
 	private final PerkThread m_thread = new PerkThread(this);
 
 	@Override
@@ -32,18 +30,15 @@ public class Perks extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_KICK, playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Event.Priority.Normal, this);
 		
         pm.registerEvent(Event.Type.FOOD_LEVEL_CHANGE, entityListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Event.Priority.Normal, this);
-
-		// Input Listener
-		pm.registerEvent(Event.Type.CUSTOM_EVENT, inputListener, Event.Priority.Normal, this);
 		
 		// Set our thread going
-		//m_thread.start();
+		m_thread.start();
 	}
 
 	@Override
@@ -57,7 +52,7 @@ public class Perks extends JavaPlugin {
 		if (cmd.getName().equalsIgnoreCase("perks")) {
 			
 			PerkUtils.OutputToPlayer(player, "Perks consists of the following perks...");
-			player.getPlayer().sendMessage("1 - /fly, /land and /flytoggle - If you're using spout you will fly, else a magic carpet will be created.");
+			player.getPlayer().sendMessage("1 - /fly, /mc - If you're using spout you will fly else a magic carpet will be created.");
 			player.getPlayer().sendMessage("2 - /tpr <name> - Sends a teleport request to a player.");
 			player.getPlayer().sendMessage("3 - Unlimited air under water when wearing a gold helmet.");
 			player.getPlayer().sendMessage("4 - You're hunger decreases at a much slower rate.");

@@ -10,16 +10,13 @@ commands:
    perks:
       description: Lists all player perks.
       usage: /<command>
+      
    fly:
       description: Turns fly mode on.
       usage: /<command>
-      
-   land:
-      description: Turns fly mode off.
-      usage: /<command>
-      
-   flytoggle:
-      description: Toggles fly mode.
+     
+   mc:
+      description: Turns magic carpet mode on.
       usage: /<command>
       
    gmtoggle:

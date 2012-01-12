@@ -23,6 +23,10 @@ public class PerkUtils {
 	static public void OutputToPlayer(PerkPlayer player, String messsage) {
 		player.getPlayer().sendMessage("\247b[Perks] \247f" + messsage + ".");
 	}
+	
+	static public void OutputToAll(String messsage) {
+		plugin.getServer().broadcastMessage("\247b[Perks] \247f" + messsage + ".");
+	}
 
 	static PerkPlayer getPlayer(Player player) {
 		return perkPlayers.getPlayer(player);

@@ -25,7 +25,8 @@ public class PerkMagicCarpet {
 	// use an array list so we can use an iterator (faster than direct array access)
 	private ArrayList<CarpetBlock> m_blocks = new ArrayList<CarpetBlock>();
 	private Location m_location = null; //!< location of the player
-
+	public int size = 2;
+	
 	// Create the magic carpet when the player enabled fly mode
 	public void create(Player player) {
 
@@ -38,8 +39,8 @@ public class PerkMagicCarpet {
 		m_location = loc;
 
 		// allocate a 3 x 3 region
-		for (int z = -1; z < 2; z++) {
-			for (int x = -1; x < 2; x++) {
+		for (int z = -size; z <= size; z++) {
+			for (int x = -size; x <= size; x++) {
 				Location l = new Location(loc.getWorld(), 
 						loc.getX() + x,
 						loc.getY(), 
@@ -91,18 +92,19 @@ public class PerkMagicCarpet {
 		loc.setY(loc.getY()-1);
 		
 		// we havn't moved so don't update...
-		if (m_location.getBlock() == loc.getBlock())
+		if (m_location.getBlock() == loc.getBlock()) {
 			return;
+		}
 		
-		// store our new loaction
+		// store our new location
 		m_location = loc;
 		
 		// remove the old carpet
 		remove();
 
 		Iterator<CarpetBlock> itr = m_blocks.iterator();
-		for (int z = -1; z < 2; z++) {
-			for (int x = -1; x < 2; x++) {
+		for (int z = -size; z <= size; z++) {
+			for (int x = -size; x <= size; x++) {
 				CarpetBlock cb = itr.next();
 				cb.loc.setX(loc.getX() + x);
 				cb.loc.setY(loc.getY());

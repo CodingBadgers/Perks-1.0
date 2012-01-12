@@ -17,9 +17,8 @@ public class PerkPlayer {
 
 	// Fly related members //
 	private boolean m_flying = false;				//!< is the player flying?
-	private boolean m_jumping = false;				//!< has the player got jump pressed (spout only)
-	private boolean m_sneaking = false;				//!< has the player got sneak pressed (spout only)
 	private PerkMagicCarpet m_magicCarpet = null;	//!< A players magic carpet object (Non spout only)
+	private boolean m_forceCarpet = false;			//!< Force magic carpet even when using spout
 	// end fly related members //
 	
 	// hunger related members //
@@ -62,7 +61,7 @@ public class PerkPlayer {
 		return m_spoutPlayer;
 	}
 
-	public void setFlying(boolean flying) {
+	public void setFlying(boolean flying, boolean forceCarpet) {
 		
 		// output a message to the user
 		if (flying) {
@@ -72,7 +71,7 @@ public class PerkPlayer {
 		}
 		
 		// if player isnt using spout create or destroy there magic carpet
-		if (!m_spoutPlayer.isSpoutCraftEnabled()) {
+		if (!m_spoutPlayer.isSpoutCraftEnabled() || forceCarpet) {
 			if (flying) {
 				m_magicCarpet.create(m_player);
 			} else {
@@ -82,26 +81,19 @@ public class PerkPlayer {
 
 		// store whether we're flying or not
 		m_flying = flying;
+		setForceCarpet(forceCarpet);
 	}
 
 	public boolean isFlying() {
 		return m_flying;
 	}
 
-	public boolean isJumping() {
-		return m_jumping;
+	public boolean getForceCarpet() {
+		return m_forceCarpet;
 	}
 
-	public void setJumping(boolean jumping) {
-		m_jumping = jumping;
-	}
-
-	public boolean isSneaking() {
-		return m_sneaking;
-	}
-
-	public void setSneaking(boolean sneaking) {
-		m_sneaking = sneaking;
+	public void setForceCarpet(boolean forceCarpet) {
+		m_forceCarpet = forceCarpet;
 	}
 
 	public PerkMagicCarpet getMagicCarpet() {

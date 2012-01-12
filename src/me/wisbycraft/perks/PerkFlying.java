@@ -15,7 +15,7 @@ public class PerkFlying {
 
 		// currently flying is only enabled if you're using spoutcraft
 		// will have to implement a magic carpet
-		if (spoutPlayer.isSpoutCraftEnabled()) {
+		if (spoutPlayer.isSpoutCraftEnabled() && !player.getForceCarpet()) {
 
 			if (m_defaultGravity == 0.0f)
 				m_defaultGravity = spoutPlayer.getGravityMultiplier();
@@ -35,15 +35,32 @@ public class PerkFlying {
 			spoutPlayer.setFallDistance(0.0f);
 
 			// effect gravity based upon keyboard input
-			if (player.isJumping())
-				spoutPlayer.setGravityMultiplier(-0.2f);
-			else if (player.isSneaking())
-				spoutPlayer.setGravityMultiplier(0.2f);
-			else
-				spoutPlayer.setGravityMultiplier(0);
+			/*
+			if (player.isJumping()) {
+				spoutPlayer.setGravityMultiplier(-0.4f); // go up
+			} else if (player.isSneaking()) {
+				spoutPlayer.setGravityMultiplier(0.4f); // go down
+			} else {
+				double yDiff = spoutPlayer.getLocation().getY() - player.m_lastY;
+				player.m_lastY = spoutPlayer.getLocation().getY();
+				
+				if (yDiff < 0.1 && yDiff > -0.1)
+					yDiff = 0.0;
+				
+				spoutPlayer.setGravityMultiplier(yDiff); // float
+			}
+			*/
+			
+			//PerkUtils.OutputToPlayer(player, "" + spoutPlayer.getLocation().getPitch());
+			
+			float pitch = spoutPlayer.getLocation().getPitch();
+			if (pitch < 10.0f && pitch > -10.0f)
+				pitch = 0.0f;
+			
+			spoutPlayer.setGravityMultiplier(pitch * 0.005);
 
 			// speed up through the air
-			spoutPlayer.setAirSpeedMultiplier(2);
+			spoutPlayer.setAirSpeedMultiplier(2); // increase speed
 		} else {
 			
 			// this is the magic carpet version... laggier and poo.
@@ -71,24 +88,13 @@ public class PerkFlying {
 			return false;
 		
 		// turns fly on
-		if (cmd.getName().equalsIgnoreCase("fly")) {
-			player.setFlying(true);
-			return true;
-		}
-
-		// turns fly off
-		if (cmd.getName().equalsIgnoreCase("land")) {
-			player.setFlying(false);
-			return true;
-		}
-
-		// toggles flying
-		if (cmd.getName().equalsIgnoreCase("flytoggle")) {
+		if (cmd.getName().equalsIgnoreCase("fly") || cmd.getName().equalsIgnoreCase("mc")) {
 			if (player.isFlying()) {
-				player.setFlying(false);
+				player.setFlying(false, cmd.getName().equalsIgnoreCase("mc"));
 			} else {
-				player.setFlying(true);
+				player.setFlying(true, cmd.getName().equalsIgnoreCase("mc"));
 			}
+			
 			return true;
 		}
 

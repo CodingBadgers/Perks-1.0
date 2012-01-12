@@ -16,6 +16,10 @@ public class PerkHunger {
         PerkPlayer player = PerkUtils.getPlayer((Player)event.getEntity());
         
         
+        if (player == null) {
+        	return;
+        }
+        
         // do they have the huger permission?
         if (!player.hasPermission("perks.hunger", false)) 
         	return;
