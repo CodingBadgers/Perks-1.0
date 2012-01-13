@@ -19,10 +19,6 @@ public class PerkThread extends Thread {
 		
 		while (m_running) {
 							
-			PerkUtils.OutputToAll("Don't forget to vote for us daily on..");
-			PerkUtils.OutputToAll("\t - minestatus.net");
-			PerkUtils.OutputToAll("\t - mcserverstatus.com");
-			
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {

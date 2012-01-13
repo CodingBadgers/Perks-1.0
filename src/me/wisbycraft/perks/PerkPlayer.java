@@ -31,14 +31,19 @@ public class PerkPlayer {
 	private ArrayList<Long> tpRequestTime = new ArrayList<Long>();
 	// end tp related members //
 	
-	private int m_damageToDragon = 0;
-
 	public PerkPlayer(Player player) {
 		m_player = player;
-		m_spoutPlayer = (SpoutPlayer) player;
-
-		// if the player isnt using spout make a magic carpet
-		if (!m_spoutPlayer.isSpoutCraftEnabled()) {
+		
+		if (PerkUtils.spoutEnabled) {
+			m_spoutPlayer = (SpoutPlayer) player;
+	
+			// if the player isnt using spout make a magic carpet
+			if (!m_spoutPlayer.isSpoutCraftEnabled()) {
+				m_magicCarpet = new PerkMagicCarpet();
+			}
+		}
+		else
+		{
 			m_magicCarpet = new PerkMagicCarpet();
 		}
 	}
@@ -71,7 +76,7 @@ public class PerkPlayer {
 		}
 		
 		// if player isnt using spout create or destroy there magic carpet
-		if (!m_spoutPlayer.isSpoutCraftEnabled() || forceCarpet) {
+		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled() || forceCarpet) {
 			if (flying) {
 				m_magicCarpet.create(m_player);
 			} else {
@@ -214,11 +219,4 @@ public class PerkPlayer {
 		tpRequest.removePlayer(player.getPlayer());
 		
 	}
-
-	public void causedDamageToDragon(int damage) {
-		m_damageToDragon += damage;
-		
-		PerkUtils.OutputToPlayer(this, "You have caused " + m_damageToDragon + " units of damage to the Dragon");
-	}
-
 }

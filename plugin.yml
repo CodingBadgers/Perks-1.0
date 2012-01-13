@@ -4,7 +4,7 @@ main: me.wisbycraft.perks.Perks
 version: 1.00
 website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for our server
-depend: [Spout]
+softdepend: [Spout]
 
 commands:
    perks:

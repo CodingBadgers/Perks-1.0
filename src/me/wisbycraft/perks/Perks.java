@@ -25,6 +25,8 @@ public class Perks extends JavaPlugin {
 		PerkUtils.plugin = this;
 		
 		PluginManager pm = this.getServer().getPluginManager();
+		
+		PerkUtils.spoutEnabled = pm.getPlugin("Spout") != null;
 
 		// Player listeners
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Normal, this);
