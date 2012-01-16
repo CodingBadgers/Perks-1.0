@@ -3,7 +3,7 @@ authors: [N3wton, wman2]
 main: me.wisbycraft.perks.Perks
 version: 1.00
 website: www.wisbycraft.com
-description: A plugin containing all the Donator perks for our server
+description: A plugin containing all the Donator perks for WisbyCraft
 softdepend: [Spout]
 
 commands:
@@ -25,7 +25,7 @@ commands:
 
    gm:
       description: Lets you see a players gamemode
-      usage: /<command>
+      usage: /<command> [player]
    
    creative:
       description: puts you into creative mode
