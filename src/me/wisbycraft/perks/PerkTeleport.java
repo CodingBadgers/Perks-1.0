@@ -34,6 +34,22 @@ public class PerkTeleport {
 			return true;
 		}
 		
+		if (cmd.getName().equalsIgnoreCase("tphr")) {
+			
+			if (args.length != 1) {
+				PerkUtils.OutputToPlayer(player, "In correct usage of command");
+				return true;
+			}
+			
+			if (!player.hasPermission("perks.teleport.tphr", true)) {
+				return true;
+			}
+			
+			toPlayer.sendTpHereRequest(player);
+			
+			return true;
+		}
+		
 		// accepting and declining shouldn't have a permission as everyone needs to do it
 		
 		if (cmd.getName().equalsIgnoreCase("tpa")) {

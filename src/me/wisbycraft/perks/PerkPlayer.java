@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-//import org.bukkit.Location;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -30,18 +30,19 @@ public class PerkPlayer {
 	private class TP {
 		public PerkPlayerArray m_tpRequest = new PerkPlayerArray();
 		public ArrayList<Long> m_tpRequestTime = new ArrayList<Long>();
+		public boolean m_tpHere = false;
 	}
 	
-	/*
 	private class DeathTP {
 		public Location m_location = null;
 		public float m_time = 0.0f;
+		public boolean m_hasDied = false;
 	}
-	*/
 	
 	private Flying m_fly = null;
 	private Hunger m_hunger = null;
 	private TP m_tp = null;
+	private DeathTP m_deathTP = null;
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -53,6 +54,7 @@ public class PerkPlayer {
 		m_fly = new Flying();
 		m_hunger = new Hunger();
 		m_tp = new TP();
+		m_deathTP = new DeathTP();
 
 		// if the player isnt using spout make a magic carpet
 		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled()) {
@@ -154,6 +156,7 @@ public class PerkPlayer {
 		if (m_tp.m_tpRequest.getPlayer(player.getPlayer()) == null) {
 			m_tp.m_tpRequest.add(player);
 			m_tp.m_tpRequestTime.add(cal.getTimeInMillis());
+			m_tp.m_tpHere = false;
 			newRequest = true;
 		}
 		
@@ -193,15 +196,18 @@ public class PerkPlayer {
 			}			
 			
 			player = m_tp.m_tpRequest.get(m_tp.m_tpRequest.size() - 1);
-		}
-		
-		if (m_tp.m_tpRequest.getPlayer(player.getPlayer()) == null) {
+		} 
+		else if (m_tp.m_tpRequest.getPlayer(player.getPlayer()) == null) {
 			PerkUtils.OutputToPlayer(this, "You have not recieved a tp request from that player");
 			return;
 		}
 		
 		PerkUtils.OutputToPlayer(player, m_player.getName() + " has accepted your tp request");
-		player.getPlayer().teleport(m_player);
+		
+		if (m_tp.m_tpHere)
+			m_player.teleport(player.getPlayer());
+		else
+			player.getPlayer().teleport(m_player);
 		
 		m_tp.m_tpRequest.removePlayer(player.getPlayer());
 		
@@ -219,8 +225,7 @@ public class PerkPlayer {
 			
 			player = m_tp.m_tpRequest.get(m_tp.m_tpRequest.size() - 1);
 		}
-		
-		if (m_tp.m_tpRequest.getPlayer(player.getPlayer()) == null) {
+		else if (m_tp.m_tpRequest.getPlayer(player.getPlayer()) == null) {
 			PerkUtils.OutputToPlayer(this, "You have not recieved a tp request from that player");
 			return;
 		}
@@ -229,5 +234,78 @@ public class PerkPlayer {
 		
 		m_tp.m_tpRequest.removePlayer(player.getPlayer());
 		
+	}
+
+	public void sendTpHereRequest(PerkPlayer player) {
+		
+		boolean newRequest = false;
+		Calendar cal = Calendar.getInstance();
+		
+		if (m_tp.m_tpRequest.getPlayer(player.getPlayer()) == null) {
+			m_tp.m_tpRequest.add(player);
+			m_tp.m_tpRequestTime.add(cal.getTimeInMillis());
+			m_tp.m_tpHere = true;
+			newRequest = true;
+		}
+		
+		// if were requesting to a player we've requested to before check times
+		if (!newRequest) {
+			for (int i = 0; i < m_tp.m_tpRequest.size(); ++i) {
+				if (m_tp.m_tpRequest.get(i) == player) {
+					// see if 30 seconds have passed, if not tell them to fuck off.
+					Long timeSinceLastReguest = cal.getTimeInMillis() - m_tp.m_tpRequestTime.get(i);
+					if(timeSinceLastReguest < 30000) {
+						PerkUtils.OutputToPlayer(player, "Please wait another " + Float.valueOf((new DecimalFormat("##.##").format(30-(timeSinceLastReguest/1000))))  + " seconds before sending another tp request to " + m_player.getName());
+						return;
+					}
+					else
+					{
+						// update the time so that they have to wait another 30 seconds.
+						m_tp.m_tpRequestTime.set(i, cal.getTimeInMillis());
+					}
+				}
+			}
+		}
+				
+		PerkUtils.OutputToPlayer(this, player.getPlayer().getName() + " have sent you a tp here request");
+		PerkUtils.OutputToPlayer(this, "Type '/tpa " + player.getPlayer().getName() + "' to accept there request");
+		
+		PerkUtils.OutputToPlayer(player, "Your tp here request has been sent to " + m_player.getName());
+		
+	}
+
+	public void addDeathLocation(Location deathLocation) {
+		
+		m_deathTP.m_location = deathLocation;
+		
+		Calendar cal = Calendar.getInstance();
+		m_deathTP.m_time = cal.getTimeInMillis();	
+		
+		m_deathTP.m_hasDied = true;
+		
+		PerkUtils.OutputToPlayer(this, "Use /death to be teleported back to the point where you died");
+		
+	}
+	
+	public boolean canDeathTP() {
+		
+		if (!m_deathTP.m_hasDied)
+			return false;
+		
+		Calendar cal = Calendar.getInstance();
+		if (cal.getTimeInMillis() - m_deathTP.m_time > 60000) {
+			m_deathTP.m_hasDied = false;
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public Location getDeathLocation() {
+		return m_deathTP.m_location;
+	}
+	
+	public void resetDeath() {
+		m_deathTP.m_hasDied = false;
 	}
 }

@@ -62,9 +62,12 @@ public class Perks extends JavaPlugin {
 			return true;
 		
 		// handles gamemode cmds
-		if (PerkGameMode.onCommand(player, cmd, commandLabel, args)) {
-                    return true;
-                }
+		if (PerkGameMode.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles death cmds
+		if (PerkDeathTP.onCommand(player, cmd, commandLabel, args))
+			return true;
 
 		return false;
 	}

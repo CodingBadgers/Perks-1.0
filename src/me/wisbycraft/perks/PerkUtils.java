@@ -30,6 +30,9 @@ public class PerkUtils {
 	}
 
 	static PerkPlayer getPlayer(Player player) {
+		if (player == null)
+			return null;
+		
 		return perkPlayers.getPlayer(player);
 	}
 	
