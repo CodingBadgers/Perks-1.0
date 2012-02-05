@@ -8,6 +8,9 @@ public class PerkDeathTP {
 	
 	public static void OnDeath(PerkPlayer player, PlayerDeathEvent event) {
 	
+		if (!player.hasPermission("perks.deathtp", false))
+			return;
+		
 		Location deathLocation = player.getPlayer().getLocation();
 		
 		player.addDeathLocation(deathLocation);
@@ -15,6 +18,9 @@ public class PerkDeathTP {
 	}
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+		
+		if (!player.hasPermission("perks.deathtp", true))
+			return true;
 		
 		if (player.canDeathTP()) {
 			player.getPlayer().teleport(player.getDeathLocation());
