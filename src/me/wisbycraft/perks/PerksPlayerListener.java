@@ -3,40 +3,38 @@ package me.wisbycraft.perks;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class PerksPlayerListener extends PlayerListener {
-
-	@SuppressWarnings("unused")
-	private Perks m_plugin = null; // were gonna need it at some point... and
-									// the warning was annoying me
+public class PerksPlayerListener implements Listener {
 
 	public PerksPlayerListener(Perks plugin) {
-		m_plugin = plugin;
+
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		PerkPlayer player = new PerkPlayer(event.getPlayer());
 		PerkUtils.perkPlayers.add(player);
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerKick(PlayerKickEvent event) {
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
@@ -48,7 +46,7 @@ public class PerksPlayerListener extends PlayerListener {
 		PerkFlying.fly(player, event);
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());

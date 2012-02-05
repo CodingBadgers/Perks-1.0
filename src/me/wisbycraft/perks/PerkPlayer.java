@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+//import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -30,6 +31,13 @@ public class PerkPlayer {
 		public PerkPlayerArray m_tpRequest = new PerkPlayerArray();
 		public ArrayList<Long> m_tpRequestTime = new ArrayList<Long>();
 	}
+	
+	/*
+	private class DeathTP {
+		public Location m_location = null;
+		public float m_time = 0.0f;
+	}
+	*/
 	
 	private Flying m_fly = null;
 	private Hunger m_hunger = null;

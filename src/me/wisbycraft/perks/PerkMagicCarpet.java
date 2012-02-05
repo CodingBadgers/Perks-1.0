@@ -26,10 +26,14 @@ public class PerkMagicCarpet {
 	private ArrayList<CarpetBlock> m_blocks = new ArrayList<CarpetBlock>();
 	private Location m_location = null; //!< location of the player
 	public int size = 2;
+	public Player m_player;
+	
 	
 	// Create the magic carpet when the player enabled fly mode
 	public void create(Player player) {
 
+		m_player = player;
+		
 		// get the players location to allocate a carpet around them
 		Location loc = new Location(player.getWorld(), player.getLocation()
 				.getX(), player.getLocation().getY() - 1, player
@@ -89,6 +93,9 @@ public class PerkMagicCarpet {
 
 	public void positionAndShow(Location loc) {
 		
+		if (m_blocks.size() == 0)
+			create(m_player);
+		
 		loc.setY(loc.getY()-1);
 		
 		// we havn't moved so don't update...
@@ -105,15 +112,17 @@ public class PerkMagicCarpet {
 		Iterator<CarpetBlock> itr = m_blocks.iterator();
 		for (int z = -size; z <= size; z++) {
 			for (int x = -size; x <= size; x++) {
-				CarpetBlock cb = itr.next();
-				cb.loc.setX(loc.getX() + x);
-				cb.loc.setY(loc.getY());
-				cb.loc.setZ(loc.getZ() + z);
+				if (itr.hasNext()) {
+					CarpetBlock cb = itr.next();
+					cb.loc.setX(loc.getX() + x);
+					cb.loc.setY(loc.getY());
+					cb.loc.setZ(loc.getZ() + z);
 
-				// if the block is empty set it to glass and mark as placed
-				if (cb.loc.getBlock().getTypeId() == 0) {
-					cb.loc.getBlock().setType(cb.material);
-					cb.placed = true;
+					// if the block is empty set it to glass and mark as placed
+					if (cb.loc.getBlock().getTypeId() == 0) {
+						cb.loc.getBlock().setType(cb.material);
+						cb.placed = true;
+					}
 				}
 			}
 		}
