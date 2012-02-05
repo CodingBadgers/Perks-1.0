@@ -11,7 +11,7 @@ public class Perks extends JavaPlugin {
 	private final PerksPlayerListener playerListener = new PerksPlayerListener(this);
     private final PerksEntityListener entityListener = new PerksEntityListener(this);
     
-	private final PerkThread m_thread = new PerkThread(this);
+	//private final PerkThread m_thread = new PerkThread(this);
 
 	@Override
 	public void onDisable() {
@@ -31,7 +31,7 @@ public class Perks extends JavaPlugin {
 		pm.registerEvents(entityListener, this);
 		
 		// Set our thread going
-		m_thread.start();
+		//m_thread.start();
 	}
 
 	@Override
@@ -45,10 +45,11 @@ public class Perks extends JavaPlugin {
 		if (cmd.getName().equalsIgnoreCase("perks")) {
 			
 			PerkUtils.OutputToPlayer(player, "Perks consists of the following perks...");
-			player.getPlayer().sendMessage("1 - /fly, /mc - If you're using spout you will fly else a magic carpet will be created.");
+			player.getPlayer().sendMessage("1 - /fly, /mc - If you're using spout you will fly else a magiccarpet.");
 			player.getPlayer().sendMessage("2 - /tpr <name> - Sends a teleport request to a player.");
 			player.getPlayer().sendMessage("3 - Unlimited air under water when wearing a gold helmet.");
 			player.getPlayer().sendMessage("4 - You're hunger decreases at a much slower rate.");
+			player.getPlayer().sendMessage("5 - /death - to teleport to your last death location.");
 			
 			return true;
 		}

@@ -2,11 +2,11 @@ package me.wisbycraft.perks;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 public class PerkDeathTP {
 	
-	public static void OnDeath(PerkPlayer player, PlayerDeathEvent event) {
+	public static void OnDeath(PerkPlayer player, EntityDeathEvent event) {
 	
 		if (!player.hasPermission("perks.deathtp", false))
 			return;
@@ -18,6 +18,8 @@ public class PerkDeathTP {
 	}
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+		
+		
 		
 		if (!player.hasPermission("perks.deathtp", true))
 			return true;

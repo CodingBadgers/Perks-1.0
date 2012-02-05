@@ -1,7 +1,7 @@
 name: Perks
 authors: [N3wton, wman2]
 main: me.wisbycraft.perks.Perks
-version: 1.00
+version: 1.4
 website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for WisbyCraft
 softdepend: [Spout]
@@ -39,6 +39,10 @@ commands:
       description: Request to be teleported to player
       usage: /<command> <player>
       
+   tphr:
+      description: Request to teleport a player to you
+      usage: /<command> <player>
+      
    tpa:
       description: Accept a players teleport request
       usage: /<command> [player]
@@ -46,3 +50,7 @@ commands:
    tpd:
       description: Accept a players teleport request
       usage: /<command> [player]
+     
+   death:
+      description: Teleport to your last death point
+      usage: /<command>
