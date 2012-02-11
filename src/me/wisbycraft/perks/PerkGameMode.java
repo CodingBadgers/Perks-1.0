@@ -47,7 +47,6 @@ public class PerkGameMode {
 					Player otherPlayer = PerkUtils.getPlayer(args[0]);
 					if (otherPlayer == null) {
 						PerkUtils.OutputToPlayer(player, "Could not find a player with the name " + args[0]);
-						return true;
 					}
 					
 					PerkUtils.OutputToPlayer(player, args[0] + " is in " + otherPlayer.getGameMode());

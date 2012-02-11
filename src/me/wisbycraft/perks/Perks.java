@@ -30,6 +30,8 @@ public class Perks extends JavaPlugin {
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
 		
+		DatabaseManager.LoadHomes();
+		
 		// Set our thread going
 		//m_thread.start();
 	}
@@ -69,6 +71,9 @@ public class Perks extends JavaPlugin {
 		// handles death cmds
 		if (PerkDeathTP.onCommand(player, cmd, commandLabel, args))
 			return true;
+
+		if (PerkPlayer.HandleHomeAndBuildCommands(player, cmd, commandLabel, args))
+			return true;
 		
 		// handles cape and color cmds
 		if (PerkCapes.onCommand(player, cmd, commandLabel, args))
@@ -77,7 +82,7 @@ public class Perks extends JavaPlugin {
 		// handles promote cmds
 		if (PerkPromote.onCommand(player, cmd, commandLabel, args))
 			return true;
-		
+
 		return false;
 	}
 

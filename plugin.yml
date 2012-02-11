@@ -1,7 +1,7 @@
 name: Perks
 authors: [N3wton, wman2]
 main: me.wisbycraft.perks.Perks
-version: 1.4
+version: 1.5
 website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for WisbyCraft
 softdepend: [Spout]
@@ -54,9 +54,28 @@ commands:
    death:
       description: Teleport to your last death point
       usage: /<command>
+      
+   home:
+      description: Teleport you to your current worlds home
+      usage: /<command>
+      
+   sethome:
+      description: Sets your home in the current world
+      usage: /<command>
+      
+   build:
+      description: Teleport you to your current build location
+      usage: /<command>
+      
+   setbuild:
+      description: Sets your build location
+      usage: /<command>
+      usage: /<command>
+	  
    capes:
       description: cape overide commands
       usage: /<command> <update/remove> [player]
+	  
    promote:
       description: promote command
       usage: /<command> <player> [ladder]

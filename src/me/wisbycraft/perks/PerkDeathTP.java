@@ -19,16 +19,17 @@ public class PerkDeathTP {
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
-		
-		
-		if (!player.hasPermission("perks.deathtp", true))
-			return true;
-		
-		if (player.canDeathTP()) {
-			player.getPlayer().teleport(player.getDeathLocation());
-			player.resetDeath();
-			PerkUtils.OutputToPlayer(player, "You have been teleported to your last death point");
-			return true;
+		if (cmd.getName().equalsIgnoreCase("death")) {
+
+			if (!player.hasPermission("perks.deathtp", true))
+				return true;
+			
+			if (player.canDeathTP()) {
+				player.getPlayer().teleport(player.getDeathLocation());
+				player.resetDeath();
+				PerkUtils.OutputToPlayer(player, "You have been teleported to your last death point");
+				return true;
+			}			
 		}
 				
 		return false;

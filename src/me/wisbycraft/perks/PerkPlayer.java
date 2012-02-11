@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.bukkit.Location;
+import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -87,14 +88,13 @@ public class PerkPlayer {
 			PerkUtils.OutputToPlayer(this, "Fly mode is now enabled");
 		} else {
 			PerkUtils.OutputToPlayer(this, "Fly mode is now disabled");
+			m_fly.m_magicCarpet.destroy();
 		}
 		
 		// if player isnt using spout create or destroy there magic carpet
 		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled() || forceCarpet) {
 			if (flying) {
 				m_fly.m_magicCarpet.create(m_player);
-			} else {
-				m_fly.m_magicCarpet.destroy();
 			}
 		}
 
@@ -127,7 +127,7 @@ public class PerkPlayer {
 			return true;
 
 		if (reportError)
-			PerkUtils.OutputToPlayer(this, "You do not have permission to use that command");
+			PerkUtils.OutputToPlayer(this, "You require the permission '" + permission + "' to use that command");
 		
 		return false;
 	}
@@ -308,4 +308,71 @@ public class PerkPlayer {
 	public void resetDeath() {
 		m_deathTP.m_hasDied = false;
 	}
+	
+	public void setBuildLocation(Location loc, boolean announce) {
+		
+		if (loc == null)
+			loc = m_player.getLocation();
+		
+		if (announce)
+			PerkUtils.OutputToPlayer(this, "Build location set");
+		
+		DatabaseManager.setBuildLocation(m_player, loc);
+	}
+		
+	public void setHomeLocation(Location loc, boolean announce) {
+		
+		if (loc == null)
+			loc = m_player.getLocation();
+		
+		
+		if (announce) {
+			PerkUtils.OutputToPlayer(this, "Added new home in world '" + loc.getWorld().getName() + "'");
+		}
+		
+		DatabaseManager.setHomeLocation(m_player, loc);
+	}
+		
+	public static boolean HandleHomeAndBuildCommands(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+		
+		if (cmd.getName().equalsIgnoreCase("home")) {
+
+			if (!player.hasPermission("perks.home", true))
+				return true;
+			
+			DatabaseManager.gotoHome(player.getPlayer());
+			return true;
+		}
+		
+		if (cmd.getName().equalsIgnoreCase("sethome")) {
+
+			if (!player.hasPermission("perks.home", true))
+				return true;
+			
+			player.setHomeLocation(null, true);
+			return true;
+		}
+			
+		if (cmd.getName().equalsIgnoreCase("build")) {
+
+			if (!player.hasPermission("perks.build", true))
+				return true;
+			
+			DatabaseManager.gotoBuild(player.getPlayer());
+			return true;
+		}
+		
+		if (cmd.getName().equalsIgnoreCase("setbuild")) {
+
+			if (!player.hasPermission("perks.build", true))
+				return true;
+			
+			player.setBuildLocation(null, true);
+			return true;
+		}
+		
+		return false;
+		
+	}
+	
 }

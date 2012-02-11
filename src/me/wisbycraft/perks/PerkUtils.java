@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class PerkUtils {
 
-	private static final Logger log = Logger.getLogger("minecraft");
+	public static final Logger log = Logger.getLogger("minecraft");
 	static public PerkPlayerArray perkPlayers = new PerkPlayerArray();
 	static public Perks plugin = null;
 	static public boolean spoutEnabled = false;
@@ -23,6 +23,10 @@ public class PerkUtils {
 
 	static public void OutputToPlayer(PerkPlayer player, String messsage) {
 		player.getPlayer().sendMessage("\247b[Perks] \247f" + messsage + ".");
+	}
+	
+	static public void OutputToPlayer(Player player, String messsage) {
+		player.sendMessage("\247b[Perks] \247f" + messsage + ".");
 	}
 	
 	static public void OutputToAll(String messsage) {

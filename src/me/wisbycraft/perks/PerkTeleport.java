@@ -6,64 +6,71 @@ public class PerkTeleport {
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 
-		PerkPlayer toPlayer = null;
 		
-		if (args.length == 1) {
-			String playerName = args[0];
-			toPlayer = PerkUtils.getPlayer(PerkUtils.server().getPlayer(playerName));
+		if (cmd.getName().equalsIgnoreCase("tpr") || 
+			cmd.getName().equalsIgnoreCase("tphr") ||
+			cmd.getName().equalsIgnoreCase("tpd") ||
+			cmd.getName().equalsIgnoreCase("tpa"))
+		{
+			PerkPlayer toPlayer = null;
 			
-			if (toPlayer == null) {
-				PerkUtils.OutputToPlayer(player, playerName + " isn't online.");
-				return false;
+			if (args.length == 1) {
+				String playerName = args[0];
+				toPlayer = PerkUtils.getPlayer(PerkUtils.server().getPlayer(playerName));
+				
+				if (toPlayer == null) {
+					PerkUtils.OutputToPlayer(player, playerName + " isn't online.");
+					return true;
+				}
 			}
-		}
-		
-		if (cmd.getName().equalsIgnoreCase("tpr")) {
 			
-			if (args.length != 1) {
-				PerkUtils.OutputToPlayer(player, "In correct usage of command");
+			if (cmd.getName().equalsIgnoreCase("tpr")) {
+				
+				if (args.length != 1) {
+					PerkUtils.OutputToPlayer(player, "In correct usage of command");
+					return true;
+				}
+				
+				if (!player.hasPermission("perks.teleport.tpr", true)) {
+					return true;
+				}
+				
+				toPlayer.sendTpRequest(player);
+				
 				return true;
 			}
 			
-			if (!player.hasPermission("perks.teleport.tpr", true)) {
+			if (cmd.getName().equalsIgnoreCase("tphr")) {
+				
+				if (args.length != 1) {
+					PerkUtils.OutputToPlayer(player, "In correct usage of command");
+					return true;
+				}
+				
+				if (!player.hasPermission("perks.teleport.tphr", true)) {
+					return true;
+				}
+				
+				toPlayer.sendTpHereRequest(player);
+				
 				return true;
 			}
 			
-			toPlayer.sendTpRequest(player);
+			// accepting and declining shouldn't have a permission as everyone needs to do it
 			
-			return true;
-		}
-		
-		if (cmd.getName().equalsIgnoreCase("tphr")) {
-			
-			if (args.length != 1) {
-				PerkUtils.OutputToPlayer(player, "In correct usage of command");
+			if (cmd.getName().equalsIgnoreCase("tpa")) {
+				
+				player.acceptTpRequest(toPlayer);
+				
 				return true;
 			}
 			
-			if (!player.hasPermission("perks.teleport.tphr", true)) {
+			if (cmd.getName().equalsIgnoreCase("tpd")) {
+				
+				player.declineTpRequest(toPlayer);
+				
 				return true;
 			}
-			
-			toPlayer.sendTpHereRequest(player);
-			
-			return true;
-		}
-		
-		// accepting and declining shouldn't have a permission as everyone needs to do it
-		
-		if (cmd.getName().equalsIgnoreCase("tpa")) {
-			
-			player.acceptTpRequest(toPlayer);
-			
-			return true;
-		}
-		
-		if (cmd.getName().equalsIgnoreCase("tpd")) {
-			
-			player.declineTpRequest(toPlayer);
-			
-			return true;
 		}
 
 		return false;

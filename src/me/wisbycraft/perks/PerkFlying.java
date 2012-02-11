@@ -46,7 +46,7 @@ public class PerkFlying {
 				spoutPlayer.setAirSpeedMultiplier(2); // increase speed
 			} else {
 				
-				// this is the magic carpet version... laggier and poo.
+				// this is the magic carpet version...
 				
 				// make sure the person is flying...
 				if (!player.isFlying()) {
@@ -55,9 +55,13 @@ public class PerkFlying {
 	
 				// get where they are going to. if there sneaking go down one.
 				Location to = event.getTo();
+				Location from = event.getFrom();
+				
 				if (player.getPlayer().isSneaking())
 					to.setY(to.getY() - 1);
-	
+				else if(from.getY() > to.getY())
+					to.setY(from.getY());
+				
 				// update the magic carpet
 				player.getMagicCarpet().positionAndShow(event.getTo());
 			}
@@ -83,13 +87,14 @@ public class PerkFlying {
 	}
 
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
-		
-		// all the following commands require this permission
-		if (!player.hasPermission("perks.fly", true))
-			return false;
-		
+				
 		// turns fly on
 		if (cmd.getName().equalsIgnoreCase("fly") || cmd.getName().equalsIgnoreCase("mc")) {
+			
+			// all the following commands require this permission
+			if (!player.hasPermission("perks.fly", true))
+				return true;
+			
 			if (player.isFlying()) {
 				player.setFlying(false, cmd.getName().equalsIgnoreCase("mc"));
 			} else {
