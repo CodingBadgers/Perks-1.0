@@ -20,6 +20,7 @@ public class PerkPromote {
 			PermissionGroup targetGroup = user.promote(promoter, "default");
 			
 			PerkUtils.OutputToPlayer(sender, "The user " + player.getName() + " has been promoted to " + targetGroup.getName());
+			PerkUtils.OutputToPlayer(player, "You have been promoted to " + targetGroup.getName());
 		} catch (RankingException e) {
 			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player, check the log");
 			e.printStackTrace();
@@ -39,6 +40,7 @@ public class PerkPromote {
 			PermissionGroup targetGroup = user.promote(promoter, ladder);
 			
 			PerkUtils.OutputToPlayer(sender, "The user " + player.getName() + " has been promoted to " + targetGroup.getName());
+			PerkUtils.OutputToPlayer(player, "You have been promoted to " + targetGroup.getName());
 		} catch (RankingException e) {
 			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player, check the log");
 			e.printStackTrace();
@@ -52,6 +54,9 @@ public class PerkPromote {
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("promote")) {
+			
+			if (player.hasPermission("perks.demote", true)) 
+				return true;
 			
 			if (args.length == 1) {
 				
@@ -69,7 +74,7 @@ public class PerkPromote {
 				
 				PerkUtils.OutputToPlayer(player, "use /promote <name> [ladder]");
 				
-				return false;
+				return true;
 			}
 			
 		}
