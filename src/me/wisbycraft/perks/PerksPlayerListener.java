@@ -83,6 +83,12 @@ public class PerksPlayerListener implements Listener {
 				}
 			}
 		}
+		
+		if (player.hasPermission("perks.capes", false)) {
+			PerkCapes.setCape(player.getPlayer());
+		}
+		
+		PerkColors.addColor(player.getPlayer());
 
 	}
 	

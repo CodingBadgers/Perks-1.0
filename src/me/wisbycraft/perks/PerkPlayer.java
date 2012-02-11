@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.bukkit.Location;
-import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -331,48 +330,6 @@ public class PerkPlayer {
 		}
 		
 		DatabaseManager.setHomeLocation(m_player, loc);
-	}
-		
-	public static boolean HandleHomeAndBuildCommands(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
-		
-		if (cmd.getName().equalsIgnoreCase("home")) {
-
-			if (!player.hasPermission("perks.home", true))
-				return true;
-			
-			DatabaseManager.gotoHome(player.getPlayer());
-			return true;
-		}
-		
-		if (cmd.getName().equalsIgnoreCase("sethome")) {
-
-			if (!player.hasPermission("perks.home", true))
-				return true;
-			
-			player.setHomeLocation(null, true);
-			return true;
-		}
-			
-		if (cmd.getName().equalsIgnoreCase("build")) {
-
-			if (!player.hasPermission("perks.build", true))
-				return true;
-			
-			DatabaseManager.gotoBuild(player.getPlayer());
-			return true;
-		}
-		
-		if (cmd.getName().equalsIgnoreCase("setbuild")) {
-
-			if (!player.hasPermission("perks.build", true))
-				return true;
-			
-			player.setBuildLocation(null, true);
-			return true;
-		}
-		
-		return false;
-		
 	}
 	
 }
