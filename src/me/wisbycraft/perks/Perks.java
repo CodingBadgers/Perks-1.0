@@ -69,7 +69,15 @@ public class Perks extends JavaPlugin {
 		// handles death cmds
 		if (PerkDeathTP.onCommand(player, cmd, commandLabel, args))
 			return true;
-
+		
+		// handles cape and color cmds
+		if (PerkCapes.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles promote cmds
+		if (PerkPromote.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
 		return false;
 	}
 

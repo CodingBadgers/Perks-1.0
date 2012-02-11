@@ -12,9 +12,15 @@ public class PerkGameMode {
 
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 
-		// toggles the plays gamemode
+		/* commit notes on this 
+		 *Added in per world gamemode change commands, this means we can give laws the option to change their gamemode in the new world while we are building and then can actualy build. (This has been bugging me as well as nin)
+		 *
+		 *Added in a getPlayer(String name) into PerkUtils, thought it might be useful, you can change the name of the method if you like
+		 * 
+		 */
 		if (cmd.getName().equalsIgnoreCase("gmtoggle")) {
-			if (player.hasPermission("perks.gamemode.toggle", true)) {
+			// permission perks.gamemode.toggle.<world_name> eg perks.gamemode.toggle.WisbyWorld
+			if (player.hasPermission("perks.gamemode.toggle." + player.getPlayer().getWorld().getName(), true)) {
 
 				if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
 					PerkUtils.OutputToPlayer(player, "Now in Survival Mode");
@@ -38,7 +44,7 @@ public class PerkGameMode {
 			} else if (args.length == 1) {
 				if (player.hasPermission("perks.gamemode.check.other", true)) {
 					// this will check another players gamemode.
-					Player otherPlayer = PerkUtils.server().getPlayer(args[0]);
+					Player otherPlayer = PerkUtils.getPlayer(args[0]);
 					if (otherPlayer == null) {
 						PerkUtils.OutputToPlayer(player, "Could not find a player with the name " + args[0]);
 						return true;
@@ -53,27 +59,29 @@ public class PerkGameMode {
 
 		// change to creative mode
 		if (cmd.getName().equalsIgnoreCase("creative")) {
-			if (player.hasPermission("perks.gamemode.creative", true)) {
-                            if (!(player.getPlayer().getGameMode() == GameMode.CREATIVE)) {
-				player.getPlayer().setGameMode(GameMode.CREATIVE);
-				PerkUtils.OutputToPlayer(player, "Now in creative mode");
-                            } else {
-                                PerkUtils.OutputToPlayer(player, "You are already in creative mode");
-                            }
+			// permission perks.gamemode.creative.<world_name> eg perks.gamemode.creative.WisbyWorld
+			if (player.hasPermission("perks.gamemode.creative." + player.getPlayer().getWorld().getName(), true)) {
+                if (!(player.getPlayer().getGameMode() == GameMode.CREATIVE)) {
+                	player.getPlayer().setGameMode(GameMode.CREATIVE);
+                	PerkUtils.OutputToPlayer(player, "Now in creative mode");
+                } else {
+                	PerkUtils.OutputToPlayer(player, "You are already in creative mode");
+                }
 				return true;
 			}
 		}
 
 		// change to survival mode
 		if (cmd.getName().equalsIgnoreCase("survival")) {
-			if (player.hasPermission("perks.gamemode.survival", true)) {
-                            if (!(player.getPlayer().getGameMode() == GameMode.SURVIVAL)) {
-				player.getPlayer().setGameMode(GameMode.SURVIVAL);
-				PerkUtils.OutputToPlayer(player, "Now in survial mode");
+			// permission perks.gamemode.survival.<world_name> eg perks.gamemode.survival.WisbyWorld
+			if (player.hasPermission("perks.gamemode.survival." + player.getPlayer().getWorld().getName(), true)) {
+				if (!(player.getPlayer().getGameMode() == GameMode.SURVIVAL)) {
+					player.getPlayer().setGameMode(GameMode.SURVIVAL);
+					PerkUtils.OutputToPlayer(player, "Now in survial mode");
+                } else {
+                    PerkUtils.OutputToPlayer(player, "You are already in survival mode");
+                }
 				return true;
-                            } else {
-                                PerkUtils.OutputToPlayer(player, "You are already in survival mode");
-                            }
 			}
 		}
 

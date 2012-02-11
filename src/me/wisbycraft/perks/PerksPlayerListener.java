@@ -22,6 +22,12 @@ public class PerksPlayerListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		PerkPlayer player = new PerkPlayer(event.getPlayer());
 		PerkUtils.perkPlayers.add(player);
+		
+		if (player.hasPermission("perks.capes", false)) {
+			PerkCapes.setCape(player.getPlayer());
+		}
+		
+		PerkColors.addColor(player.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)

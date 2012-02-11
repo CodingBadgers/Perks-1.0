@@ -39,4 +39,8 @@ public class PerkUtils {
 	static Server server() {
 		return plugin.getServer();
 	}
+	
+	static Player getPlayer(String name) {
+		return plugin.getServer().getPlayer(name);
+	}
 }

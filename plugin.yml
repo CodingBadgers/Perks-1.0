@@ -54,3 +54,9 @@ commands:
    death:
       description: Teleport to your last death point
       usage: /<command>
+   capes:
+      description: cape overide commands
+      usage: /<command> <update/remove> [player]
+   promote:
+      description: promote command
+      usage: /<command> <player> [ladder]
