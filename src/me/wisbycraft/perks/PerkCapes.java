@@ -52,7 +52,7 @@ public class PerkCapes {
 				
 				if (args.length == 1) {
 					
-					if (sender.hasPermission("perks.capes.admin.all", true)) {
+					if (!sender.hasPermission("perks.capes.admin.all", true)) {
 						return true;
 					}
 					
@@ -69,7 +69,7 @@ public class PerkCapes {
 				
 				if (args.length == 2) {
 					
-					if (sender.hasPermission("perks.capes.admin.single", true)) {
+					if (!sender.hasPermission("perks.capes.admin.single", true)) {
 						return true;
 					}
 					

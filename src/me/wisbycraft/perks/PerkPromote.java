@@ -55,27 +55,29 @@ public class PerkPromote {
 		
 		if (commandLabel.equalsIgnoreCase("promote")) {
 			
-			if (player.hasPermission("perks.demote", true)) 
+			if (!player.hasPermission("perks.promote", true)) 
 				return true;
 			
 			if (args.length == 1) {
 				
 				Player user = PerkUtils.getPlayer(args[0]);
-				promote (player, user);
 				
-				return true;
+				if (user != null)
+					promote(player, user);
+				
 			} else if (args.length == 2) {
 				
 				Player user = PerkUtils.getPlayer(args[0]);
-				promote (player, user, args[1]);
-				
-				return true;
+				if (user != null)
+					promote (player, user, args[1]);
+
 			} else {
 				
 				PerkUtils.OutputToPlayer(player, "use /promote <name> [ladder]");
-				
-				return true;
+
 			}
+			
+			return true;
 			
 		}
 		

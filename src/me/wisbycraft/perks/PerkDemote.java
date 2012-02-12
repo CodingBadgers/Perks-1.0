@@ -55,27 +55,30 @@ public class PerkDemote {
 		
 		if (commandLabel.equalsIgnoreCase("demote")) {
 			
-			if (player.hasPermission("perks.demote", true)) 
+			if (!player.hasPermission("perks.demote", true)) 
 				return true;
 			
 			if (args.length == 1) {
 				
 				Player user = PerkUtils.getPlayer(args[0]);
-				demote (player, user);
 				
-				return true;
+				if (user != null)
+					demote (player, user);
+				
 			} else if (args.length == 2) {
 				
 				Player user = PerkUtils.getPlayer(args[0]);
-				demote (player, user, args[1]);
 				
-				return true;
+				if (user != null)
+					demote (player, user, args[1]);
+				
 			} else {
 				
 				PerkUtils.OutputToPlayer(player, "use /demote <name> [ladder]");
-				
-				return true;
+
 			}
+			
+			return true;
 			
 		}
 		

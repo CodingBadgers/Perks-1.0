@@ -245,7 +245,7 @@ public class SQLite extends DatabaseHandler {
 			} catch (SQLException ex) {
 				retryCount++;
 				if (ex.getMessage().toLowerCase().contains("locking") || ex.getMessage().toLowerCase().contains("locked") ) {
-					if (retryCount == 10)
+					if (retryCount == 2)
 						passed = true;
 				} else {
 					this.writeError("Error at SQL Query: " + ex.getMessage(), false);
@@ -277,7 +277,7 @@ public class SQLite extends DatabaseHandler {
 			} catch (SQLException ex) {
 				retryCount++;
 				if (ex.getMessage().toLowerCase().contains("locking") || ex.getMessage().toLowerCase().contains("locked")) {
-					if (retryCount == 10)
+					if (retryCount == 2)
 						passed = true;
 				} else {
 					this.writeError("Error at SQL Query: " + ex.getMessage(), false);

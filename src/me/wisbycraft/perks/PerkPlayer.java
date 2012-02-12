@@ -288,12 +288,15 @@ public class PerkPlayer {
 	
 	public boolean canDeathTP() {
 		
-		if (!m_deathTP.m_hasDied)
+		if (!m_deathTP.m_hasDied) {
+			PerkUtils.OutputToPlayer(this, "You havn't died recently");
 			return false;
+		}
 		
 		Calendar cal = Calendar.getInstance();
 		if (cal.getTimeInMillis() - m_deathTP.m_time > 60000) {
 			m_deathTP.m_hasDied = false;
+			PerkUtils.OutputToPlayer(this, "More than a minute has passed, you have forgetten where you died");
 			return false;
 		}
 		

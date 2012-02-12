@@ -28,8 +28,8 @@ public class PerkDeathTP {
 				player.getPlayer().teleport(player.getDeathLocation());
 				player.resetDeath();
 				PerkUtils.OutputToPlayer(player, "You have been teleported to your last death point");
-				return true;
 			}			
+			return true;
 		}
 				
 		return false;
