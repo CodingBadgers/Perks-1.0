@@ -235,14 +235,18 @@ public class SQLite extends DatabaseHandler {
 		Connection connection = open();
 		Statement statement = null;
 		
+		int retryCount = 0;
+		
 		while (!passed) {
 			try {
 				statement = connection.createStatement();
 				statement.executeQuery(query);
 				passed = true;
 			} catch (SQLException ex) {
+				retryCount++;
 				if (ex.getMessage().toLowerCase().contains("locking") || ex.getMessage().toLowerCase().contains("locked") ) {
-					passed = false;
+					if (retryCount == 10)
+						passed = true;
 				} else {
 					this.writeError("Error at SQL Query: " + ex.getMessage(), false);
 				}
@@ -261,6 +265,8 @@ public class SQLite extends DatabaseHandler {
 		Connection connection = open();
 		Statement statement = null;
 		ResultSet result = null;
+			
+		int retryCount = 0;
 		
 		while (!passed) {
 			try {
@@ -269,8 +275,10 @@ public class SQLite extends DatabaseHandler {
 				passed = true;
 				return result;
 			} catch (SQLException ex) {
+				retryCount++;
 				if (ex.getMessage().toLowerCase().contains("locking") || ex.getMessage().toLowerCase().contains("locked")) {
-					passed = false;
+					if (retryCount == 10)
+						passed = true;
 				} else {
 					this.writeError("Error at SQL Query: " + ex.getMessage(), false);
 				}

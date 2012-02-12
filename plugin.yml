@@ -70,12 +70,15 @@ commands:
    setbuild:
       description: Sets your build location
       usage: /<command>
-      usage: /<command>
-	  
+  
    capes:
-      description: cape overide commands
+      description: cape override commands
       usage: /<command> <update/remove> [player]
-	  
+
    promote:
       description: promote command
+      usage: /<command> <player> [ladder]
+      
+   demote:
+      description: demote command
       usage: /<command> <player> [ladder]
