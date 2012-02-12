@@ -31,6 +31,21 @@ public class PerkDemote {
 		PerkColors.addColor(player);
 	}
 	
+	private static void demote (PerkPlayer sender, PermissionUser user) {
+		PermissionManager pex = PermissionsEx.getPermissionManager();
+		PermissionUser promoter = pex.getUser(sender.getPlayer());
+		
+		try {
+			PermissionGroup targetGroup = user.demote(promoter, "default");
+			
+			PerkUtils.OutputToPlayer(sender, "The user " + user.getName() + " has been promoted to " + targetGroup.getName());
+		} catch (RankingException e) {
+			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player, check the log");
+			e.printStackTrace();
+			return;
+		}
+	}
+	
 	private static void demote(PerkPlayer sender, Player player, String ladder) {
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		PermissionUser user = pex.getUser(player);
@@ -51,7 +66,25 @@ public class PerkDemote {
 		PerkColors.addColor(player);
 	}
 	
+	private static void demote (PerkPlayer sender, PermissionUser user, String ladder) {
+		PermissionManager pex = PermissionsEx.getPermissionManager();
+		PermissionUser promoter = pex.getUser(sender.getPlayer());
+		
+		try {
+			PermissionGroup targetGroup = user.demote(promoter, ladder);
+			
+			PerkUtils.OutputToPlayer(sender, "The user " + user.getName() + " has been promoted to " + targetGroup.getName());
+		} catch (RankingException e) {
+			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player, check the log");
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	
+	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
 		if (commandLabel.equalsIgnoreCase("demote")) {
 			
@@ -62,16 +95,33 @@ public class PerkDemote {
 				
 				Player user = PerkUtils.getPlayer(args[0]);
 				
-				if (user != null)
+				// if the player is not online, promote them as a pexuser
+				if (user != null) {
+					
+					PermissionUser oUser = pex.getUser(args[1]);
+					demote(player, oUser);
+					
+				} else {
+					
 					demote (player, user);
+					
+				}
 				
 			} else if (args.length == 2) {
 				
 				Player user = PerkUtils.getPlayer(args[0]);
 				
-				if (user != null)
+				// if the player is not online, promote them as a pexuser
+				if (user != null) {
+					
+					PermissionUser oUser = pex.getUser(args[1]);
+					demote (player, oUser, args[1]);
+					
+				} else {
+					
 					demote (player, user, args[1]);
-				
+					
+				}
 			} else {
 				
 				PerkUtils.OutputToPlayer(player, "use /demote <name> [ladder]");

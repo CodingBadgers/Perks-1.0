@@ -67,25 +67,29 @@ public class Perks extends JavaPlugin {
 		if (PerkTeleport.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
-		// handles gamemode cmds
+		// handles gamemode commands
 		if (PerkGameMode.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
-		// handles death cmds
+		// handles death commands
 		if (PerkDeathTP.onCommand(player, cmd, commandLabel, args))
 			return true;
 
 		if (PerkHomeAndBuild.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
-		// handles cape and color cmds
+		// handles cape and color commands
 		if (PerkCapes.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
-		// handles promote cmds
+		// handles promote commands
 		if (PerkPromote.onCommand(player, cmd, commandLabel, args))
 			return true;
-
+		
+		// handles demote commands
+		if (PerkDemote.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
 		return false;
 	}
 

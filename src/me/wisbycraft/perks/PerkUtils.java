@@ -3,6 +3,7 @@ package me.wisbycraft.perks;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -44,7 +45,8 @@ public class PerkUtils {
 		return plugin.getServer();
 	}
 	
-	static Player getPlayer(String name) {
+	static public Player getPlayer(String name) {
 		return plugin.getServer().getPlayer(name);
 	}
+	
 }

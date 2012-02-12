@@ -31,6 +31,21 @@ public class PerkPromote {
 		PerkColors.addColor(player);
 	}
 	
+	private static void promote (PerkPlayer sender, PermissionUser user) {
+		PermissionManager pex = PermissionsEx.getPermissionManager();
+		PermissionUser promoter = pex.getUser(sender.getPlayer());
+		
+		try {
+			PermissionGroup targetGroup = user.promote(promoter, "default");
+			
+			PerkUtils.OutputToPlayer(sender, "The user " + user.getName() + " has been promoted to " + targetGroup.getName());
+		} catch (RankingException e) {
+			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player, check the log");
+			e.printStackTrace();
+			return;
+		}
+	}
+	
 	private static void promote(PerkPlayer sender, Player player, String ladder) {
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		PermissionUser user = pex.getUser(player);
@@ -51,7 +66,23 @@ public class PerkPromote {
 		PerkColors.addColor(player);
 	}
 	
+	private static void promote (PerkPlayer sender, PermissionUser user, String ladder) {
+		PermissionManager pex = PermissionsEx.getPermissionManager();
+		PermissionUser promoter = pex.getUser(sender.getPlayer());
+		
+		try {
+			PermissionGroup targetGroup = user.promote(promoter, "default");
+			
+			PerkUtils.OutputToPlayer(sender, "The user " + user.getName() + " has been promoted to " + targetGroup.getName());
+		} catch (RankingException e) {
+			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player, check the log");
+			e.printStackTrace();
+			return;
+		}
+	}
+	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
 		if (commandLabel.equalsIgnoreCase("promote")) {
 			
@@ -60,16 +91,35 @@ public class PerkPromote {
 			
 			if (args.length == 1) {
 				
-				Player user = PerkUtils.getPlayer(args[0]);
+				Player user = PerkUtils.getPlayer(args[1]);
 				
-				if (user != null)
-					promote(player, user);
-				
+				// if the player is not online, promote them as a pexuser
+				if (user != null) {
+					
+					PermissionUser oUser = pex.getUser(args[0]);
+					promote (player, oUser);
+					
+				} else {
+					
+					promote (player, user);
+					
+				}
+
 			} else if (args.length == 2) {
 				
 				Player user = PerkUtils.getPlayer(args[0]);
-				if (user != null)
+				
+				// if the player is not online, promote them as a pexuser
+				if (user != null) {
+					
+					PermissionUser oUser = pex.getUser(args[1]);
+					promote (player, oUser, args[1]);
+					
+				} else {
+					
 					promote (player, user, args[1]);
+					
+				}
 
 			} else {
 				

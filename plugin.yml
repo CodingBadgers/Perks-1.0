@@ -55,6 +55,10 @@ commands:
       description: Teleport to your last death point
       usage: /<command>
       
+   capes:
+      description: cape overide commands
+      usage: /<command> <update/remove> [player]
+      
    home:
       description: Teleport you to your current worlds home
       usage: /<command>
