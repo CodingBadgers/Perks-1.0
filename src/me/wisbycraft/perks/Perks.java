@@ -32,6 +32,9 @@ public class Perks extends JavaPlugin {
 		
 		DatabaseManager.LoadHomes();
 		
+		if (!PerkConfig.loadConfig()) {
+			PerkUtils.ErrorConsole("Could not load config");
+		}
 		// Set our thread going
 		//m_thread.start();
 	}

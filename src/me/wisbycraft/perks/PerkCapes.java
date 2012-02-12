@@ -19,7 +19,7 @@ public class PerkCapes {
 		PermissionUser pPlayer = pex.getUser(player);
 		PermissionGroup[] rank = pPlayer.getGroups();
 		String rankName = rank[0].getName().toLowerCase();
-		String URL = "http://www.redstonetechnologic.co.cc/capes/" + rankName + ".png";
+		String URL = PerkConfig.capesURL + rankName + ".png";
 		
 		try {
 			sPlayer.checkUrl(URL);

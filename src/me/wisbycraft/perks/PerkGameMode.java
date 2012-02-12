@@ -11,13 +11,7 @@ import org.bukkit.entity.Player;
 public class PerkGameMode {
 
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
-
-		/* commit notes on this 
-		 *Added in per world gamemode change commands, this means we can give laws the option to change their gamemode in the new world while we are building and then can actualy build. (This has been bugging me as well as nin)
-		 *
-		 *Added in a getPlayer(String name) into PerkUtils, thought it might be useful, you can change the name of the method if you like
-		 * 
-		 */
+		
 		if (cmd.getName().equalsIgnoreCase("gmtoggle")) {
 			// permission perks.gamemode.toggle.<world_name> eg perks.gamemode.toggle.WisbyWorld
 			if (player.hasPermission("perks.gamemode.toggle." + player.getPlayer().getWorld().getName(), true)) {
