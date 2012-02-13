@@ -23,7 +23,7 @@ public class PerkPlayer {
 	}
 	
 	private class Hunger {
-		public float m_hungerRate = PerkConfig.hungerRate;				//!< means hunger goes down at 1/4 the normal rate <- will load from config when thats done
+		public float m_hungerRate = PerkConfig.hungerRate;				//!< means hunger goes down at 1/4 the normal rate <- Loads from config
 		public float m_hungerCounter  =PerkConfig.hungerCounter;			//!< stores the last hunger counter, if this is equal to 1.0 (100%) let a hunger event work as normal
 	}
 	

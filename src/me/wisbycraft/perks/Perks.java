@@ -11,7 +11,7 @@ public class Perks extends JavaPlugin {
 	private final PerksPlayerListener playerListener = new PerksPlayerListener(this);
     private final PerksEntityListener entityListener = new PerksEntityListener(this);
     
-	//private final PerkThread m_thread = new PerkThread(this);
+	private final PerkThread m_thread = new PerkThread(this);
 
 	@Override
 	public void onDisable() {
@@ -36,7 +36,7 @@ public class Perks extends JavaPlugin {
 			PerkUtils.ErrorConsole("Could not load config");
 		}
 		// Set our thread going
-		//m_thread.start();
+		m_thread.start();
 	}
 
 	@Override

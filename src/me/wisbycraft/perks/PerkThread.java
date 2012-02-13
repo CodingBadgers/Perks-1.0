@@ -1,11 +1,13 @@
 package me.wisbycraft.perks;
 
+import org.bukkit.entity.Player;
+
 public class PerkThread extends Thread {
 	
 	@SuppressWarnings("unused")
 	private Perks m_plugin = null;
 	private boolean m_running = false;
-	private int m_period = 10;
+	private int m_period = PerkConfig.sweepTime;
 	
 	public PerkThread(Perks plugin) {
 		m_plugin = plugin;
@@ -18,6 +20,18 @@ public class PerkThread extends Thread {
 		int sleepTime = (1000 * 60) * m_period;
 		
 		while (m_running) {
+			
+			Player[] player = PerkUtils.plugin.getServer().getOnlinePlayers();
+			
+			for(int i = 0; i<player.length; i++) {
+				
+				if (PerkUtils.getPlayer(player[i]).hasPermission("Perks.capes", false)) {
+					
+					PerkCapes.setCape(player[i]);
+				}
+				
+				PerkColors.addColor(player[i]);
+			}
 							
 			try {
 				Thread.sleep(sleepTime);

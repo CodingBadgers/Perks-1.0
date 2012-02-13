@@ -86,3 +86,6 @@ commands:
    demote:
       description: demote command
       usage: /<command> <player> [ladder]
+   vanish:
+      description: lets you vanish
+      usage: /<command>

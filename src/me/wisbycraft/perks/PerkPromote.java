@@ -91,7 +91,7 @@ public class PerkPromote {
 			
 			if (args.length == 1) {
 				
-				Player user = PerkUtils.getPlayer(args[1]);
+				Player user = PerkUtils.getPlayer(args[0]);
 				
 				// if the player is not online, promote them as a pexuser
 				if (user != null) {
@@ -112,7 +112,7 @@ public class PerkPromote {
 				// if the player is not online, promote them as a pexuser
 				if (user != null) {
 					
-					PermissionUser oUser = pex.getUser(args[1]);
+					PermissionUser oUser = pex.getUser(args[0]);
 					promote (player, oUser, args[1]);
 					
 				} else {

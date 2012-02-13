@@ -96,5 +96,4 @@ public class PerksPlayerListener implements Listener {
 	public PerkPlayer findPlayer(Player player) {
 		return PerkUtils.getPlayer(player);
 	}
-
 }

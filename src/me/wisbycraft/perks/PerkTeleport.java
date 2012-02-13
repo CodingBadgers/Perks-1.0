@@ -1,4 +1,4 @@
-package me.wisbycraft.perks;
+ package me.wisbycraft.perks;
 
 import org.bukkit.command.Command;
 
