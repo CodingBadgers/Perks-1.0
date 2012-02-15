@@ -23,18 +23,35 @@ public class Perks extends JavaPlugin {
 		
 		PerkUtils.plugin = this;
 		
+		// get the plugin manager
 		PluginManager pm = this.getServer().getPluginManager();
 		
+		// decide wether spout is enabled or not
 		PerkUtils.spoutEnabled = pm.getPlugin("Spout") != null;
 
+		// register the 2 event listeners
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
 		
+		// setup vault
+		if (PerkVault.setupPerms()) {
+			PerkUtils.ErrorConsole("Could not find Vault, disabling plugin");
+			pm.disablePlugin(this);
+		}
+		
+		PerkVault.setupEco();
+		
+		// set up mob arena
+		PerkMobArena.setupMobArenaHandler();
+		
+		// load the homes from the database
 		DatabaseManager.LoadHomes();
 		
+		// load the config
 		if (!PerkConfig.loadConfig()) {
 			PerkUtils.ErrorConsole("Could not load config");
 		}
+		
 		// Set our thread going
 		m_thread.start();
 	}
@@ -55,6 +72,7 @@ public class Perks extends JavaPlugin {
 			player.getPlayer().sendMessage("3 - Unlimited air under water when wearing a gold helmet.");
 			player.getPlayer().sendMessage("4 - You're hunger decreases at a much slower rate.");
 			player.getPlayer().sendMessage("5 - /death - to teleport to your last death location.");
+			player.getPlayer().sendMessage("6 - Capes for spoutcraft users donator and above");
 			
 			return true;
 		}
@@ -86,10 +104,10 @@ public class Perks extends JavaPlugin {
 		if (PerkPromote.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
-		// handles demote commands
+		// handles demote cmds
 		if (PerkDemote.onCommand(player, cmd, commandLabel, args))
 			return true;
-		
+
 		return false;
 	}
 

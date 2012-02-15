@@ -8,9 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-
 public class PerkPlayer {
 
 	private Player m_player = null;					//!< store the bukkit player
@@ -39,10 +36,15 @@ public class PerkPlayer {
 		public boolean m_hasDied = false;
 	}
 	
+	private class Vanish {
+		public boolean vanished = false;
+	}
+	
 	private Flying m_fly = null;
 	private Hunger m_hunger = null;
 	private TP m_tp = null;
 	private DeathTP m_deathTP = null;
+	private Vanish m_vanish = null;
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -55,6 +57,7 @@ public class PerkPlayer {
 		m_hunger = new Hunger();
 		m_tp = new TP();
 		m_deathTP = new DeathTP();
+		m_vanish = new Vanish();
 
 		// if the player isnt using spout make a magic carpet
 		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled()) {
@@ -121,8 +124,7 @@ public class PerkPlayer {
 	// checks whether a player has permission to do something or not
 	// uses PEX
 	public boolean hasPermission(String permission, boolean reportError) {
-		PermissionManager permissions = PermissionsEx.getPermissionManager();
-		if (permissions.has(m_player, permission) || m_player.isOp())
+		if (PerkVault.perms.has(m_player, permission) || m_player.isOp())
 			return true;
 
 		if (reportError)
@@ -333,6 +335,18 @@ public class PerkPlayer {
 		}
 		
 		DatabaseManager.setHomeLocation(m_player, loc);
+	}
+	
+	public void hidePlayer() {
+		m_player.hidePlayer(m_player);
+	}
+	
+	public void showPlayer() {
+		m_player.showPlayer(m_player);
+	}
+	
+	public boolean isHidden() {
+		return m_vanish.vanished;
 	}
 	
 }

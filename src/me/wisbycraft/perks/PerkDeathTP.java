@@ -11,6 +11,9 @@ public class PerkDeathTP {
 		if (!player.hasPermission("perks.deathtp", false))
 			return;
 		
+		if (PerkMobArena.maHandler.isPlayerInArena(player.getPlayer()))
+			return;
+		
 		Location deathLocation = player.getPlayer().getLocation();
 		
 		player.addDeathLocation(deathLocation);
@@ -25,7 +28,14 @@ public class PerkDeathTP {
 				return true;
 			
 			if (player.canDeathTP()) {
-				player.getPlayer().teleport(player.getDeathLocation());
+				Location deathloc = player.getDeathLocation();
+				
+				if (PerkMobArena.maHandler.inRegion(deathloc)) {
+					PerkUtils.OutputToPlayer(player, "Sorry you can't deathtp into the arena");
+					return true;
+				}
+				
+				player.getPlayer().teleport(deathloc);
 				player.resetDeath();
 				PerkUtils.OutputToPlayer(player, "You have been teleported to your last death point");
 			}			

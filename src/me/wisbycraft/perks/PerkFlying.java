@@ -88,7 +88,7 @@ public class PerkFlying {
 
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 				
-		// turns fly on
+		// toggles fly mode
 		if (cmd.getName().equalsIgnoreCase("fly") || cmd.getName().equalsIgnoreCase("mc")) {
 			
 			// all the following commands require this permission
@@ -103,7 +103,17 @@ public class PerkFlying {
 			
 			return true;
 		}
-
+		
+		// turns fly off, for jail mainly
+		if (cmd.getName().equalsIgnoreCase("land")) {
+			
+			if (!player.hasPermission("perks.fly", true))
+				return true;
+			
+			player.setFlying(false, false);
+			
+			return true;
+		}
 		return false;
 	}
 }

@@ -7,7 +7,7 @@ public class PerkThread extends Thread {
 	@SuppressWarnings("unused")
 	private Perks m_plugin = null;
 	private boolean m_running = false;
-	private int m_period = PerkConfig.sweepTime;
+	private int m_period = PerkConfig.capeRefresh;
 	
 	public PerkThread(Perks plugin) {
 		m_plugin = plugin;

@@ -22,8 +22,8 @@ public class PerkDemote {
 			PerkUtils.OutputToPlayer(sender, "The user " + player.getName() + " has been promoted to " + targetGroup.getName());
 			PerkUtils.OutputToPlayer(player, "You have been promoted to " + targetGroup.getName());
 		} catch (RankingException e) {
-			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player, check the log");
-			e.printStackTrace();
+			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player");
+			PerkUtils.OutputToPlayer(sender, e.getMessage());
 			return;
 		}
 		
@@ -57,8 +57,8 @@ public class PerkDemote {
 			PerkUtils.OutputToPlayer(sender, "The user " + player.getName() + " has been demoted to " + targetGroup.getName());
 			PerkUtils.OutputToPlayer(player, "You have been promoted to " + targetGroup.getName());
 		} catch (RankingException e) {
-			PerkUtils.OutputToPlayer(sender, "There was a error demoting the player");
-			e.printStackTrace();
+			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player");
+			PerkUtils.OutputToPlayer(sender, e.getMessage());
 			return;
 		}
 		
@@ -87,7 +87,7 @@ public class PerkDemote {
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
 		if (commandLabel.equalsIgnoreCase("demote")) {
-			
+
 			if (!player.hasPermission("perks.demote", true)) 
 				return true;
 			
@@ -127,7 +127,6 @@ public class PerkDemote {
 				PerkUtils.OutputToPlayer(player, "use /demote <name> [ladder]");
 
 			}
-			
 			return true;
 			
 		}

@@ -12,7 +12,7 @@ public class PerkUtils {
 	static public PerkPlayerArray perkPlayers = new PerkPlayerArray();
 	static public Perks plugin = null;
 	static public boolean spoutEnabled = false;
-	
+
 	static public void DebugConsole(String messsage) {
 		log.log(Level.INFO, "[Perks] " + messsage + ".");
 	}
