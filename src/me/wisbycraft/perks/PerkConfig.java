@@ -18,7 +18,7 @@ public class PerkConfig {
 			config.addDefault("Hunger.rate", "0.25");
 			config.addDefault("Hunger.counter", "0.0");
 			config.addDefault("Capes.RefreshTime", 5);
-			
+
 			config.options().copyDefaults(true);
 			PerkUtils.plugin.saveConfig();
 		} catch (Exception ex) {
@@ -32,7 +32,6 @@ public class PerkConfig {
 		hungerCounter = Float.parseFloat(config.getString("Hunger.counter"));
 		hungerRate = Float.parseFloat(config.getString("Hunger.rate"));
 		capeRefresh = Integer.parseInt(config.getString("Capes.RefreshTime"));
-
 		
 		return true;
 		

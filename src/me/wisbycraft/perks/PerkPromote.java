@@ -87,7 +87,7 @@ public class PerkPromote {
 		if (commandLabel.equalsIgnoreCase("promote")) {
 
 			if (!player.hasPermission("perks.promote", true)) 
-				return true;
+				return true;	
 			
 			if (args.length == 1) {
 				

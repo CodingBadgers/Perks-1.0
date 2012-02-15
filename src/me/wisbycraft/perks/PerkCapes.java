@@ -5,20 +5,13 @@ import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import ru.tehkode.permissions.PermissionGroup;
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-
 public class PerkCapes {
 	
 	public static void setCape (Player player) {
 		SpoutPlayer sPlayer = (SpoutPlayer) player;
-		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
-		PermissionUser pPlayer = pex.getUser(player);
-		PermissionGroup[] rank = pPlayer.getGroups();
-		String rankName = rank[0].getName().toLowerCase();
+		String[] groups = PerkVault.perms.getPlayerGroups(player);
+		String rankName = groups[0].toString().toLowerCase();
 		String URL = PerkConfig.capesURL + rankName + ".png";
 		
 		try {

@@ -277,12 +277,12 @@ public class DatabaseManager {
 		
 	}
 	
-	public static void gotoHome(Player player) {
+	public static void gotoHome(Player player, World world) {
 		
 		for (int i = 0; i < homes.size(); ++i) {
 			tpLocation b = homes.get(i);
 			if (b.playername.equalsIgnoreCase(player.getName()) 
-					&& player.getLocation().getWorld() == b.loc.getWorld()) {
+					&& world == b.loc.getWorld()) {
 				player.teleport(b.loc);
 				PerkUtils.OutputToPlayer(player, "You have been teleported to your home location");
 				return;
@@ -292,6 +292,10 @@ public class DatabaseManager {
 		PerkUtils.OutputToPlayer(player, "You don't have a home in this world");
 		PerkUtils.OutputToPlayer(player, "Use /sethome to set your home location");
 		
+	}
+	
+	public static void gotoHome(Player player) {
+		gotoHome(player, player.getLocation().getWorld());
 	}
 	
 }

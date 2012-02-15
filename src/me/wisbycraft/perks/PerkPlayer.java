@@ -338,11 +338,27 @@ public class PerkPlayer {
 	}
 	
 	public void hidePlayer() {
-		m_player.hidePlayer(m_player);
+		
+		Player[] players = PerkUtils.server().getOnlinePlayers();
+		
+		for (int i = 0; i < players.length; i++) {
+			
+			players[i].hidePlayer(m_player);
+		} 
+		
+		m_vanish.vanished = true;
 	}
 	
 	public void showPlayer() {
-		m_player.showPlayer(m_player);
+		
+		Player[] players = PerkUtils.server().getOnlinePlayers();
+		
+		for (int i = 0; i < players.length; i++) {
+			
+			players[i].showPlayer(m_player);
+		}
+		
+		m_vanish.vanished = false;
 	}
 	
 	public boolean isHidden() {
