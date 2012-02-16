@@ -8,8 +8,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Perks extends JavaPlugin {
 
-	private final PerksPlayerListener playerListener = new PerksPlayerListener(this);
-    private final PerksEntityListener entityListener = new PerksEntityListener(this);
+	private final PerksPlayerListener playerListener = new PerksPlayerListener();
+    private final PerksEntityListener entityListener = new PerksEntityListener();
+    private final PerkBlockListener blockListener = new PerkBlockListener();
     
 	private final PerkThread m_thread = new PerkThread(this);
 
@@ -29,9 +30,10 @@ public class Perks extends JavaPlugin {
 		// decide wether spout is enabled or not
 		PerkUtils.spoutEnabled = pm.getPlugin("Spout") != null;
 
-		// register the 2 event listeners
+		// register the 3 event listeners
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
+		pm.registerEvents(blockListener, this);
 		
 		// setup vault
 		if (PerkVault.setupPerms()) {
@@ -106,6 +108,10 @@ public class Perks extends JavaPlugin {
 		
 		// handles demote cmds
 		if (PerkDemote.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles vanish cmds
+		if (PerkVanish.onCommand(player, cmd, commandLabel, args))
 			return true;
 
 		return false;

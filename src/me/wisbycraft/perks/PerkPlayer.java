@@ -342,6 +342,8 @@ public class PerkPlayer {
 		Player[] players = PerkUtils.server().getOnlinePlayers();
 		
 		for (int i = 0; i < players.length; i++) {
+			if (PerkVault.perms.has(players[i], "perks.vanish.show"))
+				continue;
 			
 			players[i].hidePlayer(m_player);
 		} 
