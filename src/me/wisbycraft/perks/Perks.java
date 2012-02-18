@@ -35,6 +35,7 @@ public class Perks extends JavaPlugin {
 		pm.registerEvents(entityListener, this);
 		pm.registerEvents(blockListener, this);
 		
+		/* 
 		// setup vault
 		if (PerkVault.setupPerms()) {
 			PerkUtils.ErrorConsole("Could not find Vault, disabling plugin");
@@ -42,6 +43,7 @@ public class Perks extends JavaPlugin {
 		}
 		
 		PerkVault.setupEco();
+		*/
 		
 		// set up mob arena
 		PerkMobArena.setupMobArenaHandler();

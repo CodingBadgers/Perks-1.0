@@ -8,6 +8,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+
 public class PerkPlayer {
 
 	private Player m_player = null;					//!< store the bukkit player
@@ -122,9 +125,11 @@ public class PerkPlayer {
 	}
 
 	// checks whether a player has permission to do something or not
-	// uses PEX
+	// tryed to use vault, but failed
 	public boolean hasPermission(String permission, boolean reportError) {
-		if (PerkVault.perms.has(m_player, permission) || m_player.isOp())
+		PermissionManager pex = PermissionsEx.getPermissionManager();
+		
+		if (pex.has(m_player, permission) || m_player.isOp())
 			return true;
 
 		if (reportError)
@@ -342,7 +347,7 @@ public class PerkPlayer {
 		Player[] players = PerkUtils.server().getOnlinePlayers();
 		
 		for (int i = 0; i < players.length; i++) {
-			if (PerkVault.perms.has(players[i], "perks.vanish.show"))
+			if (PerkUtils.getPlayer(players[i]).hasPermission("perks.vanish.show", false))
 				continue;
 			
 			players[i].hidePlayer(m_player);

@@ -11,7 +11,7 @@ public class PerkDeathTP {
 		if (!player.hasPermission("perks.deathtp", false))
 			return;
 		
-		if (PerkMobArena.maHandler.isPlayerInArena(player.getPlayer()))
+		if (PerkMobArena.maHandler.isPlayerInArena(player.getPlayer()) || PerkMobArena.maHandler.inRegion(player.getPlayer().getLocation()))
 			return;
 		
 		Location deathLocation = player.getPlayer().getLocation();
