@@ -11,126 +11,69 @@ import ru.tehkode.permissions.exceptions.RankingException;
 
 public class PerkDemote {
 	
-	private static void demote(PerkPlayer sender, Player player) {
+	private static PermissionGroup demote(Player sender, String name, String ladder) {
 		PermissionManager pex = PermissionsEx.getPermissionManager();
-		PermissionUser user = pex.getUser(player);
-		PermissionUser promoter = pex.getUser(sender.getPlayer());
+		PermissionUser user = pex.getUser(name);
+		PermissionUser promoter = pex.getUser(sender);
 		
 		try {
-			PermissionGroup targetGroup = user.demote(promoter, "default");
+			PermissionGroup targetGroup = user.demote(promoter, ladder);	
 			
-			PerkUtils.OutputToPlayer(sender, "The user " + player.getName() + " has been promoted to " + targetGroup.getName());
-			PerkUtils.OutputToPlayer(player, "You have been promoted to " + targetGroup.getName());
-		} catch (RankingException e) {
-			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player");
-			PerkUtils.OutputToPlayer(sender, e.getMessage());
-			return;
-		}
-		
-		PerkCapes.setCape(player);
-		PerkColors.addColor(player);
-	}
-	
-	private static void demote (PerkPlayer sender, PermissionUser user) {
-		PermissionManager pex = PermissionsEx.getPermissionManager();
-		PermissionUser promoter = pex.getUser(sender.getPlayer());
-		
-		try {
-			PermissionGroup targetGroup = user.demote(promoter, "default");
-			
-			PerkUtils.OutputToPlayer(sender, "The user " + user.getName() + " has been promoted to " + targetGroup.getName());
-		} catch (RankingException e) {
-			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player, check the log");
-			e.printStackTrace();
-			return;
+			return targetGroup;
+		} catch (RankingException ex) {
+			return null;
 		}
 	}
 	
-	private static void demote(PerkPlayer sender, Player player, String ladder) {
-		PermissionManager pex = PermissionsEx.getPermissionManager();
-		PermissionUser user = pex.getUser(player);
-		PermissionUser promoter = pex.getUser(sender.getPlayer());
-		
-		try {
-			PermissionGroup targetGroup = user.demote(promoter, ladder);
-			
-			PerkUtils.OutputToPlayer(sender, "The user " + player.getName() + " has been demoted to " + targetGroup.getName());
-			PerkUtils.OutputToPlayer(player, "You have been promoted to " + targetGroup.getName());
-		} catch (RankingException e) {
-			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player");
-			PerkUtils.OutputToPlayer(sender, e.getMessage());
-			return;
-		}
-		
-		PerkCapes.setCape(player);
-		PerkColors.addColor(player);
+	private static PermissionGroup demote(Player sender, String name) {
+		return demote(sender, name, "default");
 	}
-	
-	private static void demote (PerkPlayer sender, PermissionUser user, String ladder) {
-		PermissionManager pex = PermissionsEx.getPermissionManager();
-		PermissionUser promoter = pex.getUser(sender.getPlayer());
-		
-		try {
-			PermissionGroup targetGroup = user.demote(promoter, ladder);
-			
-			PerkUtils.OutputToPlayer(sender, "The user " + user.getName() + " has been promoted to " + targetGroup.getName());
-		} catch (RankingException e) {
-			PerkUtils.OutputToPlayer(sender, "There was a error promoting the player, check the log");
-			e.printStackTrace();
-			return;
-		}
-	}
-	
-	
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
-		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
 		if (commandLabel.equalsIgnoreCase("demote")) {
-
-			if (!player.hasPermission("perks.demote", true)) 
+			if (!player.hasPermission("Perks.demote", true))
 				return true;
 			
-			if (args.length == 1) {
-				
-				Player user = PerkUtils.getPlayer(args[0]);
-				
-				// if the player is not online, promote them as a pexuser
-				if (user != null) {
-					
-					PermissionUser oUser = pex.getUser(args[1]);
-					demote(player, oUser);
-					
-				} else {
-					
-					demote (player, user);
-					
-				}
-				
-			} else if (args.length == 2) {
-				
-				Player user = PerkUtils.getPlayer(args[0]);
-				
-				// if the player is not online, promote them as a pexuser
-				if (user != null) {
-					
-					PermissionUser oUser = pex.getUser(args[1]);
-					demote (player, oUser, args[1]);
-					
-				} else {
-					
-					demote (player, user, args[1]);
-					
-				}
-			} else {
-				
-				PerkUtils.OutputToPlayer(player, "use /demote <name> [ladder]");
-
+			if (args.length == 0) {
+				PerkUtils.OutputToPlayer(player, "/demote <name> [ladder]");
+				return true;
 			}
-			return true;
+			
+			if (args.length == 1) {
+				Player target = PerkUtils.getPlayer(args[0]);
+				
+				PermissionGroup targetGroup = demote(player.getPlayer(), args[0]);
+				
+				if (target == null) {
+					
+					return true;
+				} else {
+				
+				PerkUtils.OutputToPlayer(player, target.getName() + " has been demoted to " + targetGroup.getName());
+				PerkUtils.OutputToPlayer(target, "You have been demoted to " + targetGroup.getName());
+				return true;
+				}
+			}
+			
+			if (args.length == 2) {
+				Player target = PerkUtils.getPlayer(args[0]);
+				String ladder = args[1].toLowerCase();
+				
+				PermissionGroup targetGroup = demote(player.getPlayer(), args[0], ladder);
+				
+				if (target == null) {
+					
+					return true;
+				} else {
+					
+					PerkUtils.OutputToPlayer(player, target.getName() + " has been demoted to " + targetGroup.getName() + " on ladder " + ladder);
+					PerkUtils.OutputToPlayer(target, "You have been demoted to " + targetGroup.getName() + " on ladder " + ladder);
+					return true;
+				}
+			}
 			
 		}
-		
 		return false;
 	}
 }
