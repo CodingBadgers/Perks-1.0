@@ -10,9 +10,10 @@ public class Perks extends JavaPlugin {
 
 	private final PerksPlayerListener playerListener = new PerksPlayerListener();
     private final PerksEntityListener entityListener = new PerksEntityListener();
-    private final PerkBlockListener blockListener = new PerkBlockListener();
+    // private final PerkBlockListener blockListener = new PerkBlockListener();
+    private final PerksMobAreanaListener maListener = new PerksMobAreanaListener();
     
-	private final PerkThread m_thread = new PerkThread(this);
+	// private final PerkThread m_thread = new PerkThread(this);
 
 	@Override
 	public void onDisable() {
@@ -33,7 +34,8 @@ public class Perks extends JavaPlugin {
 		// register the 3 event listeners
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
-		pm.registerEvents(blockListener, this);
+		// pm.registerEvents(blockListener, this);
+		pm.registerEvents(maListener, this);
 		
 		/* 
 		// setup vault
@@ -57,7 +59,7 @@ public class Perks extends JavaPlugin {
 		}
 		
 		// Set our thread going
-		m_thread.start();
+		// m_thread.start();
 	}
 
 	@Override

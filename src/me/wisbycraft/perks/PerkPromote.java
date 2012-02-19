@@ -45,12 +45,16 @@ public class PerkPromote {
 				
 				PermissionGroup targetGroup = promote(player.getPlayer(), args[0]);
 				
+				if (targetGroup == null) {
+					PerkUtils.OutputToPlayer(player, "Sorry there was a error promoting " + args[0].toLowerCase());
+					return true;
+				}
 				if (target == null) {
 					
+					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been promoted to " + targetGroup.getName());
 					return true;
 				} else {
 					
-					// FIXME causes NPE??
 					PerkUtils.OutputToPlayer(player, target.getName() + " has been promoted to " + targetGroup.getName());
 					PerkUtils.OutputToPlayer(target, "You have been promoted to " + targetGroup.getName());
 					return true;
@@ -63,13 +67,20 @@ public class PerkPromote {
 				
 				PermissionGroup targetGroup = promote(player.getPlayer(), args[0], ladder);
 				
+				if (targetGroup == null) {
+					PerkUtils.OutputToPlayer(player, "Sorry there was a error promoting " + args[0].toLowerCase());
+					return true;
+				}
 				if (target == null) {
+					
+					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been promoted to " + targetGroup.getName());
 					return true;
 				} else {
+					
 					PerkUtils.OutputToPlayer(player, target.getName() + " has been promoted to " + targetGroup.getName() + " on ladder " + ladder);
 					PerkUtils.OutputToPlayer(target, "You have been promoted to " + targetGroup.getName() + " on ladder " + ladder);
 					return true;
-				}
+				}	
 			}
 			
 		}

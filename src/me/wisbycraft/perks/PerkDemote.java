@@ -45,15 +45,20 @@ public class PerkDemote {
 				
 				PermissionGroup targetGroup = demote(player.getPlayer(), args[0]);
 				
+				if (targetGroup == null) {
+					PerkUtils.OutputToPlayer(player, "Sorry there was a error demoting " + args[0].toLowerCase());
+					return true;
+				}
 				if (target == null) {
 					
+					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been demoted to " + targetGroup.getName());
 					return true;
 				} else {
-				
-				PerkUtils.OutputToPlayer(player, target.getName() + " has been demoted to " + targetGroup.getName());
-				PerkUtils.OutputToPlayer(target, "You have been demoted to " + targetGroup.getName());
-				return true;
-				}
+					
+					PerkUtils.OutputToPlayer(player, target.getName() + " has been demoted to " + targetGroup.getName());
+					PerkUtils.OutputToPlayer(target, "You have been demoted to " + targetGroup.getName());
+					return true;
+				}	
 			}
 			
 			if (args.length == 2) {
@@ -62,15 +67,20 @@ public class PerkDemote {
 				
 				PermissionGroup targetGroup = demote(player.getPlayer(), args[0], ladder);
 				
+				if (targetGroup == null) {
+					PerkUtils.OutputToPlayer(player, "Sorry there was a error demoting " + args[0].toLowerCase());
+					return true;
+				}
 				if (target == null) {
 					
+					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been demoted to " + targetGroup.getName());
 					return true;
 				} else {
 					
 					PerkUtils.OutputToPlayer(player, target.getName() + " has been demoted to " + targetGroup.getName() + " on ladder " + ladder);
 					PerkUtils.OutputToPlayer(target, "You have been demoted to " + targetGroup.getName() + " on ladder " + ladder);
 					return true;
-				}
+				}	
 			}
 			
 		}

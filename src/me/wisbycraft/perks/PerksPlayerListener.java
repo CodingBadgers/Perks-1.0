@@ -26,19 +26,19 @@ public class PerksPlayerListener implements Listener {
 		
 		PerkColors.addColor(player.getPlayer());
 		
-		PerkVanish.vanishJoin(player, event);
+		// PerkVanish.vanishJoin(player, event);
 	}	
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
-		PerkVanish.vanishPlayerQuit(PerkUtils.getPlayer(event.getPlayer()), event);
+		// PerkVanish.vanishPlayerQuit(PerkUtils.getPlayer(event.getPlayer()), event);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerKick(PlayerKickEvent event) {
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
-		PerkVanish.vanishPlayerKick(PerkUtils.getPlayer(event.getPlayer()), event);
+		// PerkVanish.vanishPlayerKick(PerkUtils.getPlayer(event.getPlayer()), event);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -95,7 +95,7 @@ public class PerksPlayerListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-		PerkVanish.vanishPlayerItemPickup(PerkUtils.getPlayer(event.getPlayer()), event);
+		// PerkVanish.vanishPlayerItemPickup(PerkUtils.getPlayer(event.getPlayer()), event);
 	}
 	
 	// returns a PerkPlayer from a given Bukkit Player

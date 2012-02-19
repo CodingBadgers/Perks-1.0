@@ -39,8 +39,9 @@ public class PerkColors {
 		ChatColor color = ChatColor.getByChar(colorCode);
 		
 		if (color == null) {
-			return null;
+			return ChatColor.WHITE;
 		}
+		
 		return color;
 	}
 }
