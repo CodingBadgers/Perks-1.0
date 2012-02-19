@@ -32,7 +32,7 @@ public class PerkDemote {
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("demote")) {
-			if (!player.hasPermission("Perks.demote", true))
+			if (!player.hasPermission("perks.demote", true))
 				return true;
 			
 			if (args.length == 0) {

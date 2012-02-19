@@ -32,7 +32,7 @@ public class PerkPromote {
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("promote")) {
-			if (!player.hasPermission("Perks.promote", true))
+			if (!player.hasPermission("perks.promote", true))
 				return true;
 			
 			if (args.length == 0) {
