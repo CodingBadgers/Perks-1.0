@@ -57,6 +57,9 @@ public class PerkDemote {
 					
 					PerkUtils.OutputToPlayer(player, target.getName() + " has been demoted to " + targetGroup.getName());
 					PerkUtils.OutputToPlayer(target, "You have been demoted to " + targetGroup.getName());
+					
+					PerkCapes.setCape(target);
+					PerkColors.addColor(target);
 					return true;
 				}	
 			}
@@ -79,6 +82,9 @@ public class PerkDemote {
 					
 					PerkUtils.OutputToPlayer(player, target.getName() + " has been demoted to " + targetGroup.getName() + " on ladder " + ladder);
 					PerkUtils.OutputToPlayer(target, "You have been demoted to " + targetGroup.getName() + " on ladder " + ladder);
+					
+					PerkCapes.setCape(target);
+					PerkColors.addColor(target);
 					return true;
 				}	
 			}
