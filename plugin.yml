@@ -4,8 +4,8 @@ main: me.wisbycraft.perks.Perks
 version: 1.5
 website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for WisbyCraft
-softdepend: [Spout]
-depend: [Vault, MobArena]
+softdepend: [Spout, MobArena]
+depend: [BukkitDatabaseManager]
 
 commands:
    perks:
@@ -62,7 +62,7 @@ commands:
       
    home:
       description: Teleport you to your current worlds home
-      usage: /<command>
+      usage: /<command> [world]
       
    sethome:
       description: Sets your home in the current world
@@ -87,6 +87,7 @@ commands:
    demote:
       description: demote command
       usage: /<command> <player> [ladder]
+      
    vanish:
       description: lets you vanish
       usage: /<command>

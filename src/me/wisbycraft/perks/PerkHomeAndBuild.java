@@ -12,13 +12,10 @@ public class PerkHomeAndBuild {
 				return true;
 			
 			if (args.length == 0) {
-				
 				DatabaseManager.gotoHome(player.getPlayer());
 			} else if (args.length == 1) {
-				
 				DatabaseManager.gotoHome(player.getPlayer(), PerkUtils.server().getWorld(args[0]));
 			} else {
-				
 				PerkUtils.OutputToPlayer(player, "use /home [world]");
 			}
 			

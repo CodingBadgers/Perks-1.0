@@ -12,6 +12,10 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 public class PerkCapes {
 	
 	public static void setCape (Player player) {
+		
+		if (!PerkUtils.spoutEnabled)
+			return;
+		
 		SpoutPlayer sPlayer = (SpoutPlayer) player;
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
@@ -32,14 +36,21 @@ public class PerkCapes {
 	}
 	
 	public static void removeCape (Player player) {
+		
+		if (!PerkUtils.spoutEnabled)
+			return;
+		
 		SpoutPlayer sPlayer = (SpoutPlayer) player;
 		
 		sPlayer.resetCape();
 	}
 	
 	public static boolean onCommand(PerkPlayer sender, Command cmd, String commandLabel, String[] args) {
-		
+				
 		if (commandLabel.equalsIgnoreCase("capes")) {
+			
+			if (!PerkUtils.spoutEnabled)
+				return true;
 			
 			if (args.length < 1 || args.length > 2) {
 				PerkUtils.OutputToPlayer(sender, ChatColor.RED + "/capes <update/remove> [player]");
@@ -62,7 +73,7 @@ public class PerkCapes {
 					}
 					
 					PerkUtils.OutputToPlayer(sender, "Capes and Colors Updated");
-					return false;
+					return true;
 				}
 				
 				if (args.length == 2) {
@@ -77,7 +88,7 @@ public class PerkCapes {
 					PerkColors.addColor(players);
 					
 					PerkUtils.OutputToPlayer(sender, "Capes and Colors Updated for " + players.getName().toLowerCase());
-					return false;
+					return true;
 				}
 				
 				return true;
@@ -96,12 +107,13 @@ public class PerkCapes {
 				PerkColors.resetColor(player);
 				
 				PerkUtils.OutputToPlayer(sender, "Cape and colors removed for that player");
-				return false;
+				return true;
 				
 			}
 			
-			return false;
+			return true;
 		}
+		
 		return false;
 	}
 }

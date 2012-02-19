@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -346,12 +347,24 @@ public class PerkPlayer {
 		
 		Player[] players = PerkUtils.server().getOnlinePlayers();
 		
-		for (int i = 0; i < players.length; i++) {
+		for (int i = 0; i < players.length; ++i) {
+			
+			// dont hide yourself from yourself
+			if (players[i] == m_player)
+				continue;
+			
+			//only hide to players who dont have the permissions to see everyone
 			if (PerkUtils.getPlayer(players[i]).hasPermission("perks.vanish.show", false))
 				continue;
 			
 			players[i].hidePlayer(m_player);
 		} 
+		
+		PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " left the game.");
+		
+		PerkUtils.OutputToPlayer(this, "You're the invisible man...");
+		PerkUtils.OutputToPlayer(this, "Incredible how you can...");
+		PerkUtils.OutputToPlayer(this, "See right through you!");
 		
 		m_vanish.vanished = true;
 	}
@@ -360,10 +373,16 @@ public class PerkPlayer {
 		
 		Player[] players = PerkUtils.server().getOnlinePlayers();
 		
-		for (int i = 0; i < players.length; i++) {
+		for (int i = 0; i < players.length; ++i) {
+			if (players[i] == m_player)
+				continue;
 			
 			players[i].showPlayer(m_player);
 		}
+		
+		PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " joined the game.");
+		
+		PerkUtils.OutputToPlayer(this, "You are visible again...");
 		
 		m_vanish.vanished = false;
 	}

@@ -3,7 +3,7 @@ package me.wisbycraft.perks;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PerkVanish {
 
-	public static List<Player> invisible;
+	public static ArrayList<Player> invisible;
 	
 	public static void vanishJoin (PerkPlayer player, PlayerJoinEvent event) {
 		if (!player.isHidden()) 
@@ -70,19 +70,17 @@ public class PerkVanish {
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
-		if (commandLabel.equalsIgnoreCase("vanish")) {
-			 
-			if (player.hasPermission("perks.vanish", true))
+		if (cmd.getName().equalsIgnoreCase("vanish")) {
+								 
+			if (!player.hasPermission("perks.vanish", true))
 				return true;
-			
+				
 			if (player.isHidden()) {
-				
 				player.showPlayer();
-				removePlayer(player);
-			} else if (!player.isHidden()) {
-				
+				//removePlayer(player);
+			} else {
 				player.hidePlayer();
-				addPlayer(player);
+				//addPlayer(player);
 			}
 			
 			return true;

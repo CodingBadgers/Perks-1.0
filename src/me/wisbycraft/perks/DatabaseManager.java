@@ -4,16 +4,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import n3wton.me.BukkitDatabaseManager.*;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import lib.PatPeter.SQLibrary.SQLite;
-
 public class DatabaseManager {
 	
-	static private SQLite m_homedb = null;
-	static private SQLite m_builddb = null;
+	static private BukkitDatabase m_homedb = null;
+	static private BukkitDatabase m_builddb = null;
 	
 	public static class tpLocation {	
 		String playername;
@@ -25,21 +25,11 @@ public class DatabaseManager {
 	
 	public static void LoadHomes() {
 		
-		// create an SQList object
-		m_homedb = new SQLite(
-			PerkUtils.log, 						// mc logger
-			"PerkHomes", 						// prefix
-			"homes", 							// name
-			"plugins/Perks");					// location
+		// create an the database
+		m_homedb = BukkitDatabaseManager.CreateDatabase("Homes", PerkUtils.plugin);
 		
-		// if we can't open a connection, its broken.
-		if (m_homedb.open() == null) {
-			PerkUtils.ErrorConsole("Could not connect to perk homes database.");
-			return;
-		}
-
 		// see if a table called properties exist
-		if (!m_homedb.checkTable("homes")) {
+		if (!m_homedb.TableExists("homes")) {
 			
 			// the table doesn't exist, so make one.
 			
@@ -55,14 +45,14 @@ public class DatabaseManager {
 					");";
 			
 			// to create a table we pass an SQL query.
-			m_homedb.createTable(query);
+			m_homedb.Query(query, true);
 		}
 		
 		// load all properties
 		
 		// select every property from the table
 		String query = "SELECT * FROM homes";
-		ResultSet result = m_homedb.query(query);
+		ResultSet result = m_homedb.QueryResult(query);
 		
 		try {
 			// while we have another result, read in the data
@@ -89,22 +79,12 @@ public class DatabaseManager {
 			e.printStackTrace();
 			return;
 		}
-		
+				
 		// create an SQList object
-		m_builddb = new SQLite(
-			PerkUtils.log, 						// mc logger
-			"PerkBuilds", 						// prefix
-			"build", 							// name
-			"plugins/Perks");					// location
+		m_builddb = BukkitDatabaseManager.CreateDatabase("Build", PerkUtils.plugin);
 		
-		// if we can't open a connection, its broken.
-		if (m_builddb.open() == null) {
-			PerkUtils.ErrorConsole("Could not connect to perk build database.");
-			return;
-		}
-
 		// see if a table called properties exist
-		if (!m_builddb.checkTable("build")) {
+		if (!m_builddb.TableExists("build")) {
 			
 			// the table doesn't exist, so make one.
 			
@@ -120,14 +100,12 @@ public class DatabaseManager {
 					");";
 			
 			// to create a table we pass an SQL query.
-			m_builddb.createTable(query);
+			m_builddb.Query(query, true);
 		}
-		
-		// load all properties
 		
 		// select every property from the table
 		query = "SELECT * FROM build";
-		result = m_builddb.query(query);
+		result = m_builddb.QueryResult(query);
 		
 		try {
 			// while we have another result, read in the data
@@ -154,7 +132,6 @@ public class DatabaseManager {
 			e.printStackTrace();
 			return;
 		}
-		
 	}
 	
 	public static void AddHome(Player player, Location loc) {
@@ -169,7 +146,7 @@ public class DatabaseManager {
 				"'" + loc.getYaw() + "'," +
 				"'" + loc.getPitch() + 
 				"');";
-		m_homedb.query(query);
+		m_homedb.Query(query);
 		
 	}
 
@@ -185,7 +162,7 @@ public class DatabaseManager {
 				"'" + loc.getYaw() + "'," +
 				"'" + loc.getPitch() + 
 				"');";
-		m_builddb.query(query);
+		m_builddb.Query(query);
 		
 	}
 	
@@ -199,8 +176,7 @@ public class DatabaseManager {
 				"pitch = '" + loc.getPitch() +"' " +
 				"WHERE player = '" + player.getName() + 
 				"' AND world = '" + loc.getWorld().getName() + "';";
-		
-		m_homedb.query(query);
+		m_homedb.Query(query);
 		
 	}
 
@@ -214,9 +190,8 @@ public class DatabaseManager {
 				"yaw = '" + loc.getYaw() +"', " +
 				"pitch = '" + loc.getPitch() +"' " +
 				"WHERE player = '" + player.getName() + "';";
+		m_builddb.Query(query);			
 		
-		m_builddb.query(query);
-				
 	}
 	
 	public static void setBuildLocation(Player player, Location loc) {
@@ -280,16 +255,16 @@ public class DatabaseManager {
 	public static void gotoHome(Player player, World world) {
 		
 		for (int i = 0; i < homes.size(); ++i) {
-			tpLocation b = homes.get(i);
-			if (b.playername.equalsIgnoreCase(player.getName()) 
-					&& world == b.loc.getWorld()) {
-				player.teleport(b.loc);
+			tpLocation h = homes.get(i);
+			if (h.playername.equalsIgnoreCase(player.getName()) 
+					&& world == h.loc.getWorld()) {
+				player.teleport(h.loc);
 				PerkUtils.OutputToPlayer(player, "You have been teleported to your home location");
 				return;
 			}
 		}
 		
-		PerkUtils.OutputToPlayer(player, "You don't have a home in this world");
+		PerkUtils.OutputToPlayer(player, "You don't have a home in '" + world.getName() + "'");
 		PerkUtils.OutputToPlayer(player, "Use /sethome to set your home location");
 		
 	}

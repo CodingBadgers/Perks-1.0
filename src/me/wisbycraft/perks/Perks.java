@@ -118,6 +118,10 @@ public class Perks extends JavaPlugin {
 		if (PerkVanish.onCommand(player, cmd, commandLabel, args))
 			return true;
 
+		// handles promote cmds
+		if (PerkDemote.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
 		return false;
 	}
 

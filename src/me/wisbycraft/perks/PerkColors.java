@@ -12,6 +12,10 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 public class PerkColors {
 	
 	public static void addColor (Player player) {
+		
+		if (!PerkUtils.spoutEnabled)
+			return;
+		
 		SpoutPlayer sPlayer = (SpoutPlayer) player;
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 			
@@ -21,6 +25,10 @@ public class PerkColors {
 	}
 	
 	public static void resetColor (Player player) {
+		
+		if (!PerkUtils.spoutEnabled)
+			return;
+		
 		SpoutPlayer sPlayer = (SpoutPlayer) player;
 		
 		sPlayer.setTitle(player.getName());
