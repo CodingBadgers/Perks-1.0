@@ -182,7 +182,7 @@ public class DatabaseManager {
 
 	public static void UpdateBuild(Player player, Location loc) {
 		
-		String query = "UPDATE homes SET " +
+		String query = "UPDATE build SET " +
 				"world = '" + loc.getWorld().getName() +"', " +
 				"x = '" + loc.getX() +"', " +
 				"y = '" + loc.getY() +"', " +
