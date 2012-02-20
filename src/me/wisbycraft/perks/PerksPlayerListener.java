@@ -26,7 +26,7 @@ public class PerksPlayerListener implements Listener {
 		
 		PerkColors.addColor(player.getPlayer());
 		
-		// PerkVanish.vanishJoin(player, event);
+		PerkList.showOnlineList(player);
 	}	
 
 	@EventHandler(priority = EventPriority.NORMAL)
