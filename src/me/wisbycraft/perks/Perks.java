@@ -67,6 +67,7 @@ public class Perks extends JavaPlugin {
 			String commandLabel, String[] args) {
 
 		PerkPlayer player = playerListener.findPlayer((Player) sender);
+		
 		if (player == null)
 			return false;
 
@@ -79,6 +80,7 @@ public class Perks extends JavaPlugin {
 			player.getPlayer().sendMessage("4 - You're hunger decreases at a much slower rate.");
 			player.getPlayer().sendMessage("5 - /death - to teleport to your last death location.");
 			player.getPlayer().sendMessage("6 - Capes for spoutcraft users donator and above");
+			player.getPlayer().sendMessage("7 - /tphr <name> - Sends a teleport here request to a player");
 			
 			return true;
 		}
@@ -98,7 +100,8 @@ public class Perks extends JavaPlugin {
 		// handles death commands
 		if (PerkDeathTP.onCommand(player, cmd, commandLabel, args))
 			return true;
-
+		
+		// handles home and build commands
 		if (PerkHomeAndBuild.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
@@ -120,6 +123,10 @@ public class Perks extends JavaPlugin {
 
 		// handles promote cmds
 		if (PerkDemote.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles list cmds
+		if (PerkList.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		return false;

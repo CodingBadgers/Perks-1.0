@@ -4,8 +4,8 @@ main: me.wisbycraft.perks.Perks
 version: 1.5
 website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for WisbyCraft
-softdepend: [Spout, MobArena]
-depend: [BukkitDatabaseManager]
+softdepend: [Spout]
+depend: [BukkitDatabaseManager, MobArena]
 
 commands:
    perks:
@@ -90,4 +90,13 @@ commands:
       
    vanish:
       description: lets you vanish
+      usage: /<command>
+      
+   list:
+      description: lists all online players
+      aliases: [who,players]
+      usage: /<command>
+      
+   land:
+      description: forces your fly mode off
       usage: /<command>
