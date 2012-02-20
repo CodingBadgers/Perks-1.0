@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-public class PerkBlockListener implements Listener{
+public class PerksBlockListener implements Listener{
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockBreak (BlockBreakEvent event) {

@@ -15,7 +15,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class PerkList {
 
-	public static void showOnlineList(Player sender) {
+	public static void showOnlineList(PerkPlayer sender) {
 		
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		Player[] online = PerkUtils.server().getOnlinePlayers();
@@ -29,7 +29,7 @@ public class PerkList {
 	                PermissionGroup[] playerGroups = pex.getUser(player.getName()).getGroups();
 	                String group = playerGroups.length > 0 ? playerGroups[0].getName() : "Default";
 
-	                if (PerkUtils.getPlayer(player).isHidden()){
+	                if (PerkUtils.getPlayer(player).isHidden() && !sender.hasPermission("perks.list.showvanished", false)){
 	                	hidden.add(player);
 	                	continue;
 	                }
@@ -47,22 +47,32 @@ public class PerkList {
 	            // This applies mostly to the console, so there might be 0 players
     	        // online if that's the case!
     	        if (online.length == 0) {
-    	            sender.sendMessage("0 players are online.");
+    	            sender.getPlayer().sendMessage("0 players are online.");
     	            return;
     	        }
-
-    	        // display current users online and max users
-    	        out.append(ChatColor.GOLD + PerkUtils.server().getName() + ": " + ChatColor.GRAY + "Online (");
-    	        out.append(online.length - hidden.size());
-    	            out.append("/");
-    	            out.append(PerkUtils.server().getMaxPlayers());
-    	        out.append("): ");
-    	        out.append(ChatColor.WHITE);
+    	        
+    	        if (online.length == PerkUtils.server().getMaxPlayers()) {
+    	        	// display current users online and max users
+    	        	out.append(ChatColor.GOLD + PerkUtils.server().getServerName() + ": " + ChatColor.GRAY + "Online (" + ChatColor.GOLD);
+    	        	out.append(online.length - hidden.size());
+    	            	out.append(ChatColor.GRAY + "/" + ChatColor.GOLD);
+    	            	out.append(PerkUtils.server().getMaxPlayers());
+    	            	out.append(ChatColor.GOLD + "): ");
+    	            out.append(ChatColor.WHITE);
+    	        } else {
+    	        	// display current users online and max users
+    	        	out.append(ChatColor.GOLD + PerkUtils.server().getServerName() + ": " + ChatColor.GRAY + "Online (");
+    	        	out.append(online.length - hidden.size());
+    	            	out.append("/");
+    	            	out.append(PerkUtils.server().getMaxPlayers());
+    	            	out.append("): ");
+    	            out.append(ChatColor.WHITE);
+    	        }
     	        
 	            for (Map.Entry<String, List<Player>> entry : groups.entrySet()) {
 	    	        
 	                out.append("\n");
-	                out.append(ChatColor.WHITE).append(entry.getKey());
+	                out.append(getRankColor(entry.getKey())).append(entry.getKey());
 	                out.append(": ");
 
 	                // To keep track of commas
@@ -82,17 +92,36 @@ public class PerkList {
 	            String[] lines = out.toString().split("\n");
 
 	            for (String line : lines) {
-	               sender.sendMessage(line);
+	               sender.getPlayer().sendMessage(line);
 	            }
+	}
+	
+	private static ChatColor getRankColor(String name) {
+		PermissionManager pex = PermissionsEx.getPermissionManager();
+		PermissionGroup group = pex.getGroup(name);
+		
+		String prefix = group.getPrefix();
+		String code = prefix.substring(prefix.indexOf("&") + 1, prefix.indexOf('&') + 2);
+		
+		if (code == null) 
+			return ChatColor.WHITE;
+	
+		ChatColor colour = ChatColor.getByChar(code);
+		
+		if (colour == null) 
+			return ChatColor.WHITE;
+		
+		return colour;
 	}
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("who") || commandLabel.equalsIgnoreCase("list") || commandLabel.equalsIgnoreCase("players")) {
+			
 			if (!player.hasPermission("perks.list", true))
 				return true;
 			
-			showOnlineList(player.getPlayer());
+			showOnlineList(player);
 			return true;
 		}
 		
