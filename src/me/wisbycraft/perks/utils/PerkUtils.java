@@ -1,7 +1,10 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.utils;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+
+import me.wisbycraft.perks.Perks;
 
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -33,14 +36,14 @@ public class PerkUtils {
 		plugin.getServer().broadcastMessage("\247b[Perks] \247f" + messsage + ".");
 	}
 
-	static PerkPlayer getPlayer(Player player) {
+	public static PerkPlayer getPlayer(Player player) {
 		if (player == null)
 			return null;
 		
 		return perkPlayers.getPlayer(player);
 	}
 	
-	static Server server() {
+	public static Server server() {
 		return plugin.getServer();
 	}
 	
@@ -48,4 +51,13 @@ public class PerkUtils {
 		return plugin.getServer().getPlayer(name);
 	}
 	
+	static public boolean isNumeric(String i) {
+		try {
+			Integer.parseInt(i);
+		} catch(NumberFormatException ex) {
+			return false;
+		}
+		
+		return true;
+	}
 }

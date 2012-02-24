@@ -1,16 +1,40 @@
 package me.wisbycraft.perks;
 
+import me.wisbycraft.perks.config.DatabaseManager;
+import me.wisbycraft.perks.config.PerkConfig;
+import me.wisbycraft.perks.donator.PerkAFK;
+import me.wisbycraft.perks.donator.PerkCapes;
+import me.wisbycraft.perks.donator.PerkDeathTP;
+import me.wisbycraft.perks.donator.PerkFlying;
+import me.wisbycraft.perks.donator.PerkHomeAndBuild;
+import me.wisbycraft.perks.donator.PerkKits;
+import me.wisbycraft.perks.donator.PerkList;
+import me.wisbycraft.perks.donator.PerkTeleport;
+import me.wisbycraft.perks.listeners.PerksEntityListener;
+import me.wisbycraft.perks.listeners.PerksMobAreanaListener;
+import me.wisbycraft.perks.listeners.PerksPlayerListener;
+import me.wisbycraft.perks.staff.PerkBans;
+import me.wisbycraft.perks.staff.PerkClear;
+import me.wisbycraft.perks.staff.PerkDemote;
+import me.wisbycraft.perks.staff.PerkGameMode;
+import me.wisbycraft.perks.staff.PerkItem;
+import me.wisbycraft.perks.staff.PerkPromote;
+import me.wisbycraft.perks.staff.PerkVanish;
+import me.wisbycraft.perks.utils.PerkMobArena;
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+
 public class Perks extends JavaPlugin {
 
 	private final PerksPlayerListener playerListener = new PerksPlayerListener();
     private final PerksEntityListener entityListener = new PerksEntityListener();
-    // private final PerkBlockListener blockListener = new PerkBlockListener();
     private final PerksMobAreanaListener maListener = new PerksMobAreanaListener();
     
 	// private final PerkThread m_thread = new PerkThread(this);
@@ -34,7 +58,6 @@ public class Perks extends JavaPlugin {
 		// register the 3 event listeners
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
-		// pm.registerEvents(blockListener, this);
 		pm.registerEvents(maListener, this);
 		
 		/* 
@@ -51,7 +74,7 @@ public class Perks extends JavaPlugin {
 		PerkMobArena.setupMobArenaHandler();
 		
 		// load the homes from the database
-		DatabaseManager.LoadHomes();
+		DatabaseManager.loadDatabases();
 		
 		// load the config
 		if (!PerkConfig.loadConfig()) {
@@ -127,6 +150,26 @@ public class Perks extends JavaPlugin {
 		
 		// handles list cmds
 		if (PerkList.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles inv clear cmds
+		if (PerkClear.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles item cmds
+		if (PerkItem.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles afk cmds
+		if (PerkAFK.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles kit cmds
+		if (PerkKits.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles ban cmds
+		if (PerkBans.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		return false;

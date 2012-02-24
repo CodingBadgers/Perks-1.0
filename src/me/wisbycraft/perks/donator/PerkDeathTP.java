@@ -1,8 +1,13 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.donator;
+
+import me.wisbycraft.perks.utils.PerkMobArena;
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.event.entity.EntityDeathEvent;
+
 
 public class PerkDeathTP {
 	

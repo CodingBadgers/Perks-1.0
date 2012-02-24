@@ -1,8 +1,12 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.listeners;
+
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+
 
 import com.garbagemule.MobArena.events.ArenaPlayerJoinEvent;
 

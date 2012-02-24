@@ -1,9 +1,14 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.donator;
+
+import me.wisbycraft.perks.config.PerkConfig;
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
+
 
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;

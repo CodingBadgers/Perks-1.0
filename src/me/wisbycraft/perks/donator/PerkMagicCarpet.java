@@ -1,4 +1,4 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.donator;
 
 import java.util.ArrayList;
 import java.util.Iterator;

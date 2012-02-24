@@ -1,19 +1,24 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.config;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import me.wisbycraft.perks.utils.BannedPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
 import n3wton.me.BukkitDatabaseManager.*;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+
 public class DatabaseManager {
 	
 	static private BukkitDatabase m_homedb = null;
 	static private BukkitDatabase m_builddb = null;
+	static private BukkitDatabase m_afkdb = null;
+	static private BukkitDatabase m_bandb = null;
 	
 	public static class tpLocation {	
 		String playername;
@@ -22,8 +27,10 @@ public class DatabaseManager {
 		
 	static public ArrayList<tpLocation> homes = new ArrayList<tpLocation>();
 	static public ArrayList<tpLocation> builds = new ArrayList<tpLocation>();
+	static public ArrayList<tpLocation> afk = new ArrayList<tpLocation>();
+	static public ArrayList<BannedPlayer> bans = new ArrayList<BannedPlayer>();
 	
-	public static void LoadHomes() {
+	public static void loadDatabases() {
 		
 		// create an the database
 		m_homedb = BukkitDatabaseManager.CreateDatabase("Homes", PerkUtils.plugin);
@@ -131,7 +138,53 @@ public class DatabaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
-		}
+		}			
+				
+				// create an the database
+				m_bandb = BukkitDatabaseManager.CreateDatabase("bans", PerkUtils.plugin);
+				
+				// see if a table called properties exist
+				if (!m_bandb.TableExists("bans")) {
+					
+					// the table doesn't exist, so make one.
+					
+					PerkUtils.DebugConsole("Could not find perk bans table, now creating one.");
+					query = "CREATE TABLE bans (" +
+							"player VARCHAR(64)," +
+							"reason VARCHAR(128)," +
+							"staff VATCHAR(64)" +
+							");";
+					
+				// to create a table we pass an SQL query.
+					m_bandb.Query(query, true);
+				}
+				
+				// load all properties
+				
+				// select every property from the table
+				query = "SELECT * FROM bans";
+				result = m_bandb.QueryResult(query);
+				
+				try {
+					// while we have another result, read in the data
+					while (result.next()) {
+			            String player = result.getString("player");
+			            String reason = result.getString("reason");
+			            String staffName = result.getString("staff");
+			            
+			            Player staff = PerkUtils.plugin.getServer().getPlayer(staffName);
+			                        
+			            BannedPlayer bp = new BannedPlayer(player, reason, staff);
+
+			            bans.add(bp);
+			            
+			        }
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return;
+				}
+				
+				
 	}
 	
 	public static void AddHome(Player player, Location loc) {
@@ -273,4 +326,43 @@ public class DatabaseManager {
 		gotoHome(player, player.getLocation().getWorld());
 	}
 	
+	public static void addAFK(Player player, Location loc) {
+		
+		String query = "INSERT INTO 'afk' " +
+				"('player','world','x','y','z','yaw','pitch') VALUES (" + 
+				"'" + player.getName() + "'," +
+				"'" + loc.getWorld().getName() + "'," +
+				"'" + loc.getX() + "'," +
+				"'" + loc.getY() + "'," +
+				"'" + loc.getZ() + "'," +
+				"'" + loc.getYaw() + "'," +
+				"'" + loc.getPitch() + 
+				"');";
+		m_afkdb.Query(query);
+		
+	}
+	
+	public static void addBannedPlayer(BannedPlayer bp) {
+		
+		String query = "INSERT INTO 'bans' " +
+				"('player', 'reason', 'staff') VALUES (" + 
+				"'" + bp.getName() + "'," +
+				"'" + bp.getReason() + "'," +
+				"'" + bp.getStaff().getName() +
+				"');";
+		m_bandb.Query(query);
+	}
+	
+	public static void removeBannedPlayer(String name) {
+		
+		for (int i = 0; i<bans.size(); i++) {
+			if (bans.get(i).getName() == name) {
+				bans.remove(i);
+			}
+		}
+		
+		String query = "DELETE FROM tableName " +
+					"WHERE player='" + name + "'";
+		m_bandb.Query(query);
+	}
 }

@@ -1,9 +1,13 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.donator;
+
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+
 
 public class PerkUnlimitedAir {
 

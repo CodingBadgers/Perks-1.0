@@ -100,3 +100,25 @@ commands:
    land:
       description: forces your fly mode off
       usage: /<command>
+      
+   item:
+      description: gives yourself items 
+      usage: /<command> <id> <ammount>
+      aliases: [i]
+   
+   afk:
+      description: teleports you to your afk spot
+      usage: /<command>
+      
+   tphere:
+      description: teleports another player here
+      aliases: [s, bring]
+      usage: /<command> <target>
+   
+   tp:
+      description: teleports you to another player
+      usage: /<command> <target>
+   
+   ban:
+      description: bans a player
+      usage: /<command> <target>

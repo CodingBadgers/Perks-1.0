@@ -1,13 +1,18 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.utils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import me.wisbycraft.perks.config.DatabaseManager;
+import me.wisbycraft.perks.config.PerkConfig;
+import me.wisbycraft.perks.donator.PerkMagicCarpet;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.player.SpoutPlayer;
+
 
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -44,11 +49,16 @@ public class PerkPlayer {
 		public boolean vanished = false;
 	}
 	
+	private class Afk {
+		public boolean afk = false;
+	}
+	
 	private Flying m_fly = null;
 	private Hunger m_hunger = null;
 	private TP m_tp = null;
 	private DeathTP m_deathTP = null;
 	private Vanish m_vanish = null;
+	private Afk m_afk = null;
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -62,6 +72,7 @@ public class PerkPlayer {
 		m_tp = new TP();
 		m_deathTP = new DeathTP();
 		m_vanish = new Vanish();
+		m_afk = new Afk();
 
 		// if the player isnt using spout make a magic carpet
 		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled()) {
@@ -391,4 +402,23 @@ public class PerkPlayer {
 		return m_vanish.vanished;
 	}
 	
+	public void teleport(PerkPlayer player) {
+		m_player.getPlayer().teleport(player.getPlayer());
+	}
+	
+	public void teleportHere(PerkPlayer player) {
+		player.getPlayer().teleport(m_player.getPlayer());
+	}
+	
+	public void clearInv() {
+		m_player.getPlayer().getInventory().clear();
+	}
+	
+	public boolean isAfk() {
+		return m_afk.afk;
+	}
+	
+	public void setAfk(boolean afk)  {
+		m_afk.afk = afk;
+	}
 }

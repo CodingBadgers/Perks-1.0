@@ -1,13 +1,12 @@
-package me.wisbycraft.perks;
-/*
+package me.wisbycraft.perks.utils;
+
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-*/
 
 public class PerkVault {
-/*	
+
 	public static Permission perms;
 	public static Economy eco;
 	
@@ -22,6 +21,5 @@ public class PerkVault {
 		eco = rsp.getProvider();
 		return eco != null;
 	}
-	
-*/	
+
 }

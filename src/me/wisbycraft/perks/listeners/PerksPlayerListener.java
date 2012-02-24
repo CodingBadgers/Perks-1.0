@@ -1,4 +1,12 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.listeners;
+
+import me.wisbycraft.perks.donator.PerkCapes;
+import me.wisbycraft.perks.donator.PerkColors;
+import me.wisbycraft.perks.donator.PerkFlying;
+import me.wisbycraft.perks.donator.PerkList;
+import me.wisbycraft.perks.staff.PerkBans;
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -8,10 +16,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
 
 public class PerksPlayerListener implements Listener {
 
@@ -26,19 +36,17 @@ public class PerksPlayerListener implements Listener {
 		
 		PerkColors.addColor(player.getPlayer());
 		
-		PerkList.showOnlineList(player);
+		PerkList.showOnlineList(player);	
 	}	
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
-		// PerkVanish.vanishPlayerQuit(PerkUtils.getPlayer(event.getPlayer()), event);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerKick(PlayerKickEvent event) {
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
-		// PerkVanish.vanishPlayerKick(PerkUtils.getPlayer(event.getPlayer()), event);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -93,13 +101,15 @@ public class PerksPlayerListener implements Listener {
 
 	}
 	
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-		// PerkVanish.vanishPlayerItemPickup(PerkUtils.getPlayer(event.getPlayer()), event);
-	}
-	
 	// returns a PerkPlayer from a given Bukkit Player
 	public PerkPlayer findPlayer(Player player) {
 		return PerkUtils.getPlayer(player);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerLogin(PlayerLoginEvent event){
+		if (PerkBans.isBanned(event.getPlayer())) {
+			event.disallow(Result.KICK_BANNED, "You have been Banned!!");
+		}
 	}
 }

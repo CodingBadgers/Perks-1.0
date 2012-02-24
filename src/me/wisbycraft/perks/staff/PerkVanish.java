@@ -1,4 +1,6 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.staff;
+
+import me.wisbycraft.perks.utils.PerkPlayer;
 
 import org.bukkit.command.Command;
 import org.bukkit.event.player.PlayerJoinEvent;

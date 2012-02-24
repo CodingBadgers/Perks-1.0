@@ -1,6 +1,11 @@
- package me.wisbycraft.perks;
+ package me.wisbycraft.perks.donator;
 
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
+
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+
 
 public class PerkTeleport {
 	
@@ -71,6 +76,50 @@ public class PerkTeleport {
 				
 				return true;
 			}
+		}
+		
+		if (cmd.getName().equalsIgnoreCase("tp")) {
+			
+			if (!player.hasPermission("perks.teleport.tp", true))
+				return true;
+			
+			if (args.length != 1) {
+				PerkUtils.OutputToPlayer(player, ChatColor.RED + "/tp <name>");
+				return true;
+			}
+			
+			PerkPlayer target = PerkUtils.getPlayer(PerkUtils.getPlayer(args[0]));
+			
+			if (target == null) {
+				PerkUtils.OutputToPlayer(player, "That player is not online");
+				return true;
+			}
+			
+			player.teleport(target);
+			
+			PerkUtils.OutputToPlayer(player, "You have been teleported to " + target.getPlayer().getName());
+		}
+		
+		if (cmd.getName().equalsIgnoreCase("tphere") || cmd.getName().equalsIgnoreCase("s") || cmd.getName().equalsIgnoreCase("bring")) {
+			
+			if (!player.hasPermission("perks.teleport.tphere", true))
+				return true;
+			
+			if (args.length != 1) {
+				PerkUtils.OutputToPlayer(player, ChatColor.RED + "/tphere <name>");
+				return true;
+			}
+			
+			PerkPlayer target = PerkUtils.getPlayer(PerkUtils.getPlayer(args[0]));
+			
+			if (target == null) {
+				PerkUtils.OutputToPlayer(player, "That player is not online");
+				return true;
+			}
+			
+			player.teleportHere(target);
+			
+			PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has been teleported to you.");
 		}
 
 		return false;

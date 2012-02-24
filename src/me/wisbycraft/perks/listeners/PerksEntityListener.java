@@ -1,4 +1,10 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.listeners;
+
+import me.wisbycraft.perks.donator.PerkDeathTP;
+import me.wisbycraft.perks.donator.PerkHunger;
+import me.wisbycraft.perks.donator.PerkUnlimitedAir;
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,7 +14,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
-class PerksEntityListener implements Listener {
+
+public class PerksEntityListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event) {

@@ -1,6 +1,12 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.utils;
+
+import me.wisbycraft.perks.Perks;
+import me.wisbycraft.perks.config.PerkConfig;
+import me.wisbycraft.perks.donator.PerkCapes;
+import me.wisbycraft.perks.donator.PerkColors;
 
 import org.bukkit.entity.Player;
+
 
 public class PerkThread extends Thread {
 	

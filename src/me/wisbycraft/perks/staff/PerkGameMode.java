@@ -1,8 +1,12 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.staff;
+
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+
 
 /**
  * 

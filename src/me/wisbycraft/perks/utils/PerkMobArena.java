@@ -1,4 +1,4 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;

@@ -1,13 +1,17 @@
-package me.wisbycraft.perks;
+package me.wisbycraft.perks.donator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+
 
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
@@ -33,7 +37,7 @@ public class PerkList {
 	                	hidden.add(player);
 	                	continue;
 	                }
-	                
+ 	                
 	                if (groups.containsKey(group)) {
 	                    groups.get(group).add(player);
 	                } else {
@@ -73,7 +77,7 @@ public class PerkList {
 	    	        
 	                out.append("\n");
 	                out.append(getRankColor(entry.getKey())).append(entry.getKey());
-	                out.append(": ");
+	                out.append(ChatColor.WHITE + ": ");
 
 	                // To keep track of commas
 	                boolean first = true;
@@ -83,8 +87,11 @@ public class PerkList {
 	                        out.append(", ");
 	                    }
 
-	                    out.append(player.getDisplayName()).append(ChatColor.WHITE);
-
+	                    if (PerkUtils.getPlayer(player).isAfk()) {
+	                    	out.append(ChatColor.GRAY + player.getName()).append(ChatColor.WHITE);
+	                    } else {
+	                    	out.append(player.getDisplayName()).append(ChatColor.WHITE);
+	                    }
 	                    first = false;
 	                }
 	            }
