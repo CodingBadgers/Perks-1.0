@@ -13,7 +13,6 @@ import me.wisbycraft.perks.donator.PerkTeleport;
 import me.wisbycraft.perks.listeners.PerksEntityListener;
 import me.wisbycraft.perks.listeners.PerksMobAreanaListener;
 import me.wisbycraft.perks.listeners.PerksPlayerListener;
-import me.wisbycraft.perks.staff.PerkBans;
 import me.wisbycraft.perks.staff.PerkClear;
 import me.wisbycraft.perks.staff.PerkDemote;
 import me.wisbycraft.perks.staff.PerkGameMode;
@@ -166,10 +165,6 @@ public class Perks extends JavaPlugin {
 		
 		// handles kit cmds
 		if (PerkKits.onCommand(player, cmd, commandLabel, args))
-			return true;
-		
-		// handles ban cmds
-		if (PerkBans.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		return false;

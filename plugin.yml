@@ -122,3 +122,19 @@ commands:
    ban:
       description: bans a player
       usage: /<command> <target>
+   
+   kit:
+      description: kit commands
+      usage: /<command> [target]
+   
+   unban:
+      description: unban a player
+      usage: /<command> <target>
+   
+   bans:
+      description: bans commands
+      usage: /<command> <command>
+      
+   isbanned:
+      description: check if a player is banned
+      usage: /<command> <target>   

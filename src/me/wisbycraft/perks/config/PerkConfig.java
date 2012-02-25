@@ -49,11 +49,19 @@ public class PerkConfig {
 		hungerRate = Float.parseFloat(config.getString("Hunger.rate"));
 		capeRefresh = Integer.parseInt(config.getString("Capes.RefreshTime"));
 		
+		File kitConfig = new File(PerkUtils.plugin.getDataFolder() + "\\" + "kits.cfg");
+		if (!kitConfig.exists()) {
+			createDefaultKitConfig(kitConfig);
+		}
+		loadKitsConfig(kitConfig);
+		
 		return true;
 		
 	}
 	
-	public static void createDefaultKitsConfig(File kitConfig) {
+	public static void createDefaultKitConfig(File kitConfig) {
+		
+		PerkUtils.log.info("Creating default kit config.");
 		
 		try {
 			kitConfig.createNewFile();
@@ -65,13 +73,10 @@ public class PerkConfig {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(kitConfig.getPath()));
 
-			writer.write("# This is the kits config file");
-			writer.write("[kit]\n");
-			writer.write("[name = default]\n");
-			writer.write("[timeout = 200]\n");
+			writer.write("# This is the kits config file\n");
+			writer.write("[default = 200]\n");
 			writer.write("wooden_pick\n");
 			writer.write("torch,16\n");
-			writer.write("[/kit]\n");
 
 			writer.close();
 
@@ -101,30 +106,46 @@ public class PerkConfig {
 				if (line.startsWith("#") || line.length() == 0)
 					continue;
 				
-				if (!line.equalsIgnoreCase("[kit]")) {
+				if (!line.startsWith("[")) {
 					return;
 				}
 				
 				ArrayList<ItemStack> newKit = new ArrayList<ItemStack>();
 				String name = null;
-				String timeout = null;
+				String timeoutString = null;
 				
 				while ((line = reader.readLine()) != null) {
 					
-					if (line.startsWith("[name = ")) {
-						name = line.substring(line.indexOf('=') + 1, line.indexOf(']'));
+					if (line.startsWith("[")) {
+						name = line.substring(line.indexOf('[') + 1, line.indexOf('=') - 1);
+						timeoutString = line.substring(line.indexOf('=') + 1, line.indexOf(']') - 1);
 						continue;
 					}
 					
-					if (line.startsWith("[timeout = ")) {
-						timeout = line.substring(line.indexOf('=') + 2, line.indexOf(']'));
-						continue;
-					}
-					
-					if (line.equalsIgnoreCase("[/kit]"))
+					if (line.length() == 0)
 						break;
 					
-					ItemStack item;
+					Material material;
+					int ammount;
+					
+					if (line.indexOf(",") != -1) {
+						
+						String ammountString = line.substring(line.indexOf(',') + 1);
+						
+						if (PerkUtils.isNumeric(ammountString)) {
+							
+							ammount = Integer.parseInt(ammountString);
+							line = line.substring(0, line.indexOf(',') - 1);
+						} else {
+							
+							PerkUtils.ErrorConsole("Could not parse item ammount");
+							ammount = 1;
+						}
+						
+					} else {
+						
+						ammount = 1;
+					}
 					
 					if (PerkUtils.isNumeric(line)) {
 						
@@ -133,22 +154,25 @@ public class PerkConfig {
 							continue;
 						}
 						
-						item = new ItemStack(Material.getMaterial(Integer.parseInt(line)));				
+						material = Material.getMaterial(Integer.parseInt(line));				
 					} else {
 						
-						String itemName = line.toUpperCase();
-						if (Material.getMaterial(itemName) == null) {
-							PerkUtils.ErrorConsole("Could not find item with id " + line);
-							continue;
-						}
-						
-						item = new ItemStack(Material.getMaterial(line.toUpperCase()));
+						PerkUtils.ErrorConsole("Please use item ids");
+						continue;
 					}
 					
+					ItemStack item = new ItemStack(material, ammount);
 					newKit.add(item);
 				}
 				
-				Kit kit = new Kit(name, Integer.parseInt(timeout), newKit);
+				int timeout;
+				if (PerkUtils.isNumeric(timeoutString)) {
+					timeout = Integer.parseInt(timeoutString);
+				} else {
+					timeout = 0;
+				}
+					
+				Kit kit = new Kit(name, timeout, newKit);
 				PerkKits.kits.add(kit);
 			}
 			

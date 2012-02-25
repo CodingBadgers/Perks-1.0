@@ -53,12 +53,12 @@ public class PerkKits {
 		boolean first = true;
 		
 		for (int i = 0; i<kits.size(); i++) {
-			
-			out.append(kits.get(i).getName());
-			
+
 			if (!first) {
 				out.append(',');
 			}
+			
+			out.append(kits.get(i).getName());
 			
 			first = false;
 		}
