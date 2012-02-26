@@ -46,9 +46,9 @@ public class PerkUtils {
 	public static Server server() {
 		return plugin.getServer();
 	}
-	
-	static public Player getPlayer(String name) {
-		return plugin.getServer().getPlayer(name);
+		
+	static public PerkPlayer getPlayer(String name) {
+		return perkPlayers.getPlayer(server().getPlayer(name));
 	}
 	
 	static public boolean isNumeric(String i) {

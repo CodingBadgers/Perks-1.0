@@ -25,7 +25,7 @@ public class PerkClear {
 				if (!player.hasPermission("perks.clear.other", true))
 					return true;
 				
-				PerkPlayer target = PerkUtils.getPlayer(PerkUtils.getPlayer(args[0]));
+				PerkPlayer target = PerkUtils.getPlayer(args[0]);
 				
 				if (target == null) {
 					PerkUtils.OutputToPlayer(player, "That player is not online");
@@ -34,6 +34,8 @@ public class PerkClear {
 				
 				target.clearInv();
 			}
+			
+			return true;
 		}
 		return false;
 	}

@@ -98,80 +98,63 @@ public class PerkConfig {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(kitConfig.getPath()));
 
+			String name = null;
+			String timeoutString = null;
+			ArrayList<ItemStack> newKit = null;
+						
 			String line = null;
 			while ((line = reader.readLine()) != null) {
+				
 				line = line.trim();
-
-				// ignore comments and empty lines
-				if (line.startsWith("#") || line.length() == 0)
+				
+				if (line.startsWith("#"))
 					continue;
 				
-				if (!line.startsWith("[")) {
-					return;
+				if (line.length() == 0 && newKit != null) {
+					int timeout = Integer.parseInt(timeoutString);
+					Kit kit = new Kit(name, timeout, newKit);
+					PerkKits.kits.add(kit);
+					newKit = null;
 				}
 				
-				ArrayList<ItemStack> newKit = new ArrayList<ItemStack>();
-				String name = null;
-				String timeoutString = null;
+				if (line.startsWith("[")) {
+					name = line.substring(line.indexOf('[') + 1, line.indexOf('='));
+					timeoutString = line.substring(line.indexOf('=') + 1, line.indexOf(']'));
+					newKit = new ArrayList<ItemStack>();
+					continue;
+				}
 				
-				while ((line = reader.readLine()) != null) {
+				int amount = 1;
+				Material material = null;
+				
+				if (line.indexOf(",") != -1) {
 					
-					if (line.startsWith("[")) {
-						name = line.substring(line.indexOf('[') + 1, line.indexOf('=') - 1);
-						timeoutString = line.substring(line.indexOf('=') + 1, line.indexOf(']') - 1);
+					String ammountString = line.substring(line.indexOf(',') + 1);
+					
+					if (PerkUtils.isNumeric(ammountString)) {
+						amount = Integer.parseInt(ammountString);
+						line = line.substring(0, line.indexOf(','));
+					}
+				}
+				
+				if (PerkUtils.isNumeric(line)) {
+					if (Material.getMaterial(Integer.parseInt(line)) == null) {
+						PerkUtils.ErrorConsole("Could not find item with id " + line);
 						continue;
 					}
 					
-					if (line.length() == 0)
-						break;
-					
-					Material material;
-					int ammount;
-					
-					if (line.indexOf(",") != -1) {
-						
-						String ammountString = line.substring(line.indexOf(',') + 1);
-						
-						if (PerkUtils.isNumeric(ammountString)) {
-							
-							ammount = Integer.parseInt(ammountString);
-							line = line.substring(0, line.indexOf(',') - 1);
-						} else {
-							
-							PerkUtils.ErrorConsole("Could not parse item ammount");
-							ammount = 1;
-						}
-						
-					} else {
-						
-						ammount = 1;
-					}
-					
-					if (PerkUtils.isNumeric(line)) {
-						
-						if (Material.getMaterial(Integer.parseInt(line)) == null) {
-							PerkUtils.ErrorConsole("Could not find item with id " + line);
-							continue;
-						}
-						
-						material = Material.getMaterial(Integer.parseInt(line));				
-					} else {
-						
-						PerkUtils.ErrorConsole("Please use item ids");
-						continue;
-					}
-					
-					ItemStack item = new ItemStack(material, ammount);
-					newKit.add(item);
+					material = Material.getMaterial(Integer.parseInt(line));
 				}
 				
-				int timeout;
-				if (PerkUtils.isNumeric(timeoutString)) {
-					timeout = Integer.parseInt(timeoutString);
-				} else {
-					timeout = 0;
-				}
-					
+				if (material == null)
+					continue;
+				
+				ItemStack item = new ItemStack(material, amount);
+				newKit.add(item);
+			}
+			
+			if (newKit != null) {
+				int timeout = Integer.parseInt(timeoutString);
 				Kit kit = new Kit(name, timeout, newKit);
 				PerkKits.kits.add(kit);
 			}
@@ -179,6 +162,8 @@ public class PerkConfig {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		
 				
 	}
 }

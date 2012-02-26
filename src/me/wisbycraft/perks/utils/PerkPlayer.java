@@ -41,7 +41,6 @@ public class PerkPlayer {
 	
 	private class DeathTP {
 		public Location m_location = null;
-		public float m_time = 0.0f;
 		public boolean m_hasDied = false;
 	}
 	
@@ -53,12 +52,18 @@ public class PerkPlayer {
 		public boolean afk = false;
 	}
 	
+	private class PlayerKit {
+		private ArrayList<Kit> usedKit = new ArrayList<Kit>();
+		private ArrayList<Long> usedTime = new ArrayList<Long>();
+	}
+	
 	private Flying m_fly = null;
 	private Hunger m_hunger = null;
 	private TP m_tp = null;
 	private DeathTP m_deathTP = null;
 	private Vanish m_vanish = null;
 	private Afk m_afk = null;
+	private PlayerKit m_kits = null;
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -73,6 +78,7 @@ public class PerkPlayer {
 		m_deathTP = new DeathTP();
 		m_vanish = new Vanish();
 		m_afk = new Afk();
+		m_kits = new PlayerKit();
 
 		// if the player isnt using spout make a magic carpet
 		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled()) {
@@ -294,11 +300,7 @@ public class PerkPlayer {
 
 	public void addDeathLocation(Location deathLocation) {
 		
-		m_deathTP.m_location = deathLocation;
-		
-		Calendar cal = Calendar.getInstance();
-		m_deathTP.m_time = cal.getTimeInMillis();	
-		
+		m_deathTP.m_location = deathLocation;		
 		m_deathTP.m_hasDied = true;
 		
 		PerkUtils.OutputToPlayer(this, "Use /death to be teleported back to the point where you died");
@@ -311,14 +313,7 @@ public class PerkPlayer {
 			PerkUtils.OutputToPlayer(this, "You havn't died recently");
 			return false;
 		}
-		
-		Calendar cal = Calendar.getInstance();
-		if (cal.getTimeInMillis() - m_deathTP.m_time > 60000) {
-			m_deathTP.m_hasDied = false;
-			PerkUtils.OutputToPlayer(this, "More than a minute has passed, you have forgetten where you died");
-			return false;
-		}
-		
+				
 		return true;
 	}
 	
@@ -420,5 +415,39 @@ public class PerkPlayer {
 	
 	public void setAfk(boolean afk)  {
 		m_afk.afk = afk;
+	}
+
+	public void usedKit(Kit kit) {
+		m_kits.usedKit.add(kit);
+		Calendar cal = Calendar.getInstance();
+		m_kits.usedTime.add(cal.getTimeInMillis());
+	}
+	
+	public boolean canUseKit(Kit requestedKit) {
+		
+		for (int i = 0; i < m_kits.usedKit.size(); ++i) {
+			
+			if (requestedKit.getName().equalsIgnoreCase(m_kits.usedKit.get(i).getName())) {
+				
+				Calendar cal = Calendar.getInstance();
+				Long timeDifference = (long) ((cal.getTimeInMillis() - m_kits.usedTime.get(i)) * 0.001);
+					
+				if (timeDifference > m_kits.usedKit.get(i).getTimeout()) {
+					
+					m_kits.usedKit.remove(i);
+					m_kits.usedTime.remove(i);
+					
+					return true;
+				}
+				
+				PerkUtils.OutputToPlayer(this, "You can't use kit '" + requestedKit.getName() + "' for another " + ((m_kits.usedKit.get(i).getTimeout() - timeDifference) + 1) + " seconds");
+				
+				return false;
+			}
+			
+		}
+		
+		// if we are here then we have never used the requested kit before
+		return true;
 	}
 }

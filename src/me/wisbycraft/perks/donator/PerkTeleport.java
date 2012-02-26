@@ -88,7 +88,7 @@ public class PerkTeleport {
 				return true;
 			}
 			
-			PerkPlayer target = PerkUtils.getPlayer(PerkUtils.getPlayer(args[0]));
+			PerkPlayer target = PerkUtils.getPlayer(args[0]);
 			
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "That player is not online");
@@ -110,7 +110,7 @@ public class PerkTeleport {
 				return true;
 			}
 			
-			PerkPlayer target = PerkUtils.getPlayer(PerkUtils.getPlayer(args[0]));
+			PerkPlayer target = PerkUtils.getPlayer(args[0]);
 			
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "That player is not online");

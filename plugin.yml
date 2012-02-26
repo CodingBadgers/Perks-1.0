@@ -122,3 +122,7 @@ commands:
    kit:
       description: kit commands
       usage: /<command> [target]  
+      
+   clear:
+      description: Clears a players inventory
+      usage: /<command> [player]

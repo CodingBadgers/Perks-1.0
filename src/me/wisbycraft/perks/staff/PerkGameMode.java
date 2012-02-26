@@ -42,7 +42,7 @@ public class PerkGameMode {
 			} else if (args.length == 1) {
 				if (player.hasPermission("perks.gamemode.check.other", true)) {
 					// this will check another players gamemode.
-					Player otherPlayer = PerkUtils.getPlayer(args[0]);
+					Player otherPlayer = PerkUtils.getPlayer(args[0]).getPlayer();
 					if (otherPlayer == null) {
 						PerkUtils.OutputToPlayer(player, "Could not find a player with the name " + args[0]);
 					}

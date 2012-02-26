@@ -87,7 +87,7 @@ public class PerkCapes {
 						return true;
 					}
 					
-					Player players = PerkUtils.getPlayer(args[1]);
+					Player players = PerkUtils.getPlayer(args[1]).getPlayer();
 					
 					setCape(players);
 					PerkColors.addColor(players);
@@ -106,7 +106,7 @@ public class PerkCapes {
 					return true;
 				}
 				
-				Player player = PerkUtils.getPlayer(args[1]);
+				Player player = PerkUtils.getPlayer(args[1]).getPlayer();
 				
 				setCape(player);
 				PerkColors.resetColor(player);

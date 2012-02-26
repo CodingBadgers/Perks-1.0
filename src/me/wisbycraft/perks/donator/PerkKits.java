@@ -20,32 +20,17 @@ public class PerkKits {
 	}
 	
 	public static Kit getKit(String name) {
-		Kit kit = null;
-		
-		for (int i = 0; i<kits.size(); i++) {
-			
-			if (kits.get(i).getName() == name) {
-				
-				kit = kits.get(i);
+		for (int i = 0; i < kits.size(); i++) {
+			if (kits.get(i).getName().equalsIgnoreCase(name)) {
+				return kits.get(i);
 			}
 		}
-		
-		return kit;
+		return null;
 	}
 	
 	public static boolean kitExists(String name) {
 		
-		for (int i = 0; i<kits.size(); i++) {
-			
-			if (kits.get(i).getName() == name) {
-				
-				return true;
-			
-			}
-		
-		}
-		
-		return false;
+		return getKit(name) != null;
 	}
 	
 	public static void listKits(PerkPlayer player) {
@@ -93,20 +78,32 @@ public class PerkKits {
 					return true;
 				
 				Kit kit = getKit(name);
+				if (kit == null) {
+					PerkUtils.OutputToPlayer(player, "An unknown error has occured.");
+					PerkUtils.OutputToPlayer(player, "Please inform a developer.");
+					return true;
+				}
 				
-				for (int i = 0; i<kit.getItems().size(); i++) {
-					
+				if (!player.canUseKit(kit)) {
+					return true;
+				}
+				
+				for (int i = 0; i< kit.getItems().size(); i++) {
 					player.getPlayer().getInventory().addItem(kit.getItems().get(i));
 				}
 				
 				PerkUtils.OutputToPlayer(player, "You have been given kit " + name);
 				
-			} else {
+				player.usedKit(kit);
 				
+				return true;
+				
+			} else {
 				PerkUtils.OutputToPlayer(player, "use '/kit <name>' or '/kit' to list the kits");
 				return true;
 			}
 		}
+		
 		return false;
 	}
 }

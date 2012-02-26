@@ -47,7 +47,7 @@ public class PerkPromote {
 			}
 			
 			if (args.length == 1) {
-				Player target = PerkUtils.getPlayer(args[0]);
+				Player target = PerkUtils.getPlayer(args[0]).getPlayer();
 				
 				PermissionGroup targetGroup = promote(player.getPlayer(), args[0]);
 				
@@ -71,7 +71,7 @@ public class PerkPromote {
 			}
 			
 			if (args.length == 2) {
-				Player target = PerkUtils.getPlayer(args[0]);
+				Player target = PerkUtils.getPlayer(args[0]).getPlayer();
 				String ladder = args[1].toLowerCase();
 				
 				PermissionGroup targetGroup = promote(player.getPlayer(), args[0], ladder);
