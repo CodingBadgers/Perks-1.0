@@ -25,10 +25,8 @@ public class PerkVanish {
 				
 			if (player.isHidden()) {
 				player.showPlayer();
-				//removePlayer(player);
 			} else {
 				player.hidePlayer();
-				//addPlayer(player);
 			}
 			
 			return true;

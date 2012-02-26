@@ -8,6 +8,7 @@ import me.wisbycraft.perks.Perks;
 
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.dynmap.DynmapAPI;
 
 public class PerkUtils {
 
@@ -15,6 +16,7 @@ public class PerkUtils {
 	static public PerkPlayerArray perkPlayers = new PerkPlayerArray();
 	static public Perks plugin = null;
 	static public boolean spoutEnabled = false;
+	public static DynmapAPI dynmapapi;
 
 	static public void DebugConsole(String messsage) {
 		log.log(Level.INFO, "[Perks] " + messsage + ".");

@@ -98,6 +98,8 @@ public class PerkTeleport {
 			player.teleport(target);
 			
 			PerkUtils.OutputToPlayer(player, "You have been teleported to " + target.getPlayer().getName());
+			
+			return true;
 		}
 		
 		if (cmd.getName().equalsIgnoreCase("tphere") || cmd.getName().equalsIgnoreCase("s") || cmd.getName().equalsIgnoreCase("bring")) {
@@ -120,6 +122,8 @@ public class PerkTeleport {
 			player.teleportHere(target);
 			
 			PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has been teleported to you.");
+			
+			return true;
 		}
 
 		return false;

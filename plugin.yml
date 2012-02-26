@@ -4,7 +4,7 @@ main: me.wisbycraft.perks.Perks
 version: 1.5
 website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for WisbyCraft
-softdepend: [Spout, MobArena]
+softdepend: [Spout, MobArena, dynmap]
 depend: [BukkitDatabaseManager]
 
 commands:

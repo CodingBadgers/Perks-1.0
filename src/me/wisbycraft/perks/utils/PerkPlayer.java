@@ -366,6 +366,9 @@ public class PerkPlayer {
 			players[i].hidePlayer(m_player);
 		} 
 		
+		if (PerkUtils.dynmapapi != null)
+			PerkUtils.dynmapapi.setPlayerVisiblity(m_player, false);
+		
 		PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " left the game.");
 		
 		PerkUtils.OutputToPlayer(this, "You're the invisible man...");
@@ -385,6 +388,9 @@ public class PerkPlayer {
 			
 			players[i].showPlayer(m_player);
 		}
+		
+		if (PerkUtils.dynmapapi != null)
+			PerkUtils.dynmapapi.setPlayerVisiblity(m_player, true);
 		
 		PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " joined the game.");
 		

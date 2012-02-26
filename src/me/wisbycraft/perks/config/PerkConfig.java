@@ -49,7 +49,7 @@ public class PerkConfig {
 		hungerRate = Float.parseFloat(config.getString("Hunger.rate"));
 		capeRefresh = Integer.parseInt(config.getString("Capes.RefreshTime"));
 		
-		File kitConfig = new File(PerkUtils.plugin.getDataFolder() + "\\" + "kits.cfg");
+		File kitConfig = new File(PerkUtils.plugin.getDataFolder() + "/" + "kits.cfg");
 		if (!kitConfig.exists()) {
 			createDefaultKitConfig(kitConfig);
 		}
