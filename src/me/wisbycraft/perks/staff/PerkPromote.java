@@ -5,6 +5,7 @@ import me.wisbycraft.perks.donator.PerkColors;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
@@ -47,7 +48,7 @@ public class PerkPromote {
 			}
 			
 			if (args.length == 1) {
-				Player target = PerkUtils.getPlayer(args[0]).getPlayer();
+				OfflinePlayer target = PerkUtils.server().getOfflinePlayer(args[0]);
 				
 				PermissionGroup targetGroup = promote(player.getPlayer(), args[0]);
 				
@@ -55,17 +56,17 @@ public class PerkPromote {
 					PerkUtils.OutputToPlayer(player, "Sorry there was a error promoting " + args[0].toLowerCase());
 					return true;
 				}
-				if (target == null) {
+				if (target.getPlayer() == null) {
 					
 					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been promoted to " + targetGroup.getName());
 					return true;
 				} else {
 					
 					PerkUtils.OutputToPlayer(player, target.getName() + " has been promoted to " + targetGroup.getName());
-					PerkUtils.OutputToPlayer(target, "You have been promoted to " + targetGroup.getName());
+					PerkUtils.OutputToPlayer(target.getPlayer(), "You have been promoted to " + targetGroup.getName());
 					
-					PerkCapes.setCape(target);
-					PerkColors.addColor(target);
+					PerkCapes.setCape(target.getPlayer());
+					PerkColors.addColor(target.getPlayer());
 					return true;
 				}	
 			}

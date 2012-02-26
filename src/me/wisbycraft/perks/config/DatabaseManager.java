@@ -82,6 +82,8 @@ public class DatabaseManager {
 			e.printStackTrace();
 			return;
 		}
+		
+		m_homedb.FreeResult(result);
 				
 		// create an SQList object
 		m_builddb = BukkitDatabaseManager.CreateDatabase("Build", PerkUtils.plugin);
@@ -134,7 +136,9 @@ public class DatabaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
-		}				
+		}		
+		
+		m_builddb.FreeResult(result);
 				
 	}
 	

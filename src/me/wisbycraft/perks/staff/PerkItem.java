@@ -13,24 +13,13 @@ public class PerkItem {
 	
 	public static Material getItem(String name) throws CommandException{
 		
-		Material item = null;
-		
         if (PerkUtils.isNumeric(name)) {
-        	
         	int id = Integer.parseInt(name);
-        	item = Material.getMaterial(id);
-        	
-        	if (item == null) 
-        		throw new CommandException("Could not find item from id");
+        	return Material.getMaterial(id);
         } else {
-        	
-        	item = Material.getMaterial(name);
-        	
-        	if (item == null)
-        		throw new CommandException("Could not find item from name");
+        	return Material.getMaterial(name);
         }
         
-        return item;
 	}        
         
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) 
@@ -40,42 +29,27 @@ public class PerkItem {
 			
 			if (!player.hasPermission("perks.item", true))
 				return true;
+						
+			int amount = 1;
 			
-			if (args.length == 1) {
-				
-				Material item = getItem(args[0].toString());
-				
-				if (item == null) {
-					PerkUtils.OutputToPlayer(player, "Could not find item.");
-				}
-				
-				player.getPlayer().getInventory().addItem(new ItemStack(item));
-				
-				PerkUtils.OutputToPlayer(player, "You have been given "  + "1"   + " " + item.toString() );
-				
-			} else if (args.length == 2) {
-				
-				int ammount = 0;
-				
+			if (args.length == 2) {
+								
 				try {
-					
-					ammount = Integer.parseInt(args[1]);
+					amount = Integer.parseInt(args[1]);
 				} catch(NumberFormatException ex) {
-					
-					PerkUtils.OutputToPlayer(player, "Could not parse ammount.");
-					return true;
 				}
-				
-				Material item = getItem(args[0].toString());
-				
-				if (item == null) {
-					PerkUtils.OutputToPlayer(player, "Could not find item.");
-				}
-				
-				player.getPlayer().getInventory().addItem(new ItemStack((item), ammount));
-				
-				PerkUtils.OutputToPlayer(player, "You have been given "  + ammount + " "+ item.toString() );
 			}
+			
+			Material item = getItem(args[0].toString());
+			
+			if (item == null) {
+				PerkUtils.OutputToPlayer(player, "Could not find item.");
+				return true;
+			}
+			
+			player.getPlayer().getInventory().addItem(new ItemStack(item, amount));
+			
+			PerkUtils.OutputToPlayer(player, "You have been given " + amount + " " + item.toString() );
 			
 			return true;
 		}
