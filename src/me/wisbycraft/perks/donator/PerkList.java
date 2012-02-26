@@ -112,17 +112,16 @@ public class PerkList {
 		PermissionGroup group = pex.getGroup(name);
 		
 		String prefix = group.getPrefix();
-		String code = prefix.substring(prefix.indexOf("&") + 1, prefix.indexOf('&') + 2);
+		if (prefix.indexOf("&") != -1) {
+			String code = prefix.substring(prefix.indexOf("&") + 1, prefix.indexOf('&') + 2);
+			
+			if (code == null) 
+				return ChatColor.WHITE;
 		
-		if (code == null) 
-			return ChatColor.WHITE;
-	
-		ChatColor colour = ChatColor.getByChar(code);
+			return ChatColor.getByChar(code);
+		}
 		
-		if (colour == null) 
-			return ChatColor.WHITE;
-		
-		return colour;
+		return ChatColor.WHITE;
 	}
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
