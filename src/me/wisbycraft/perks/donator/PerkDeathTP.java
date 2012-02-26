@@ -16,7 +16,7 @@ public class PerkDeathTP {
 		if (!player.hasPermission("perks.deathtp", false))
 			return;
 		
-		if (PerkMobArena.maHandler.isPlayerInArena(player.getPlayer()) || PerkMobArena.maHandler.inRegion(player.getPlayer().getLocation()))
+		if (PerkMobArena.maHandler != null && (PerkMobArena.maHandler.isPlayerInArena(player.getPlayer()) || PerkMobArena.maHandler.inRegion(player.getPlayer().getLocation())))
 			return;
 		
 		Location deathLocation = player.getPlayer().getLocation();
@@ -35,7 +35,7 @@ public class PerkDeathTP {
 			if (player.canDeathTP()) {
 				Location deathloc = player.getDeathLocation();
 				
-				if (PerkMobArena.maHandler.inRegion(deathloc)) {
+				if (PerkMobArena.maHandler != null && PerkMobArena.maHandler.inRegion(deathloc)) {
 					PerkUtils.OutputToPlayer(player, "Sorry you can't deathtp into the arena");
 					return true;
 				}

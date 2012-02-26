@@ -70,7 +70,8 @@ public class Perks extends JavaPlugin {
 		*/
 		
 		// set up mob arena
-		PerkMobArena.setupMobArenaHandler();
+		if (pm.getPlugin("MobArena") != null)
+			PerkMobArena.setupMobArenaHandler();
 		
 		// load the homes from the database
 		DatabaseManager.loadDatabases();

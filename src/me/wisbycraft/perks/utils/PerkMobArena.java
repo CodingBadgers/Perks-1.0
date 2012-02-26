@@ -8,7 +8,7 @@ import com.garbagemule.MobArena.MobArenaHandler;
 
 public class PerkMobArena {
 
-	public static MobArenaHandler maHandler;
+	public static MobArenaHandler maHandler = null;
 	
 	public static void setupMobArenaHandler()
 	{
