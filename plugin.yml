@@ -126,3 +126,7 @@ commands:
    clear:
       description: Clears a players inventory
       usage: /<command> [player]
+      
+   time:
+      description: changes the time
+      usage: /<command> <time> [world]

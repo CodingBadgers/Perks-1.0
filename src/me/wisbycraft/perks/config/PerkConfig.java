@@ -74,7 +74,7 @@ public class PerkConfig {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(kitConfig.getPath()));
 
 			writer.write("# This is the kits config file\n");
-			writer.write("[default = 200]\n");
+			writer.write("[default=200]\n");
 			writer.write("wooden_pick\n");
 			writer.write("torch,16\n");
 
