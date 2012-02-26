@@ -33,7 +33,7 @@ public class PerkList {
 	                PermissionGroup[] playerGroups = pex.getUser(player.getName()).getGroups();
 	                String group = playerGroups.length > 0 ? playerGroups[0].getName() : "Default";
 
-	                if (PerkUtils.getPlayer(player).isHidden() && !sender.hasPermission("perks.list.showvanished", false)){
+	                if (PerkUtils.getPlayer(player).isHidden()){
 	                	hidden.add(player);
 	                }
  	                
@@ -82,17 +82,34 @@ public class PerkList {
 	                boolean first = true;
 
 	                for (Player player : entry.getValue()) {
-	                    if (!first) {
-	                        out.append(", ");
-	                    }
+	                    
 
 	                    if (PerkUtils.getPlayer(player).isAfk()) {
+	                    	
+	                    	if (!first) {
+		                        out.append(", ");
+		                    }
 	                    	
 	                    	out.append(ChatColor.GRAY + player.getName()).append(ChatColor.WHITE);
 	                    } else if (PerkUtils.getPlayer(player).isHidden()) {
 	                    	
-	                    	out.append(ChatColor.GOLD + player.getName()).append(ChatColor.WHITE);
+	                    	if (PerkUtils.getPlayer(player).hasPermission("perks.list.showvanish", false)) {
+	                    		
+	                    		if (!first) {
+	    	                        out.append(", ");
+	    	                    }
+	                    		
+	                    		out.append(ChatColor.GOLD + player.getName()).append(ChatColor.WHITE);
+	                    	} else {
+	                    		
+	                    		continue;
+	                    	}
+	                    	
 	                    } else {
+	                    	
+	                    	if (!first) {
+		                        out.append(", ");
+		                    }
 	                    	
 	                    	out.append(player.getDisplayName()).append(ChatColor.WHITE);
 	                    }
