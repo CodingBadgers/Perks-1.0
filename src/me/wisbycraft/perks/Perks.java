@@ -57,7 +57,6 @@ public class Perks extends JavaPlugin {
 		// register the 3 event listeners
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
-		pm.registerEvents(maListener, this);
 		
 		/* 
 		// setup vault
@@ -70,8 +69,10 @@ public class Perks extends JavaPlugin {
 		*/
 		
 		// set up mob arena
-		if (pm.getPlugin("MobArena") != null)
+		if (pm.getPlugin("MobArena") != null) {
+			pm.registerEvents(maListener, this);
 			PerkMobArena.setupMobArenaHandler();
+		}
 		
 		// load the homes from the database
 		DatabaseManager.loadDatabases();
