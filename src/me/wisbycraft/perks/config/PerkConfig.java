@@ -27,6 +27,8 @@ public class PerkConfig {
 	
 	public static boolean loadConfig () {
 		
+		PerkKits.kits.clear();
+		
 		FileConfiguration config = PerkUtils.plugin.getConfig();
 		
 		try {
@@ -162,8 +164,6 @@ public class PerkConfig {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-				
+					
 	}
 }

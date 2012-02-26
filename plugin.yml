@@ -130,3 +130,12 @@ commands:
    time:
       description: changes the time
       usage: /<command> <time> [world]
+      
+   weather:
+      description: changes the weather
+      usage: /<command> <state> [duration] [world]
+      
+   perksadmin:
+      description: admin commands
+      aliases: [padmin]
+      usage: /<command> <argument>

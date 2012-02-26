@@ -35,7 +35,6 @@ public class PerkList {
 
 	                if (PerkUtils.getPlayer(player).isHidden() && !sender.hasPermission("perks.list.showvanished", false)){
 	                	hidden.add(player);
-	                	continue;
 	                }
  	                
 	                if (groups.containsKey(group)) {
@@ -57,11 +56,11 @@ public class PerkList {
     	        
     	        if (online.length == PerkUtils.server().getMaxPlayers()) {
     	        	// display current users online and max users
-    	        	out.append(ChatColor.GOLD + PerkUtils.server().getServerName() + ": " + ChatColor.GRAY + "Online (" + ChatColor.GOLD);
+    	        	out.append(ChatColor.GOLD + PerkUtils.server().getServerName() + ": " + ChatColor.GRAY + "Online " + ChatColor.GOLD + "(" + ChatColor.GOLD);
     	        	out.append(online.length - hidden.size());
-    	            	out.append(ChatColor.GRAY + "/" + ChatColor.GOLD);
+    	            	out.append("/");
     	            	out.append(PerkUtils.server().getMaxPlayers());
-    	            	out.append(ChatColor.GOLD + "): ");
+    	            	out.append("): ");
     	            out.append(ChatColor.WHITE);
     	        } else {
     	        	// display current users online and max users
@@ -88,8 +87,13 @@ public class PerkList {
 	                    }
 
 	                    if (PerkUtils.getPlayer(player).isAfk()) {
+	                    	
 	                    	out.append(ChatColor.GRAY + player.getName()).append(ChatColor.WHITE);
+	                    } else if (PerkUtils.getPlayer(player).isHidden()) {
+	                    	
+	                    	out.append(ChatColor.GOLD + player.getName()).append(ChatColor.WHITE);
 	                    } else {
+	                    	
 	                    	out.append(player.getDisplayName()).append(ChatColor.WHITE);
 	                    }
 	                    first = false;

@@ -1,5 +1,14 @@
 package me.wisbycraft.perks;
 
+import me.wisbycraft.perks.admin.PerkAdmin;
+import me.wisbycraft.perks.admin.PerkClear;
+import me.wisbycraft.perks.admin.PerkDemote;
+import me.wisbycraft.perks.admin.PerkGameMode;
+import me.wisbycraft.perks.admin.PerkItem;
+import me.wisbycraft.perks.admin.PerkPromote;
+import me.wisbycraft.perks.admin.PerkTime;
+import me.wisbycraft.perks.admin.PerkVanish;
+import me.wisbycraft.perks.admin.PerkWeather;
 import me.wisbycraft.perks.config.DatabaseManager;
 import me.wisbycraft.perks.config.PerkConfig;
 import me.wisbycraft.perks.donator.PerkAFK;
@@ -13,13 +22,6 @@ import me.wisbycraft.perks.donator.PerkTeleport;
 import me.wisbycraft.perks.listeners.PerksEntityListener;
 import me.wisbycraft.perks.listeners.PerksMobAreanaListener;
 import me.wisbycraft.perks.listeners.PerksPlayerListener;
-import me.wisbycraft.perks.staff.PerkClear;
-import me.wisbycraft.perks.staff.PerkDemote;
-import me.wisbycraft.perks.staff.PerkGameMode;
-import me.wisbycraft.perks.staff.PerkItem;
-import me.wisbycraft.perks.staff.PerkPromote;
-import me.wisbycraft.perks.staff.PerkTime;
-import me.wisbycraft.perks.staff.PerkVanish;
 import me.wisbycraft.perks.utils.PerkMobArena;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
@@ -175,6 +177,14 @@ public class Perks extends JavaPlugin {
 		
 		// handles time cmds
 		if (PerkTime.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles weather cmds
+		if (PerkWeather.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles admin cmds
+		if (PerkAdmin.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		return false;

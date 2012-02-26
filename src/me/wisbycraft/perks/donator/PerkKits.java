@@ -39,8 +39,11 @@ public class PerkKits {
 		
 		for (int i = 0; i<kits.size(); i++) {
 
+			if (!player.hasPermission("perks.kit." + kits.get(i).getName(), false))
+				continue;
+			
 			if (!first) {
-				out.append(',');
+				out.append(", ");
 			}
 			
 			out.append(kits.get(i).getName());

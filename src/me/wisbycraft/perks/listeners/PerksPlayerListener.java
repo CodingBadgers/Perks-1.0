@@ -56,6 +56,13 @@ public class PerksPlayerListener implements Listener {
 
 		// handle flying...
 		PerkFlying.fly(player, event);
+		
+		/* Handle afk moving */
+		if (player.isAfk()) {
+			Location from = event.getFrom();
+			Location to = from;
+			event.setTo(to);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
