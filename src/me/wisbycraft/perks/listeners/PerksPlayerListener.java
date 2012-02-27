@@ -33,7 +33,20 @@ public class PerksPlayerListener implements Listener {
 		
 		PerkColors.addColor(player.getPlayer());
 		
-		PerkList.showOnlineList(player);	
+		PerkList.showOnlineList(player);
+		
+		Player[] players = PerkUtils.server().getOnlinePlayers();
+		for (int i = 0; i < players.length; ++i)
+		{
+			PerkPlayer p = PerkUtils.getPlayer(players[i]);
+			
+			if (p == player)
+				continue;
+			
+			if (p.isHidden()) {
+				player.getPlayer().hidePlayer(p.getPlayer());
+			}			
+		}
 	}	
 
 	@EventHandler(priority = EventPriority.NORMAL)
