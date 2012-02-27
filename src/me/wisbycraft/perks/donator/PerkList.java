@@ -82,29 +82,26 @@ public class PerkList {
 	                boolean first = true;
 
 	                for (Player player : entry.getValue()) {
-	                    
 
 	                    if (PerkUtils.getPlayer(player).isAfk()) {
-	                    	
 	                    	if (!first) {
 		                        out.append(", ");
 		                    }
-	                    	
 	                    	out.append(ChatColor.GRAY + player.getName()).append(ChatColor.WHITE);
+	                    	
 	                    } else if (PerkUtils.getPlayer(player).isHidden()) {
 	                    	
-	                    	if (PerkUtils.getPlayer(player).hasPermission("perks.list.showvanish", false)) {
+	                    	if (sender.hasPermission("perks.list.showvanish", false)) {
 	                    		
 	                    		if (!first) {
 	    	                        out.append(", ");
 	    	                    }
-	                    		
 	                    		out.append(ChatColor.GOLD + player.getName()).append(ChatColor.WHITE);
+	                    		
 	                    	} else {
 	                    		
 	                    		continue;
 	                    	}
-	                    	
 	                    } else {
 	                    	
 	                    	if (!first) {
