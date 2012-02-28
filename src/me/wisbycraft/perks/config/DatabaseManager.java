@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 import n3wton.me.BukkitDatabaseManager.*;
 
@@ -16,6 +17,7 @@ public class DatabaseManager {
 	
 	static private BukkitDatabase m_homedb = null;
 	static private BukkitDatabase m_builddb = null;
+	static private BukkitDatabase m_vanishdb = null;
 	
 	public static class tpLocation {	
 		String playername;
@@ -24,7 +26,7 @@ public class DatabaseManager {
 		
 	static public ArrayList<tpLocation> homes = new ArrayList<tpLocation>();
 	static public ArrayList<tpLocation> builds = new ArrayList<tpLocation>();
-	static public ArrayList<tpLocation> afk = new ArrayList<tpLocation>();
+	static public ArrayList<PerkPlayer> vanish = new ArrayList<PerkPlayer>();
 	
 	public static void loadDatabases() {
 		
@@ -139,6 +141,42 @@ public class DatabaseManager {
 		}		
 		
 		m_builddb.FreeResult(result);
+		
+		// create an SQList object
+				m_vanishdb = BukkitDatabaseManager.CreateDatabase("vanish", PerkUtils.plugin);
+				
+				// see if a table called properties exist
+				if (!m_vanishdb.TableExists("vanish")) {
+					
+					// the table doesn't exist, so make one.
+					
+					PerkUtils.DebugConsole("Could not find perk vanish databse, now creating one.");
+					query = "CREATE TABLE vanish (" +
+							"player VARCHAR(64)" +
+							");";
+					
+					// to create a table we pass an SQL query.
+					m_vanishdb.Query(query, true);
+				}
+				
+				// select every property from the table
+				query = "SELECT * FROM vanish";
+				result = m_vanishdb.QueryResult(query);
+				
+				try {
+					// while we have another result, read in the data
+					while (result.next()) {
+			            String playerName = result.getString("player");
+			            PerkPlayer newPlayer = PerkUtils.getPlayer(playerName);
+			            vanish.add(newPlayer);
+			            
+			        }
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return;
+				}		
+				
+				m_vanishdb.FreeResult(result);
 				
 	}
 	
@@ -279,6 +317,41 @@ public class DatabaseManager {
 	
 	public static void gotoHome(Player player) {
 		gotoHome(player, player.getLocation().getWorld());
+	}
+	
+	public static void addVanishPlayer(PerkPlayer player) {
+		
+		String query = "INSERT INTO 'vanish' " +
+				"('player') VALUES (" + 
+				"'" + player.getPlayer().getName() +
+				"');";
+		m_vanishdb.Query(query);
+		
+		vanish.add(player);
+		
+	}
+	
+	public static void removeVanishPlayer(PerkPlayer player) {
+		
+		String query = "DELETE FROM 'vanish' " +
+				"WHERE player=" + 
+				"'" + player.getPlayer().getName() +
+				"');";
+		m_vanishdb.Query(query);
+		
+		vanish.remove(player);
+	}
+	
+	public static boolean isVanished(PerkPlayer player) {
+		
+		for (int i = 0; i < vanish.size(); i++) {
+			if (vanish.get(i).getPlayer().getName().equalsIgnoreCase(player.getPlayer().getName())) {
+				return true;
+			}
+		}
+		
+		return false;
+		
 	}
 
 }

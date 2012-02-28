@@ -139,3 +139,7 @@ commands:
       description: admin commands
       aliases: [padmin]
       usage: /<command> <argument>
+      
+   debug:
+      description: debug stuff
+      usage: /<command> <clock/info>

@@ -375,7 +375,7 @@ public class PerkPlayer {
 		PerkUtils.OutputToPlayer(this, "Incredible how you can...");
 		PerkUtils.OutputToPlayer(this, "See right through you!");
 		
-		m_vanish.vanished = true;
+		setHidden(true);
 	}
 	
 	public void showPlayer() {
@@ -396,15 +396,19 @@ public class PerkPlayer {
 		
 		PerkUtils.OutputToPlayer(this, "You are visible again...");
 		
-		m_vanish.vanished = false;
+		setHidden(false);
 	}
 	
 	public boolean isHidden() {
 		return m_vanish.vanished;
 	}
 	
-	public void teleport(PerkPlayer player) {
-		m_player.getPlayer().teleport(player.getPlayer());
+	public void setHidden(boolean hidden) {
+		m_vanish.vanished = hidden;
+	}
+	
+	public void teleport(Location loc) {
+		m_player.getPlayer().teleport(loc);
 	}
 	
 	public void teleportHere(PerkPlayer player) {

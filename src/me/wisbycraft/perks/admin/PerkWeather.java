@@ -15,6 +15,9 @@ public class PerkWeather {
 		
 		for (int i = 0; i<worlds.size(); i++) {
 			
+			//if (worlds.get(i).getName().equalsIgnoreCase(/* pvp world */)) {
+			//	return;
+			//}
 			worlds.get(i).setStorm(storm);
 			
 			if (duration>0) {
@@ -46,7 +49,7 @@ public class PerkWeather {
 	
 	        	setStorm(true, duration * 20);
 	            
-	            PerkUtils.OutputToAll(player.getPlayer().getName() + " has started a storm.");
+	            PerkUtils.OutputToAll(player.getPlayer().getName() + " has started a storm");
 	            return true;
 	
 	        } else if (weatherStr.equalsIgnoreCase("clear")
@@ -58,7 +61,7 @@ public class PerkWeather {
 	
 	            setStorm(false, duration * 20);
 	            
-	            PerkUtils.OutputToAll(player.getPlayer().getName() + " has stopped a storm.");
+	            PerkUtils.OutputToAll(player.getPlayer().getName() + " has stopped a storm");
 	            return true;
 	
 	        } else {

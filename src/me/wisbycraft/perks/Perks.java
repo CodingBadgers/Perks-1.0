@@ -2,6 +2,7 @@ package me.wisbycraft.perks;
 
 import me.wisbycraft.perks.admin.PerkAdmin;
 import me.wisbycraft.perks.admin.PerkClear;
+import me.wisbycraft.perks.admin.PerkDebug;
 import me.wisbycraft.perks.admin.PerkDemote;
 import me.wisbycraft.perks.admin.PerkGameMode;
 import me.wisbycraft.perks.admin.PerkItem;
@@ -18,6 +19,7 @@ import me.wisbycraft.perks.donator.PerkFlying;
 import me.wisbycraft.perks.donator.PerkHomeAndBuild;
 import me.wisbycraft.perks.donator.PerkKits;
 import me.wisbycraft.perks.donator.PerkList;
+import me.wisbycraft.perks.donator.PerkSpawn;
 import me.wisbycraft.perks.donator.PerkTeleport;
 import me.wisbycraft.perks.listeners.PerksEntityListener;
 import me.wisbycraft.perks.listeners.PerksMobAreanaListener;
@@ -100,20 +102,6 @@ public class Perks extends JavaPlugin {
 		
 		if (player == null)
 			return false;
-
-		if (cmd.getName().equalsIgnoreCase("perks")) {
-			
-			PerkUtils.OutputToPlayer(player, "Perks consists of the following perks...");
-			player.getPlayer().sendMessage("1 - /fly, /mc - If you're using spout you will fly else a magiccarpet.");
-			player.getPlayer().sendMessage("2 - /tpr <name> - Sends a teleport request to a player.");
-			player.getPlayer().sendMessage("3 - Unlimited air under water when wearing a gold helmet.");
-			player.getPlayer().sendMessage("4 - You're hunger decreases at a much slower rate.");
-			player.getPlayer().sendMessage("5 - /death - to teleport to your last death location.");
-			player.getPlayer().sendMessage("6 - Capes for spoutcraft users donator and above");
-			player.getPlayer().sendMessage("7 - /tphr <name> - Sends a teleport here request to a player");
-			
-			return true;
-		}
 		
 		// handle fly commands
 		if (PerkFlying.onCommand(player, cmd, commandLabel, args))
@@ -150,10 +138,6 @@ public class Perks extends JavaPlugin {
 		// handles vanish cmds
 		if (PerkVanish.onCommand(player, cmd, commandLabel, args))
 			return true;
-
-		// handles promote cmds
-		if (PerkDemote.onCommand(player, cmd, commandLabel, args))
-			return true;
 		
 		// handles list cmds
 		if (PerkList.onCommand(player, cmd, commandLabel, args))
@@ -185,6 +169,14 @@ public class Perks extends JavaPlugin {
 		
 		// handles admin cmds
 		if (PerkAdmin.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles debug cmds
+		if (PerkDebug.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles spawn cmds
+		if (PerkSpawn.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		return false;

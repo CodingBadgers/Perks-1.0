@@ -82,7 +82,6 @@ public class PerkList {
 	                boolean first = true;
 
 	                for (Player player : entry.getValue()) {
-
 	                    if (PerkUtils.getPlayer(player).isAfk()) {
 	                    	if (!first) {
 		                        out.append(", ");

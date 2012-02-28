@@ -4,6 +4,7 @@ import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 
 
@@ -88,7 +89,7 @@ public class PerkTeleport {
 				return true;
 			}
 			
-			PerkPlayer target = PerkUtils.getPlayer(args[0]);
+			Location target = matchLocation(player, args[0]);
 			
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "That player is not online");
@@ -97,7 +98,7 @@ public class PerkTeleport {
 			
 			player.teleport(target);
 			
-			PerkUtils.OutputToPlayer(player, "You have been teleported to " + target.getPlayer().getName());
+			PerkUtils.OutputToPlayer(player, "You have been teleported");
 			
 			return true;
 		}
@@ -129,4 +130,31 @@ public class PerkTeleport {
 		return false;
 	}
 	
+	public static Location matchLocation(PerkPlayer source, String filter) {
+
+        // Handle coordinates
+        if (filter.matches("^[\\-0-9\\.]+,[\\-0-9\\.]+,[\\-0-9\\.]+(?:.+)?$")) {
+
+            String[] args = filter.split(":");
+            String[] parts = args[0].split(",");
+            double x, y, z;
+
+            try {
+                x = Double.parseDouble(parts[0]);
+                y = Double.parseDouble(parts[1]);
+                z = Double.parseDouble(parts[2]);
+            } catch (NumberFormatException e) {
+            	return null;
+            }
+
+            if (args.length > 1) {
+                return new Location(PerkUtils.server().getWorld(args[1]), x, y, z);
+            } else {
+                return new Location(source.getPlayer().getWorld(), x, y, z);
+            }
+
+        }
+
+        return PerkUtils.getPlayer(filter).getPlayer().getLocation();
+    }
 }

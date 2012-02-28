@@ -1,5 +1,6 @@
 package me.wisbycraft.perks.listeners;
 
+import me.wisbycraft.perks.admin.PerkVanish;
 import me.wisbycraft.perks.donator.PerkCapes;
 import me.wisbycraft.perks.donator.PerkColors;
 import me.wisbycraft.perks.donator.PerkFlying;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -30,6 +32,8 @@ public class PerksPlayerListener implements Listener {
 		if (player.hasPermission("perks.capes", false)) {
 			PerkCapes.setCape(player.getPlayer());
 		}
+		
+		PerkVanish.vanishJoin(player, event);
 		
 		PerkColors.addColor(player.getPlayer());
 		
@@ -121,5 +125,21 @@ public class PerksPlayerListener implements Listener {
 	// returns a PerkPlayer from a given Bukkit Player
 	public PerkPlayer findPlayer(Player player) {
 		return PerkUtils.getPlayer(player);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerChat(PlayerChatEvent event) {
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+		
+		if (player.isAfk()) {
+			
+			event.setCancelled(true);
+		}
+		
+		if (player.isHidden()) {
+			
+			event.setCancelled(true);
+		}
+		
 	}
 }

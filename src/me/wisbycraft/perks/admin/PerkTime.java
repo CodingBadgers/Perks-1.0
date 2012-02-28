@@ -105,7 +105,10 @@ public class PerkTime {
             return (22 - 8 + 24) * 1000;
         } else if (timeStr.equalsIgnoreCase("midnight")) {
             return (0 - 8 + 24) * 1000;
+        } else if (timeStr.equalsIgnoreCase("s1m") || timeStr.equalsIgnoreCase("sim")) {
+        	return (7 - 8 + 24) * 1000;
         }
+        
 		return -1;
 
     }
@@ -113,9 +116,6 @@ public class PerkTime {
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("time")) {
-			
-			if (!player.hasPermission("perks.time", true))
-				return true;
 			
 			String timeStr;
 			
@@ -139,11 +139,20 @@ public class PerkTime {
                     return true;
                 }
             
+            if (!player.hasPermission("perks.time.change", true))
+				return true;
             
-           	setTime(matchTime(timeStr));
+            int time = matchTime(timeStr);
+            
+            if (time == -1) {
+            	PerkUtils.OutputToPlayer(player, "Time value is invaid.");
+            	return true;
+            }
+            
+           	setTime(time);
            	
             PerkUtils.OutputToAll(player.getPlayer().getName( )+ " set the time of all worlds "
-        		 	+ "' to "
+        		 	+ " to "
         		 	+ getTimeString(matchTime(timeStr)));
             return true;
 		}
