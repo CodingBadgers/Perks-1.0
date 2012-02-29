@@ -143,3 +143,7 @@ commands:
    debug:
       description: debug stuff
       usage: /<command> <clock/info>
+      
+   lookup:
+      description: lookup a player
+      usage: /<command> <target>

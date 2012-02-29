@@ -6,6 +6,7 @@ import me.wisbycraft.perks.admin.PerkDebug;
 import me.wisbycraft.perks.admin.PerkDemote;
 import me.wisbycraft.perks.admin.PerkGameMode;
 import me.wisbycraft.perks.admin.PerkItem;
+import me.wisbycraft.perks.admin.PerkLookup;
 import me.wisbycraft.perks.admin.PerkPromote;
 import me.wisbycraft.perks.admin.PerkTime;
 import me.wisbycraft.perks.admin.PerkVanish;
@@ -177,6 +178,10 @@ public class Perks extends JavaPlugin {
 		
 		// handles spawn cmds
 		if (PerkSpawn.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles lookup cmds
+		if (PerkLookup.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		return false;

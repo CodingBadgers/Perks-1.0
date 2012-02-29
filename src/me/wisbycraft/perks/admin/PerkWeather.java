@@ -18,10 +18,11 @@ public class PerkWeather {
 			//if (worlds.get(i).getName().equalsIgnoreCase(/* pvp world */)) {
 			//	return;
 			//}
+			
 			worlds.get(i).setStorm(storm);
 			
 			if (duration>0) {
-				
+
 				worlds.get(i).setWeatherDuration(duration);
 			}
 		}
