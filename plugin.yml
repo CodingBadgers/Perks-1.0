@@ -147,3 +147,7 @@ commands:
    lookup:
       description: lookup a player
       usage: /<command> <target>
+      
+   ping:
+      description: pong
+      usage: /<command>

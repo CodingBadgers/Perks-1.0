@@ -47,7 +47,7 @@ public class PerkDemote {
 			}
 			
 			if (args.length == 1) {
-				Player target = PerkUtils.getPlayer(args[0]).getPlayer();
+				PerkPlayer target = PerkUtils.getPlayer(args[0]);
 				
 				PermissionGroup targetGroup = demote(player.getPlayer(), args[0]);
 				
@@ -61,17 +61,17 @@ public class PerkDemote {
 					return true;
 				} else {
 					
-					PerkUtils.OutputToPlayer(player, target.getName() + " has been demoted to " + targetGroup.getName());
+					PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has been demoted to " + targetGroup.getName());
 					PerkUtils.OutputToPlayer(target, "You have been demoted to " + targetGroup.getName());
 					
-					PerkCapes.setCape(target);
-					PerkColors.addColor(target);
+					PerkCapes.setCape(target.getPlayer());
+					PerkColors.addColor(target.getPlayer());
 					return true;
 				}	
 			}
 			
 			if (args.length == 2) {
-				Player target = PerkUtils.getPlayer(args[0]).getPlayer();
+				PerkPlayer target = PerkUtils.getPlayer(args[0]);
 				String ladder = args[1].toLowerCase();
 				
 				PermissionGroup targetGroup = demote(player.getPlayer(), args[0], ladder);
@@ -86,11 +86,11 @@ public class PerkDemote {
 					return true;
 				} else {
 					
-					PerkUtils.OutputToPlayer(player, target.getName() + " has been demoted to " + targetGroup.getName() + " on ladder " + ladder);
+					PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has been demoted to " + targetGroup.getName() + " on ladder " + ladder);
 					PerkUtils.OutputToPlayer(target, "You have been demoted to " + targetGroup.getName() + " on ladder " + ladder);
 					
-					PerkCapes.setCape(target);
-					PerkColors.addColor(target);
+					PerkCapes.setCape(target.getPlayer());
+					PerkColors.addColor(target.getPlayer());
 					return true;
 				}	
 			}
