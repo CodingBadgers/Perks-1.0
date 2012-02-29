@@ -11,6 +11,7 @@ import me.wisbycraft.perks.donator.PerkMagicCarpet;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 
@@ -34,36 +35,41 @@ public class PerkPlayer {
 	}
 	
 	private class TP {
-		public PerkPlayerArray m_tpRequest = new PerkPlayerArray();
-		public ArrayList<Long> m_tpRequestTime = new ArrayList<Long>();
-		public boolean m_tpHere = false;
+		public PerkPlayerArray m_tpRequest = new PerkPlayerArray();			// !< stores the teleport requests
+		public ArrayList<Long> m_tpRequestTime = new ArrayList<Long>();		// !< stores the request time
+		public boolean m_tpHere = false;									// !< If it is to tp the player to here
 	}
 	
 	private class DeathTP {
-		public Location m_location = null;
-		public boolean m_hasDied = false;
+		public Location m_location = null;			// !< stores the death location
+		public boolean m_hasDied = false;			// !< stores whether the player has died
 	}
 	
 	private class Vanish {
-		public boolean vanished = false;
+		public boolean vanished = false; 			// !< stores whether you are vanished
 	}
 	
 	private class Afk {
-		public boolean afk = false;
+		public boolean afk = false;					// !< stores whether you are afk
 	}
 	
 	private class PlayerKit {
-		private ArrayList<Kit> usedKit = new ArrayList<Kit>();
-		private ArrayList<Long> usedTime = new ArrayList<Long>();
+		private ArrayList<PerkKit> usedKit = new ArrayList<PerkKit>();  // !< stores what kit you used
+		private ArrayList<Long> usedTime = new ArrayList<Long>(); 		// !< store the remaining time
+	}
+	
+	private class Inventory {
+		private PlayerInventory inv = null;			// !< stores the players inventory
 	}
 	
 	private Flying m_fly = null;
 	private Hunger m_hunger = null;
 	private TP m_tp = null;
-	private DeathTP m_deathTP = null;
 	private Vanish m_vanish = null;
+	private DeathTP m_deathTP = null;
 	private Afk m_afk = null;
 	private PlayerKit m_kits = null;
+	private Inventory m_inv = null;
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -79,6 +85,7 @@ public class PerkPlayer {
 		m_vanish = new Vanish();
 		m_afk = new Afk();
 		m_kits = new PlayerKit();
+		m_inv = new Inventory();
 
 		// if the player isnt using spout make a magic carpet
 		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled()) {
@@ -416,7 +423,16 @@ public class PerkPlayer {
 	}
 	
 	public void clearInv() {
+		m_inv.inv = m_player.getPlayer().getInventory();
 		m_player.getPlayer().getInventory().clear();
+	}
+	
+	public void colectInv() {
+		m_player.getInventory().clear();
+		
+		for (int i = 0; i<m_player.getInventory().getSize(); i++) {
+			m_player.getInventory().addItem(m_inv.inv.getItem(i));
+		}
 	}
 	
 	public boolean isAfk() {
@@ -427,13 +443,13 @@ public class PerkPlayer {
 		m_afk.afk = afk;
 	}
 
-	public void usedKit(Kit kit) {
+	public void usedKit(PerkKit kit) {
 		m_kits.usedKit.add(kit);
 		Calendar cal = Calendar.getInstance();
 		m_kits.usedTime.add(cal.getTimeInMillis());
 	}
 	
-	public boolean canUseKit(Kit requestedKit) {
+	public boolean canUseKit(PerkKit requestedKit) {
 		
 		for (int i = 0; i < m_kits.usedKit.size(); ++i) {
 			

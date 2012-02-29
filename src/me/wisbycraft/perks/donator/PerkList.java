@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
@@ -71,8 +72,10 @@ public class PerkList {
     	            	out.append("): ");
     	            out.append(ChatColor.WHITE);
     	        }
+    	               
+    	        Map<String, List<Player>> sortGroups = new TreeMap<String, List<Player>>(groups);
     	        
-	            for (Map.Entry<String, List<Player>> entry : groups.entrySet()) {
+	            for (Map.Entry<String, List<Player>> entry : sortGroups.entrySet()) {
 	    	        
 	                out.append("\n");
 	                out.append(getRankColor(entry.getKey())).append(entry.getKey());

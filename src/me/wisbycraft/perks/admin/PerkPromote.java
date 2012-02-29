@@ -47,7 +47,7 @@ public class PerkPromote {
 			}
 			
 			if (args.length == 1) {
-				Player target = PerkUtils.getPlayer(args[0]).getPlayer();
+				PerkPlayer target = PerkUtils.getPlayer(args[0]);
 				
 				PermissionGroup targetGroup = promote(player.getPlayer(), args[0]);
 				
@@ -61,11 +61,11 @@ public class PerkPromote {
 					return true;
 				} else {
 					
-					PerkUtils.OutputToPlayer(player, target.getName() + " has been promoted to " + targetGroup.getName());
+					PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has been promoted to " + targetGroup.getName());
 					PerkUtils.OutputToPlayer(target, "You have been promoted to " + targetGroup.getName());
 					
-					PerkCapes.setCape(target);
-					PerkColors.addColor(target);
+					PerkCapes.setCape(target.getPlayer());
+					PerkColors.addColor(target.getPlayer());
 					return true;
 				}	
 			}

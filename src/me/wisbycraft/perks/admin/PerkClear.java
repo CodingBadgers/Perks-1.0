@@ -40,6 +40,17 @@ public class PerkClear {
 			
 			return true;
 		}
+		
+		if (commandLabel.equalsIgnoreCase("colect")) {
+			
+			if (!player.hasPermission("perks.clear.colecr", true))
+				return true;
+			
+			player.colectInv();
+			PerkUtils.OutputToPlayer(player, "Here is your inventory back");
+			
+			return true;
+		}
 		return false;
 	}
 }

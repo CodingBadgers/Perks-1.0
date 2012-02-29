@@ -2,7 +2,7 @@ package me.wisbycraft.perks.donator;
 
 import java.util.ArrayList;
 
-import me.wisbycraft.perks.utils.Kit;
+import me.wisbycraft.perks.utils.PerkKit;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -12,14 +12,14 @@ import org.bukkit.inventory.ItemStack;
 
 public class PerkKits {
 
-	public static ArrayList<Kit> kits = new ArrayList<Kit>();
+	public static ArrayList<PerkKit> kits = new ArrayList<PerkKit>();
 	
 	public static void addKit(String name, int timeout,ArrayList<ItemStack> items) {
-		Kit kit = new Kit(name, timeout, items);
+		PerkKit kit = new PerkKit(name, timeout, items);
 		kits.add(kit);
 	}
 	
-	public static Kit getKit(String name) {
+	public static PerkKit getKit(String name) {
 		for (int i = 0; i < kits.size(); i++) {
 			if (kits.get(i).getName().equalsIgnoreCase(name)) {
 				return kits.get(i);
@@ -80,7 +80,7 @@ public class PerkKits {
 				if (!player.hasPermission("perks.kit." + name, true))
 					return true;
 				
-				Kit kit = getKit(name);
+				PerkKit kit = getKit(name);
 				if (kit == null) {
 					PerkUtils.OutputToPlayer(player, "An unknown error has occured.");
 					PerkUtils.OutputToPlayer(player, "Please inform a developer.");

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import org.bukkit.inventory.ItemStack;
 
-public class Kit {
+public class PerkKit {
 
 	private String m_name = null;
 	private ArrayList<ItemStack> m_items = null;
 	private int m_timeout = 0;
 	
-	public Kit(String name, int timeout, ArrayList<ItemStack> items) {
+	public PerkKit(String name, int timeout, ArrayList<ItemStack> items) {
 		m_name = name;
 		m_items = items;
 		m_timeout = timeout;

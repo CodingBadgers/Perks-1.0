@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import me.wisbycraft.perks.donator.PerkKits;
-import me.wisbycraft.perks.utils.Kit;
+import me.wisbycraft.perks.utils.PerkKit;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.Material;
@@ -114,7 +114,7 @@ public class PerkConfig {
 				
 				if (line.length() == 0 && newKit != null) {
 					int timeout = Integer.parseInt(timeoutString);
-					Kit kit = new Kit(name, timeout, newKit);
+					PerkKit kit = new PerkKit(name, timeout, newKit);
 					PerkKits.kits.add(kit);
 					newKit = null;
 				}
@@ -157,7 +157,7 @@ public class PerkConfig {
 			
 			if (newKit != null) {
 				int timeout = Integer.parseInt(timeoutString);
-				Kit kit = new Kit(name, timeout, newKit);
+				PerkKit kit = new PerkKit(name, timeout, newKit);
 				PerkKits.kits.add(kit);
 			}
 			

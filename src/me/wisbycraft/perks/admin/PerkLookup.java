@@ -70,12 +70,12 @@ public class PerkLookup {
 				hunger= target.getPlayer().getFoodLevel();
 				loc = target.getPlayer().getLocation();
 			
-				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("/n");
+				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "IP: " + ChatColor.WHITE + getIpAddress(target)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Health: " + ChatColor.WHITE + health).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Hunger: " + ChatColor.WHITE + hunger).append(ChatColor.WHITE).append("\n");
-				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + "x: " + loc.getX() + "y: " + loc.getY() + "z: " + loc.getZ()).append(ChatColor.WHITE).append("\n");
+				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " x: " + loc.getX() + " y: " + loc.getY() + " z: " + loc.getZ()).append(ChatColor.WHITE).append("\n");
 				
 			} else if (PerkUtils.server().getOfflinePlayer(args[0]) != null) {
 				
