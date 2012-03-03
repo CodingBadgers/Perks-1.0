@@ -47,11 +47,11 @@ public class PerkVanish {
 				
 			if (player.isHidden()) {
 				
-				player.showPlayer();
+				player.showPlayer(true);
 				removePlayer(player);
 			} else {
 				
-				player.hidePlayer();
+				player.hidePlayer(true);
 				addPlayer(player);
 			}
 			

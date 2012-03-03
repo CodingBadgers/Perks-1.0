@@ -151,3 +151,15 @@ commands:
    ping:
       description: pong
       usage: /<command>
+      
+   spawn:
+      description: teleports you to spawn
+      usage: /<command>
+      
+   setspawn:
+      description: sets the spawn
+      usage: /<command>
+      
+   spectate:
+      description: spectate a player
+      usage: /<command> <target>

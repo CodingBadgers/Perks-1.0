@@ -74,9 +74,25 @@ public class PerkList {
     	        }
     	               
     	        Map<String, List<Player>> sortGroups = new TreeMap<String, List<Player>>(groups);
+    	        int inGroup = 0;
+    	        List<Player> hiddenGroup = new ArrayList<Player>();
     	        
 	            for (Map.Entry<String, List<Player>> entry : sortGroups.entrySet()) {
 	    	        
+	            	inGroup = entry.getValue().size();
+	            	
+	            	for (int i = 0; i < entry.getValue().size(); i++) {
+	            		if (PerkUtils.getPlayer(entry.getValue().get(i)).isHidden() && !sender.hasPermission("perks.list.showvanish", false)) {
+	            			hiddenGroup.add(entry.getValue().get(i));
+	            		}
+	            	}
+	            	
+	            	inGroup -= hiddenGroup.size();
+	            	
+	            	if (inGroup == 0) {
+	            		continue;
+	            	}
+	            	
 	                out.append("\n");
 	                out.append(getRankColor(entry.getKey())).append(entry.getKey());
 	                out.append(ChatColor.WHITE + ": ");

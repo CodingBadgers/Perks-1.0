@@ -1,22 +1,14 @@
 package me.wisbycraft.perks.donator;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+
 import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUtils;
 
 public class PerkSpawn {
-
-	public static void teleportSpawn(PerkPlayer player, World world) {
-		player.getPlayer().teleport(world.getSpawnLocation());
-	}
-	
-	public static void setSpawn(Location loc) {
-		World world = loc.getWorld();
-		
-		world.setSpawnLocation((int) loc.getX(), (int) loc.getY(), (int) loc.getZ());
-	}
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
@@ -25,10 +17,25 @@ public class PerkSpawn {
 			if (!player.hasPermission("perks.spawn", true))
 				return true;
 			
-			teleportSpawn (player, player.getPlayer().getWorld());
+			Location spawn = null;
+			
+			if (PerkUtils.worldManager != null) {
+				MultiverseWorld world = PerkUtils.worldManager.getMVWorld(player.getPlayer().getWorld());
+				spawn = world.getSpawnLocation();
+			} else {
+				spawn = player.getPlayer().getWorld().getSpawnLocation();
+			}
+			
+			if (spawn == null) {
+				PerkUtils.OutputToPlayer(player, "An error has occured, please tell staff");
+				return true;
+			}
+			
+			player.teleport(spawn);
+			PerkUtils.OutputToPlayer(player, "Teleported to spawn");
 			return true;
 		}
-		
+
 		return false;
 	}
 }

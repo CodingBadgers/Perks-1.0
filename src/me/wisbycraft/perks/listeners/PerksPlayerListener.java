@@ -1,5 +1,6 @@
 package me.wisbycraft.perks.listeners;
 
+import me.wisbycraft.perks.admin.PerkSpectate;
 import me.wisbycraft.perks.admin.PerkVanish;
 import me.wisbycraft.perks.donator.PerkCapes;
 import me.wisbycraft.perks.donator.PerkColors;
@@ -38,28 +39,18 @@ public class PerksPlayerListener implements Listener {
 		PerkColors.addColor(player.getPlayer());
 		
 		PerkList.showOnlineList(player);
-		
-		Player[] players = PerkUtils.server().getOnlinePlayers();
-		for (int i = 0; i < players.length; ++i)
-		{
-			PerkPlayer p = PerkUtils.getPlayer(players[i]);
-			
-			if (p == player)
-				continue;
-			
-			if (p.isHidden()) {
-				player.getPlayer().hidePlayer(p.getPlayer());
-			}			
-		}
+
 	}	
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
+		PerkUtils.getPlayer(event.getPlayer()).showPlayer(false);
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerKick(PlayerKickEvent event) {
+		PerkUtils.getPlayer(event.getPlayer()).showPlayer(false);
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
 
@@ -80,6 +71,26 @@ public class PerksPlayerListener implements Listener {
 			Location to = from;
 			event.setTo(to);
 		}
+		
+		/* handle spectate */		
+		if (PerkSpectate.isBeingFolowed(player)) {
+			
+			PerkPlayer stalker = null;
+			
+			for (int i = 0; i < PerkUtils.perkPlayers.size(); i++) {
+				
+				if (PerkUtils.perkPlayers.get(i).getFolowing() == player) {
+					
+					stalker = PerkUtils.perkPlayers.get(i);
+				}
+			}
+			stalker.teleport(event.getTo());
+		}
+
+		if (player.isSpectating()) {
+			event.setTo(event.getFrom());
+		}
+		
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)

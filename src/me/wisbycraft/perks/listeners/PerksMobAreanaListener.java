@@ -26,7 +26,7 @@ public class PerksMobAreanaListener implements Listener{
 		
 		if (player.isHidden()) {
 			
-			player.showPlayer();
+			player.showPlayer(true);
 			
 			PerkUtils.OutputToPlayer(player, "Your vanish mode has been disabled while you are in the arena");
 		}

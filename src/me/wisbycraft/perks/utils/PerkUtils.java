@@ -10,6 +10,8 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.dynmap.DynmapAPI;
 
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
+
 public class PerkUtils {
 
 	public static final Logger log = Logger.getLogger("minecraft");
@@ -17,6 +19,7 @@ public class PerkUtils {
 	static public Perks plugin = null;
 	static public boolean spoutEnabled = false;
 	public static DynmapAPI dynmapapi;
+	public static MVWorldManager worldManager;
 
 	static public void DebugConsole(String messsage) {
 		log.log(Level.INFO, "[Perks] " + messsage + ".");

@@ -89,14 +89,43 @@ public class PerkTeleport {
 				return true;
 			}
 			
-			Location target = matchLocation(player, args[0]);
+			Location loc = null;
 			
+			// Handle coordinates
+	        if (args[0].matches("^[\\-0-9\\.]+,[\\-0-9\\.]+,[\\-0-9\\.]+(?:.+)?$")) {
+
+	            String[] arg = args[0].split(":");
+	            String[] parts = args[0].split(",");
+	            double x = 0, y = 0, z = 0;
+
+	            try {
+	                x = Double.parseDouble(parts[0]);
+	                y = Double.parseDouble(parts[1]);
+	                z = Double.parseDouble(parts[2]);
+	            } catch (NumberFormatException e) {
+	            	PerkUtils.OutputToPlayer(player, "");
+	            }
+
+	            if (arg.length > 1) {
+	                loc = new Location(PerkUtils.server().getWorld(arg[1]), x, y, z);
+	            } else {
+	                loc = new Location(player.getPlayer().getWorld(), x, y, z);
+	            }
+
+	            player.teleport(loc);
+				
+				PerkUtils.OutputToPlayer(player, "You have been teleported");
+	        }
+			
+	        PerkPlayer target = PerkUtils.getPlayer(args[0]);
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "That player is not online");
 				return true;
 			}
 			
-			player.teleport(target);
+			loc = target.getPlayer().getLocation();
+			
+			player.teleport(loc);
 			
 			PerkUtils.OutputToPlayer(player, "You have been teleported");
 			
@@ -129,32 +158,5 @@ public class PerkTeleport {
 
 		return false;
 	}
-	
-	public static Location matchLocation(PerkPlayer source, String filter) {
 
-        // Handle coordinates
-        if (filter.matches("^[\\-0-9\\.]+,[\\-0-9\\.]+,[\\-0-9\\.]+(?:.+)?$")) {
-
-            String[] args = filter.split(":");
-            String[] parts = args[0].split(",");
-            double x, y, z;
-
-            try {
-                x = Double.parseDouble(parts[0]);
-                y = Double.parseDouble(parts[1]);
-                z = Double.parseDouble(parts[2]);
-            } catch (NumberFormatException e) {
-            	return null;
-            }
-
-            if (args.length > 1) {
-                return new Location(PerkUtils.server().getWorld(args[1]), x, y, z);
-            } else {
-                return new Location(source.getPlayer().getWorld(), x, y, z);
-            }
-
-        }
-
-        return PerkUtils.getPlayer(filter).getPlayer().getLocation();
-    }
 }

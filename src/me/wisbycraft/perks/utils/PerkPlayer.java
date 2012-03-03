@@ -59,7 +59,14 @@ public class PerkPlayer {
 	}
 	
 	private class Inventory {
-		private PlayerInventory inv = null;			// !< stores the players inventory
+		public PlayerInventory inv = null;			// !< stores the players inventory
+	}
+	
+	private class Spectate {
+		public boolean spectating = false;			// !< whether the player is spectating or not
+		public PlayerInventory inv = null;			// !< the players inventory
+		public PerkPlayer folowing = null;			// !< the player this player is folowing
+		public Location startLocation = null;  		// !< stores the start location
 	}
 	
 	private Flying m_fly = null;
@@ -70,6 +77,7 @@ public class PerkPlayer {
 	private Afk m_afk = null;
 	private PlayerKit m_kits = null;
 	private Inventory m_inv = null;
+	private Spectate m_spec = null;
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -86,6 +94,7 @@ public class PerkPlayer {
 		m_afk = new Afk();
 		m_kits = new PlayerKit();
 		m_inv = new Inventory();
+		m_spec = new Spectate();
 
 		// if the player isnt using spout make a magic carpet
 		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled()) {
@@ -356,7 +365,7 @@ public class PerkPlayer {
 		DatabaseManager.setHomeLocation(m_player, loc);
 	}
 	
-	public void hidePlayer() {
+	public void hidePlayer(boolean broadcast) {
 		
 		Player[] players = PerkUtils.server().getOnlinePlayers();
 		
@@ -376,7 +385,8 @@ public class PerkPlayer {
 		if (PerkUtils.dynmapapi != null)
 			PerkUtils.dynmapapi.setPlayerVisiblity(m_player, false);
 		
-		PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " left the game.");
+		if (broadcast)
+			PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " left the game.");
 		
 		PerkUtils.OutputToPlayer(this, "You're the invisible man...");
 		PerkUtils.OutputToPlayer(this, "Incredible how you can...");
@@ -385,7 +395,7 @@ public class PerkPlayer {
 		setHidden(true);
 	}
 	
-	public void showPlayer() {
+	public void showPlayer(boolean broadcast) {
 		
 		Player[] players = PerkUtils.server().getOnlinePlayers();
 		
@@ -399,7 +409,8 @@ public class PerkPlayer {
 		if (PerkUtils.dynmapapi != null)
 			PerkUtils.dynmapapi.setPlayerVisiblity(m_player, true);
 		
-		PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " joined the game.");
+		if (broadcast)
+			PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " joined the game.");
 		
 		PerkUtils.OutputToPlayer(this, "You are visible again...");
 		
@@ -475,5 +486,45 @@ public class PerkPlayer {
 		
 		// if we are here then we have never used the requested kit before
 		return true;
+	}
+	
+	public boolean isSpectating() {
+		return m_spec.spectating;
+	}
+	
+	public PlayerInventory getInventory() {
+		return m_spec.inv;
+	}
+	
+	public PerkPlayer getFolowing() {
+		return m_spec.folowing;
+	}
+	
+	public void setSpectating(boolean spectate) {
+		m_spec.spectating = spectate;
+	}
+	
+	public void setSpectatingInventory() {
+		m_spec.inv = m_player.getInventory();
+	}
+	
+	public void setSpectatingInventory(PlayerInventory inv) {
+		m_spec.inv = inv;
+	}
+	
+	public void setSpecatingPlayer(PerkPlayer player) {
+		m_spec.folowing = player;
+	}
+	
+	public Location getStartLocation() {
+		return m_spec.startLocation;
+	}
+	
+	public void setStartLocation(Location loc) {
+		m_spec.startLocation = loc;
+	}
+	
+	public void setStartLocation() {
+		m_spec.startLocation = m_player.getLocation();
 	}
 }

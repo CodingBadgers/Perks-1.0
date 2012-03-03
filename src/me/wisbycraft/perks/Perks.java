@@ -8,6 +8,7 @@ import me.wisbycraft.perks.admin.PerkGameMode;
 import me.wisbycraft.perks.admin.PerkItem;
 import me.wisbycraft.perks.admin.PerkLookup;
 import me.wisbycraft.perks.admin.PerkPromote;
+import me.wisbycraft.perks.admin.PerkSpectate;
 import me.wisbycraft.perks.admin.PerkTime;
 import me.wisbycraft.perks.admin.PerkVanish;
 import me.wisbycraft.perks.admin.PerkWeather;
@@ -35,6 +36,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapAPI;
+
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
 
 public class Perks extends JavaPlugin {
@@ -81,6 +84,11 @@ public class Perks extends JavaPlugin {
 		if (pm.getPlugin("MobArena") != null) {
 			pm.registerEvents(maListener, this);
 			PerkMobArena.setupMobArenaHandler();
+		}
+		
+		// check for multiverse
+		if (pm.getPlugin("Multiverse") != null) {
+			PerkUtils.worldManager = (MVWorldManager) pm.getPlugin("Multiverse");
 		}
 		
 		// load the homes from the database
@@ -182,6 +190,10 @@ public class Perks extends JavaPlugin {
 		
 		// handles lookup cmds
 		if (PerkLookup.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles spectate cmds
+		if (PerkSpectate.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		return false;

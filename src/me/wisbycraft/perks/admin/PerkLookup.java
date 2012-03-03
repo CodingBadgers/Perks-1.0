@@ -30,7 +30,7 @@ public class PerkLookup {
 	}
 	
 	private static String getIpAddress(PerkPlayer player) {
-		return player.getPlayer().getAddress().getHostString();
+		return player.getPlayer().getAddress().getAddress().getHostAddress();
 	}
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
@@ -75,7 +75,7 @@ public class PerkLookup {
 				out.append(ChatColor.GOLD + "IP: " + ChatColor.WHITE + getIpAddress(target)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Health: " + ChatColor.WHITE + health).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Hunger: " + ChatColor.WHITE + hunger).append(ChatColor.WHITE).append("\n");
-				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " x: " + loc.getX() + " y: " + loc.getY() + " z: " + loc.getZ()).append(ChatColor.WHITE).append("\n");
+				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " x: " + Math.round(loc.getX()) + " y: " + Math.round(loc.getY()) + " z: " + Math.round(loc.getZ())).append(ChatColor.WHITE).append("\n");
 				
 			} else if (PerkUtils.server().getOfflinePlayer(args[0]) != null) {
 				
