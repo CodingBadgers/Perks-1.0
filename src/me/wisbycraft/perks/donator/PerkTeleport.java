@@ -115,6 +115,8 @@ public class PerkTeleport {
 	            player.teleport(loc);
 				
 				PerkUtils.OutputToPlayer(player, "You have been teleported");
+				
+				return true;
 	        }
 			
 	        PerkPlayer target = PerkUtils.getPlayer(args[0]);

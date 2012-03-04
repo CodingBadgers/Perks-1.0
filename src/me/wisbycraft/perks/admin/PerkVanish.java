@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class PerkVanish {
 	
 	public static void vanishJoin (PerkPlayer player, PlayerJoinEvent event) {
-		if (player.hasPermission("perks.vanish.view", true))
+		if (player.hasPermission("perks.vanish.view", false))
 			return;
 		
 		Player[] players = PerkUtils.server().getOnlinePlayers();
