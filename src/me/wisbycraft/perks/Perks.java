@@ -88,7 +88,7 @@ public class Perks extends JavaPlugin {
 		
 		// check for multiverse
 		if (pm.getPlugin("Multiverse") != null) {
-			PerkUtils.worldManager = (MVWorldManager) pm.getPlugin("Multiverse");
+			PerkUtils.worldManager = (MVWorldManager) pm.getPlugin("Multiverse-Core");
 		}
 		
 		// load the homes from the database

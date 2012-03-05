@@ -44,8 +44,17 @@ public class PerksPlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		PerkUtils.getPlayer(event.getPlayer()).showPlayer(false);
-		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
+		
+		Player bPlayer = event.getPlayer();
+		if (bPlayer == null)
+			return;
+		
+		PerkPlayer player = PerkUtils.getPlayer(bPlayer);
+		if (player == null)
+			return;
+		
+		player.showPlayer(false);
+		PerkUtils.perkPlayers.removePlayer(bPlayer);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)

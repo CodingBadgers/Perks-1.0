@@ -16,19 +16,31 @@ public class PerkUnlimitedAir {
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		PerkPlayer player = PerkUtils.getPlayer((Player) event.getEntity());
+		Player bPlayer = (Player) event.getEntity();
 		
-		if (player == null) {
-			return; // sanity check
-		}
+		if (bPlayer == null)
+			return;
+		
+		PerkPlayer player = PerkUtils.getPlayer(bPlayer);
+		
+		if (player == null)
+			return;
 
 		if (!player.hasPermission("perks.water", false))
 			return;
 
 		if (event.getCause() == DamageCause.DROWNING) {
 			{
-				if (player.getPlayer().getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
-					player.getPlayer().setRemainingAir(player.getPlayer().getMaximumAir());
+				if (!player.hasPermission("perks.water.plus", false))
+				{
+					if (bPlayer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
+						bPlayer.setRemainingAir(bPlayer.getMaximumAir());
+						event.setCancelled(true);
+					}
+				}
+				else
+				{
+					bPlayer.setRemainingAir(bPlayer.getMaximumAir());
 					event.setCancelled(true);
 				}
 			}

@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
-import n3wton.me.BukkitDatabaseManager.*;
+import n3wton.me.BukkitDatabaseManager.BukkitDatabaseManager;
+import n3wton.me.BukkitDatabaseManager.BukkitDatabaseManager.DatabaseType;
+import n3wton.me.BukkitDatabaseManager.Database.BukkitDatabase;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -31,7 +33,7 @@ public class DatabaseManager {
 	public static void loadDatabases() {
 		
 		// create an the database
-		m_homedb = BukkitDatabaseManager.CreateDatabase("Homes", PerkUtils.plugin);
+		m_homedb = BukkitDatabaseManager.CreateDatabase("Homes", PerkUtils.plugin, DatabaseType.SQLite);
 		
 		// see if a table called properties exist
 		if (!m_homedb.TableExists("homes")) {
@@ -88,7 +90,7 @@ public class DatabaseManager {
 		m_homedb.FreeResult(result);
 				
 		// create an SQList object
-		m_builddb = BukkitDatabaseManager.CreateDatabase("Build", PerkUtils.plugin);
+		m_builddb = BukkitDatabaseManager.CreateDatabase("Build", PerkUtils.plugin, DatabaseType.SQLite);
 		
 		// see if a table called properties exist
 		if (!m_builddb.TableExists("build")) {
@@ -143,41 +145,40 @@ public class DatabaseManager {
 		m_builddb.FreeResult(result);
 		
 		// create an SQList object
-				m_vanishdb = BukkitDatabaseManager.CreateDatabase("vanish", PerkUtils.plugin);
-				
-				// see if a table called properties exist
-				if (!m_vanishdb.TableExists("vanish")) {
-					
-					// the table doesn't exist, so make one.
-					
-					PerkUtils.DebugConsole("Could not find perk vanish databse, now creating one.");
-					query = "CREATE TABLE vanish (" +
-							"player VARCHAR(64)" +
-							");";
-					
-					// to create a table we pass an SQL query.
-					m_vanishdb.Query(query, true);
-				}
-				
-				// select every property from the table
-				query = "SELECT * FROM vanish";
-				result = m_vanishdb.QueryResult(query);
-				
-				try {
-					// while we have another result, read in the data
-					while (result.next()) {
-			            String playerName = result.getString("player");
-			            PerkPlayer newPlayer = PerkUtils.getPlayer(playerName);
-			            vanish.add(newPlayer);
-			            
-			        }
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return;
-				}		
-				
-				m_vanishdb.FreeResult(result);
-				
+		m_vanishdb = BukkitDatabaseManager.CreateDatabase("vanish", PerkUtils.plugin, DatabaseType.SQLite);
+		
+		// see if a table called properties exist
+		if (!m_vanishdb.TableExists("vanish")) {
+			
+			// the table doesn't exist, so make one.
+			
+			PerkUtils.DebugConsole("Could not find perk vanish databse, now creating one.");
+			query = "CREATE TABLE vanish (" +
+					"player VARCHAR(64)" +
+					");";
+			
+			// to create a table we pass an SQL query.
+			m_vanishdb.Query(query, true);
+		}
+		
+		// select every property from the table
+		query = "SELECT * FROM vanish";
+		result = m_vanishdb.QueryResult(query);
+		
+		try {
+			// while we have another result, read in the data
+			while (result.next()) {
+	            String playerName = result.getString("player");
+	            PerkPlayer newPlayer = PerkUtils.getPlayer(playerName);
+	            vanish.add(newPlayer);
+	            
+	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}		
+		
+		m_vanishdb.FreeResult(result);
 	}
 	
 	public static void AddHome(Player player, Location loc) {
@@ -336,7 +337,7 @@ public class DatabaseManager {
 		String query = "DELETE FROM 'vanish' " +
 				"WHERE player=" + 
 				"'" + player.getPlayer().getName() +
-				"');";
+				"';";
 		m_vanishdb.Query(query);
 		
 		vanish.remove(player);

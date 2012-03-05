@@ -28,9 +28,7 @@ public class PerkSpectate {
 			
 			if (!player.hasPermission("perks.spectate", true))
 				return true;
-			
-			PerkPlayer target = PerkUtils.getPlayer(args[0]);
-			
+						
 			if (player.isSpectating()) {
 				// reset your inventory
 				player.getPlayer().getInventory().clear();
@@ -47,9 +45,13 @@ public class PerkSpectate {
 				
 				// show the player
 				player.showPlayer(true);
-				player.getPlayer().showPlayer(target.getPlayer());
+				player.getPlayer().showPlayer(player.getSpecatingPlayer().getPlayer());
 				return true;
 			}
+			
+			PerkPlayer target = null;
+			if (args.length > 0)
+				target = PerkUtils.getPlayer(args[0]);
 			
 			if (target == player) {
 				PerkUtils.OutputToPlayer(player, "You cant spectate yourself.");

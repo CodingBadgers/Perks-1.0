@@ -426,7 +426,7 @@ public class PerkPlayer {
 	}
 	
 	public void teleport(Location loc) {
-		m_player.getPlayer().teleport(loc);
+		m_player.teleport(loc);
 	}
 	
 	public void teleportHere(PerkPlayer player) {
@@ -435,7 +435,7 @@ public class PerkPlayer {
 	
 	public void clearInv() {
 		m_inv.inv = m_player.getPlayer().getInventory();
-		m_player.getPlayer().getInventory().clear();
+		m_player.getInventory().clear();
 	}
 	
 	public void colectInv() {
@@ -526,5 +526,9 @@ public class PerkPlayer {
 	
 	public void setStartLocation() {
 		m_spec.startLocation = m_player.getLocation();
+	}
+
+	public PerkPlayer getSpecatingPlayer() {
+		return m_spec.folowing;
 	}
 }
