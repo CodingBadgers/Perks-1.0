@@ -14,6 +14,10 @@ public class PerkDebug {
 		if (commandLabel.equalsIgnoreCase("debug")) { 
 			
 			if (args[0].equalsIgnoreCase("clock")) {
+				
+				if (!player.hasPermission("perks.debug.clock", true))
+					return true;
+				
 				 int expected = 5;
 
 		         if (args.length == 2) {
@@ -84,6 +88,9 @@ public class PerkDebug {
 			}
 			
 			if (args[0].equalsIgnoreCase("info")) {
+				
+				if (!player.hasPermission("perks.debug.info", true))
+					return true;
 				
 				Runtime rt = Runtime.getRuntime();
 

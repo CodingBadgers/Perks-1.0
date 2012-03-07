@@ -29,6 +29,7 @@ import me.wisbycraft.perks.listeners.PerksPlayerListener;
 import me.wisbycraft.perks.utils.PerkMobArena;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
+import me.wisbycraft.perks.utils.PerkVault;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -68,15 +69,11 @@ public class Perks extends JavaPlugin {
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
 		
-		/* 
 		// setup vault
 		if (PerkVault.setupPerms()) {
 			PerkUtils.ErrorConsole("Could not find Vault, disabling plugin");
 			pm.disablePlugin(this);
 		}
-		
-		PerkVault.setupEco();
-		*/
 		
         PerkUtils.dynmapapi = (DynmapAPI)pm.getPlugin("dynmap");
 		

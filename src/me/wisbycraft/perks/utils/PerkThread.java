@@ -2,10 +2,6 @@ package me.wisbycraft.perks.utils;
 
 import me.wisbycraft.perks.Perks;
 import me.wisbycraft.perks.config.PerkConfig;
-import me.wisbycraft.perks.donator.PerkCapes;
-import me.wisbycraft.perks.donator.PerkColors;
-
-import org.bukkit.entity.Player;
 
 
 public class PerkThread extends Thread {
@@ -27,17 +23,6 @@ public class PerkThread extends Thread {
 		
 		while (m_running) {
 			
-			Player[] player = PerkUtils.plugin.getServer().getOnlinePlayers();
-			
-			for(int i = 0; i<player.length; i++) {
-				
-				if (PerkUtils.getPlayer(player[i]).hasPermission("Perks.capes", false)) {
-					
-					PerkCapes.setCape(player[i]);
-				}
-				
-				PerkColors.addColor(player[i]);
-			}
 							
 			try {
 				Thread.sleep(sleepTime);
