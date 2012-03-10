@@ -13,6 +13,10 @@ public class PerkAdmin {
 		if (commandLabel.equalsIgnoreCase("perksadmin") || commandLabel.equalsIgnoreCase("padmin")) {
 			
 			if (args[0].equalsIgnoreCase("reload")) {
+				
+				if (!player.hasPermission("perks.admin.reload", true))
+					return true;
+				
 				PluginManager pm = PerkUtils.server().getPluginManager();
 				pm.disablePlugin(PerkUtils.plugin);
 				pm.enablePlugin(PerkUtils.plugin);
