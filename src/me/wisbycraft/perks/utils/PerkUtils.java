@@ -20,6 +20,7 @@ public class PerkUtils {
 	static public boolean spoutEnabled = false;
 	public static DynmapAPI dynmapapi;
 	public static MVWorldManager worldManager;
+	public static boolean vaultEnabled = false;
 
 	static public void DebugConsole(String messsage) {
 		log.log(Level.INFO, "[Perks] " + messsage + ".");

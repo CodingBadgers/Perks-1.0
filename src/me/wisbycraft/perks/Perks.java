@@ -4,6 +4,7 @@ import me.wisbycraft.perks.admin.PerkAdmin;
 import me.wisbycraft.perks.admin.PerkClear;
 import me.wisbycraft.perks.admin.PerkDebug;
 import me.wisbycraft.perks.admin.PerkDemote;
+import me.wisbycraft.perks.admin.PerkFun;
 import me.wisbycraft.perks.admin.PerkGameMode;
 import me.wisbycraft.perks.admin.PerkItem;
 import me.wisbycraft.perks.admin.PerkLookup;
@@ -70,9 +71,13 @@ public class Perks extends JavaPlugin {
 		pm.registerEvents(entityListener, this);
 		
 		// setup vault
-		if (PerkVault.setupPerms()) {
-			PerkUtils.ErrorConsole("Could not find Vault, disabling plugin");
-			pm.disablePlugin(this);
+		if (pm.getPlugin("Vault") != null) {
+			PerkUtils.vaultEnabled = true;
+		} else {
+			PerkUtils.DebugConsole("Vault not found disabling vault stuff");
+		}
+		if (PerkUtils.vaultEnabled) {
+			PerkVault.setupPerms();
 		}
 		
         PerkUtils.dynmapapi = (DynmapAPI)pm.getPlugin("dynmap");
@@ -104,6 +109,9 @@ public class Perks extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] args) {
 
+		if (!(sender instanceof Player))
+			return false;
+		
 		PerkPlayer player = playerListener.findPlayer((Player) sender);
 		
 		if (player == null)
@@ -192,6 +200,10 @@ public class Perks extends JavaPlugin {
 		// handles spectate cmds
 		if (PerkSpectate.onCommand(player, cmd, commandLabel, args))
 			return true;
+		
+		// handles fun cmds
+		if (PerkFun.onCommand(player, cmd, commandLabel, args))
+			return true; 
 		
 		return false;
 	}

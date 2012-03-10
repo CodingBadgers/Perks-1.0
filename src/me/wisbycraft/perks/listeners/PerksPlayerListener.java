@@ -38,7 +38,9 @@ public class PerksPlayerListener implements Listener {
 		
 		PerkColors.addColor(player.getPlayer());
 		
-		PerkList.showOnlineList(player);
+		if (event.getPlayer() instanceof Player) {
+			PerkList.showOnlineList(player);
+		}
 
 	}	
 

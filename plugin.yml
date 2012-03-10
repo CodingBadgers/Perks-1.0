@@ -1,7 +1,7 @@
 name: Perks
 authors: [N3wton, wman2]
 main: me.wisbycraft.perks.Perks
-version: 1.6
+version: 1.7
 website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for WisbyCraft
 softdepend: [Spout, MobArena, dynmap, Multiverse-Core]
@@ -162,4 +162,12 @@ commands:
       
    spectate:
       description: spectate a player
+      usage: /<command> <target>
+      
+   slap:
+      description: slap
+      usage: /<command> <target>
+      
+   rocket:
+      description: rocket
       usage: /<command> <target>

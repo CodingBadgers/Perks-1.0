@@ -22,6 +22,9 @@ public class PerkList {
 
 	public static void showOnlineList(PerkPlayer sender) {
 		
+		if (sender == null)
+			return;
+		
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		Player[] online = PerkUtils.server().getOnlinePlayers();
 		

@@ -4,6 +4,7 @@ import me.wisbycraft.perks.utils.PerkUtils;
 
 import net.milkbowl.vault.item.Items;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.inventory.ItemStack;
 
@@ -47,7 +48,11 @@ public class PerkItem {
 				return null;
 			}
 			
-			items = Items.itemById(id, dv).toStack();
+			if (PerkUtils.vaultEnabled) {
+				items = Items.itemById(id, dv).toStack();
+			} else {
+				items = new ItemStack(Material.getMaterial(id));
+			}
 			
 			if (amount < 1 || amount > 64) {
 				items.setAmount(1);
