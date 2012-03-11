@@ -66,6 +66,7 @@ public class PerkPlayer {
 		public boolean spectating = false;			// !< whether the player is spectating or not
 		public PlayerInventory inv = null;			// !< the players inventory
 		public PerkPlayer folowing = null;			// !< the player this player is folowing
+		public PerkPlayer stalker = null;			// !< the player this player is folowing
 		public Location startLocation = null;  		// !< stores the start location
 	}
 	
@@ -513,9 +514,15 @@ public class PerkPlayer {
 	}
 	
 	public void setSpecatingPlayer(PerkPlayer player) {
+		if (m_spec.folowing != null)
+			m_spec.folowing.setStalker(null);
 		m_spec.folowing = player;
 	}
 	
+	public void setStalker(PerkPlayer player) {
+		m_spec.stalker = player;
+	}
+
 	public Location getStartLocation() {
 		return m_spec.startLocation;
 	}
@@ -529,6 +536,6 @@ public class PerkPlayer {
 	}
 
 	public PerkPlayer getSpecatingPlayer() {
-		return m_spec.folowing;
+		return m_spec.stalker;
 	}
 }

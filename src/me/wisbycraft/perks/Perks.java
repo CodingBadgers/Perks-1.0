@@ -73,11 +73,9 @@ public class Perks extends JavaPlugin {
 		// setup vault
 		if (pm.getPlugin("Vault") != null) {
 			PerkUtils.vaultEnabled = true;
+			PerkVault.setupPerms();
 		} else {
 			PerkUtils.DebugConsole("Vault not found disabling vault stuff");
-		}
-		if (PerkUtils.vaultEnabled) {
-			PerkVault.setupPerms();
 		}
 		
         PerkUtils.dynmapapi = (DynmapAPI)pm.getPlugin("dynmap");

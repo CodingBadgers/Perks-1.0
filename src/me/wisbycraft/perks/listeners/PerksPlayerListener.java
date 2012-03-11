@@ -85,19 +85,11 @@ public class PerksPlayerListener implements Listener {
 		
 		/* handle spectate */		
 		if (PerkSpectate.isBeingFolowed(player)) {
-			
-			PerkPlayer stalker = null;
-			
-			for (int i = 0; i < PerkUtils.perkPlayers.size(); i++) {
-				
-				if (PerkUtils.perkPlayers.get(i).getFolowing() == player) {
-					
-					stalker = PerkUtils.perkPlayers.get(i);
-				}
-			}
-			stalker.teleport(event.getTo());
+			PerkPlayer stalker = player.getSpecatingPlayer();
+			stalker.teleport(player.getPlayer().getLocation());
 		}
 
+		// stop the stalker moving
 		if (player.isSpectating()) {
 			event.setTo(event.getFrom());
 		}

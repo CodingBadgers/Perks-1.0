@@ -1,6 +1,7 @@
 package me.wisbycraft.perks.admin;
 
 import org.bukkit.command.Command;
+import org.bukkit.entity.Player;
 
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
@@ -30,6 +31,9 @@ public class PerkSpectate {
 				return true;
 						
 			if (player.isSpectating()) {
+				
+				Player following = player.getFolowing().getPlayer();
+				
 				// reset your inventory
 				player.getPlayer().getInventory().clear();
 				player.getPlayer().getInventory().setContents(player.getInventory().getContents());
@@ -45,7 +49,7 @@ public class PerkSpectate {
 				
 				// show the player
 				player.showPlayer(true);
-				player.getPlayer().showPlayer(player.getSpecatingPlayer().getPlayer());
+				player.getPlayer().showPlayer(following);
 				return true;
 			}
 			
@@ -63,6 +67,8 @@ public class PerkSpectate {
 			player.setSpecatingPlayer(target);
 			player.setSpectatingInventory();
 			player.setStartLocation();
+			
+			target.setStalker(player);
 			
 			// set the players inv to that of the other players.
 			player.getPlayer().getInventory().setContents(target.getPlayer().getInventory().getContents());
