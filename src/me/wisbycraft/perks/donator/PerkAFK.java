@@ -25,11 +25,18 @@ public class PerkAFK {
 					PerkUtils.OutputToAll(player.getPlayer().getName() + " is back");
 				} else {
 					
+					
 					player.setAfk(true);
-					player.teleport(new Location(player.getPlayer().getLocation().getWorld(),
-							player.getPlayer().getLocation().getX(), 
-							player.getPlayer().getWorld().getHighestBlockAt(player.getPlayer().getLocation()).getLocation().getY(), 
-							player.getPlayer().getLocation().getZ()));
+					
+					// if a players y coord is greater than the highest block at there location, lower them
+					double y = player.getPlayer().getWorld().getHighestBlockAt(player.getPlayer().getLocation()).getLocation().getY();
+					if (y > player.getPlayer().getLocation().getY()) {
+						player.teleport(new Location(player.getPlayer().getLocation().getWorld(),
+								player.getPlayer().getLocation().getX(), 
+								y, 
+								player.getPlayer().getLocation().getZ()));
+					}
+					
 					PerkUtils.OutputToPlayer(player, "You are afk.");
 					PerkUtils.OutputToAll(player.getPlayer().getName() + " is afk");
 				}

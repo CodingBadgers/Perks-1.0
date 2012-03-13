@@ -58,6 +58,17 @@ public class PerkKits {
         }
 	}
 	
+	public static void load(PerkPlayer player, String kitName, Long time) {
+		
+		PerkKit kit = getKit(kitName);
+		if (kit == null) {
+			return;
+		}
+		
+		player.usedKit(kit, time);
+		
+	}
+	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("kit")) {

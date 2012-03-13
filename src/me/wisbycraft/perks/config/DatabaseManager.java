@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import me.wisbycraft.perks.donator.PerkKits;
+import me.wisbycraft.perks.utils.PerkKit;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 import n3wton.me.BukkitDatabaseManager.BukkitDatabaseManager;
@@ -20,6 +22,7 @@ public class DatabaseManager {
 	static private BukkitDatabase m_homedb = null;
 	static private BukkitDatabase m_builddb = null;
 	static private BukkitDatabase m_vanishdb = null;
+	static private BukkitDatabase m_kitdb = null;
 	
 	public static class tpLocation {	
 		String playername;
@@ -179,6 +182,48 @@ public class DatabaseManager {
 		}		
 		
 		m_vanishdb.FreeResult(result);
+		
+		
+		
+		// create an SQList object
+		m_kitdb = BukkitDatabaseManager.CreateDatabase("kit", PerkUtils.plugin, DatabaseType.SQLite);
+		
+		// see if a table called properties exist
+		if (!m_kitdb.TableExists("kit")) {
+			
+			// the table doesn't exist, so make one.
+			
+			PerkUtils.DebugConsole("Could not find perk kit databse, now creating one.");
+			query = "CREATE TABLE kit (" +
+					"player VARCHAR(64)," +
+					"kitname VARCHAR(64)," +
+					"time LONG" +
+					");";
+			
+			// to create a table we pass an SQL query.
+			m_kitdb.Query(query, true);
+		}
+		
+		// select every property from the table
+		query = "SELECT * FROM kit";
+		result = m_kitdb.QueryResult(query);
+		
+		try {
+			// while we have another result, read in the data
+			while (result.next()) {
+	            String playerName = result.getString("player");
+	            String kitName = result.getString("kitname");
+	            Long time = result.getLong("time");
+	            
+	            PerkPlayer player = PerkUtils.getPlayer(playerName);
+	            PerkKits.load(player, kitName, time);
+	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}		
+		
+		m_kitdb.FreeResult(result);
 	}
 	
 	public static void AddHome(Player player, Location loc) {
@@ -352,6 +397,32 @@ public class DatabaseManager {
 		}
 		
 		return false;
+		
+	}
+	
+	public static void addKit(PerkPlayer player, PerkKit kit, Long time) {
+		
+		String query = "INSERT INTO 'kit' " +
+				"('player','kitname','time') VALUES (" + 
+				"'" + player.getPlayer().getName() + "'," +
+				"'" + kit.getName() + "'," +
+				"'" + time + 
+				"');";
+		
+		m_kitdb.Query(query);
+		
+	}
+	
+	public static void deleteKit(PerkPlayer player, PerkKit kit) {
+		
+		String query = "DELETE FROM 'kit' " +
+				"WHERE player=" + 
+				"'" + player.getPlayer().getName() +
+				"' AND kitname=" +
+				"'" + kit.getName() +
+				"';";
+		
+		m_kitdb.Query(query);
 		
 	}
 

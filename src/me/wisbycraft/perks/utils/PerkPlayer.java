@@ -458,7 +458,17 @@ public class PerkPlayer {
 	public void usedKit(PerkKit kit) {
 		m_kits.usedKit.add(kit);
 		Calendar cal = Calendar.getInstance();
-		m_kits.usedTime.add(cal.getTimeInMillis());
+		
+		Long time = cal.getTimeInMillis();
+		m_kits.usedTime.add(time);
+		
+		DatabaseManager.addKit(this, kit, time);
+		
+	}
+	
+	public void usedKit(PerkKit kit, Long time) {
+		m_kits.usedKit.add(kit);
+		m_kits.usedTime.add(time);
 	}
 	
 	public boolean canUseKit(PerkKit requestedKit) {
@@ -474,6 +484,8 @@ public class PerkPlayer {
 					
 					m_kits.usedKit.remove(i);
 					m_kits.usedTime.remove(i);
+					
+					DatabaseManager.deleteKit(this, requestedKit);
 					
 					return true;
 				}
