@@ -1,6 +1,7 @@
 package me.wisbycraft.perks.listeners;
 
 import me.wisbycraft.perks.admin.PerkSpectate;
+import me.wisbycraft.perks.admin.PerkThor;
 import me.wisbycraft.perks.admin.PerkVanish;
 import me.wisbycraft.perks.donator.PerkCapes;
 import me.wisbycraft.perks.donator.PerkColors;
@@ -16,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -155,5 +157,12 @@ public class PerksPlayerListener implements Listener {
 			event.setCancelled(true);
 		}
 		
+	}
+	
+	@EventHandler (priority = EventPriority.NORMAL)
+	public void onPlayerInteraction(PlayerInteractEvent event) {
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+		
+		PerkThor.onPlayerInteract(player, event);
 	}
 }

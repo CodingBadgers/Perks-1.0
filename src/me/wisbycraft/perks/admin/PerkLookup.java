@@ -33,6 +33,61 @@ public class PerkLookup {
 		return player.getPlayer().getAddress().getAddress().getHostAddress();
 	}
 	
+	private static String represent (int health) {
+		String gui;
+		
+		switch (health) {
+		case 20:
+			gui = ChatColor.GREEN + "||||||||||";
+			break;
+		
+		case 18:
+			gui = ChatColor.GREEN + "|||||||||" + ChatColor.BLACK + "|";
+			break;
+			
+		case 16:
+			gui = ChatColor.GREEN + "||||||||" + ChatColor.BLACK + "||";
+			break;
+			
+		case 14:
+			gui = ChatColor.GREEN + "|||||||" + ChatColor.BLACK + "|||";
+			break;
+		
+		case 12:
+			gui = ChatColor.GREEN + "||||||" + ChatColor.BLACK + "||||";
+			break;
+			
+		case 10:
+			gui = ChatColor.GREEN + "|||||" + ChatColor.BLACK + "||||||";
+			break;
+			
+		case 8:
+			gui = ChatColor.GREEN + "||||" + ChatColor.BLACK + "|||||||";
+			break;
+			
+		case 6:
+			gui = ChatColor.GREEN + "|||" + ChatColor.BLACK + "||||||||";
+			break;
+			
+		case 4:
+			gui = ChatColor.GREEN + "||" + ChatColor.BLACK + "|||||||||";
+			break;
+			
+		case 2:
+			gui = ChatColor.GREEN + "|" + ChatColor.BLACK + "||||||||||";
+			break;
+			
+		case 0:
+			gui = ChatColor.BLACK + "|||||||||||";
+			break;
+			
+		default:
+			gui = ChatColor.BLACK + "|||||||||||";
+		}
+		
+		return gui;
+	}
+	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("lookup")) {
@@ -73,8 +128,8 @@ public class PerkLookup {
 				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "IP: " + ChatColor.WHITE + getIpAddress(target)).append(ChatColor.WHITE).append("\n");
-				out.append(ChatColor.GOLD + "Health: " + ChatColor.WHITE + health).append(ChatColor.WHITE).append("\n");
-				out.append(ChatColor.GOLD + "Hunger: " + ChatColor.WHITE + hunger).append(ChatColor.WHITE).append("\n");
+				out.append(ChatColor.GOLD + "Health: " + ChatColor.WHITE + represent(health)).append(ChatColor.WHITE).append("\n");
+				out.append(ChatColor.GOLD + "Hunger: " + ChatColor.WHITE + represent(hunger)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " x: " + Math.round(loc.getX()) + " y: " + Math.round(loc.getY()) + " z: " + Math.round(loc.getZ())).append(ChatColor.WHITE).append("\n");
 				
 			} else if (PerkUtils.server().getOfflinePlayer(args[0]) != null) {

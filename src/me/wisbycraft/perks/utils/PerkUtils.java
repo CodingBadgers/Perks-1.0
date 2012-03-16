@@ -3,7 +3,6 @@ package me.wisbycraft.perks.utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import me.wisbycraft.perks.Perks;
 
 import org.bukkit.Server;
@@ -66,5 +65,5 @@ public class PerkUtils {
 		
 		return true;
 	}
-	
+
 }

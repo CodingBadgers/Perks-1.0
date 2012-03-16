@@ -16,7 +16,7 @@ public class PerkFun {
 		
 		player.getPlayer().setVelocity(new Vector(
                 random.nextDouble() * 10.0 - 5,
-                random.nextDouble() * 10,
+                random.nextDouble() * 2,
                 random.nextDouble() * 10.0 - 5));
 	}
 	

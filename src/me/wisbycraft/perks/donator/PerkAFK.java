@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 
 public class PerkAFK {
 
+	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args){
 		
 		if (commandLabel.equalsIgnoreCase("afk")) {
@@ -27,18 +28,19 @@ public class PerkAFK {
 					
 					
 					player.setAfk(true);
-					
-					// if a players y coord is greater than the highest block at there location, lower them
-					double y = player.getPlayer().getWorld().getHighestBlockAt(player.getPlayer().getLocation()).getLocation().getY();
-					if (y > player.getPlayer().getLocation().getY()) {
-						player.teleport(new Location(player.getPlayer().getLocation().getWorld(),
-								player.getPlayer().getLocation().getX(), 
-								y, 
-								player.getPlayer().getLocation().getZ()));
-					}
-					
-					PerkUtils.OutputToPlayer(player, "You are afk.");
-					PerkUtils.OutputToAll(player.getPlayer().getName() + " is afk");
+                    
+                    // if a players y coord is greater than the highest block at there location, lower them
+                    double y = player.getPlayer().getWorld().getHighestBlockAt(player.getPlayer().getLocation()).getLocation().getY();
+                    if (y > player.getPlayer().getLocation().getY()) {
+                            player.teleport(new Location(player.getPlayer().getLocation().getWorld(),
+                                            player.getPlayer().getLocation().getX(), 
+                                            y, 
+                                            player.getPlayer().getLocation().getZ()));
+                    }
+                    
+                    PerkUtils.OutputToPlayer(player, "You are afk.");
+                    PerkUtils.OutputToAll(player.getPlayer().getName() + " is afk");
+
 				}
 				
 			}else {

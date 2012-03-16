@@ -70,6 +70,10 @@ public class PerkPlayer {
 		public Location startLocation = null;  		// !< stores the start location
 	}
 	
+	private class Thor {
+		public boolean thorEnabled = false; 		// !< stores whether the player has thor or not
+	}
+	
 	private Flying m_fly = null;
 	private Hunger m_hunger = null;
 	private TP m_tp = null;
@@ -79,6 +83,7 @@ public class PerkPlayer {
 	private PlayerKit m_kits = null;
 	private Inventory m_inv = null;
 	private Spectate m_spec = null;
+	private Thor m_thor = null;
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -96,6 +101,7 @@ public class PerkPlayer {
 		m_kits = new PlayerKit();
 		m_inv = new Inventory();
 		m_spec = new Spectate();
+		m_thor = new Thor();
 
 		// if the player isnt using spout make a magic carpet
 		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled()) {
@@ -549,5 +555,13 @@ public class PerkPlayer {
 
 	public PerkPlayer getSpecatingPlayer() {
 		return m_spec.stalker;
+	}
+	
+	public boolean isThorEnabled() {
+		return m_thor.thorEnabled;
+	}
+	
+	public void setThor (boolean thor) {
+		m_thor.thorEnabled = thor;
 	}
 }

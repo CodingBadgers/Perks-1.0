@@ -10,6 +10,7 @@ import me.wisbycraft.perks.admin.PerkItem;
 import me.wisbycraft.perks.admin.PerkLookup;
 import me.wisbycraft.perks.admin.PerkPromote;
 import me.wisbycraft.perks.admin.PerkSpectate;
+import me.wisbycraft.perks.admin.PerkThor;
 import me.wisbycraft.perks.admin.PerkTime;
 import me.wisbycraft.perks.admin.PerkVanish;
 import me.wisbycraft.perks.admin.PerkWeather;
@@ -202,6 +203,10 @@ public class Perks extends JavaPlugin {
 		// handles fun cmds
 		if (PerkFun.onCommand(player, cmd, commandLabel, args))
 			return true; 
+		
+		// handles thor cmds
+		if (PerkThor.onCommnad(player, cmd, commandLabel, args))
+			return true;
 		
 		return false;
 	}
