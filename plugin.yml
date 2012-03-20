@@ -1,7 +1,7 @@
 name: Perks
 authors: [N3wton, wman2]
 main: me.wisbycraft.perks.Perks
-version: 1.7
+version: 1.8
 website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for WisbyCraft
 softdepend: [Spout, MobArena, dynmap, Multiverse-Core]
@@ -170,4 +170,12 @@ commands:
       
    rocket:
       description: rocket
+      usage: /<command> <target>
+      
+   thor:
+      description: grants the use of thors hammer
+      usage: /<command>
+      
+   shock:
+      description: shocks a player
       usage: /<command> <target>

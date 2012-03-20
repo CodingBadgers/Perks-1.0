@@ -22,7 +22,7 @@ public class PerkThor {
 	}
 	
 	public static void shockEffect(PerkPlayer player) {
-		shock(player.getPlayer().getLocation());
+		shockEffect(player.getPlayer().getLocation());
 	}
 	
 	public static void shockEffect(Location location) {
@@ -35,20 +35,25 @@ public class PerkThor {
 
 			ItemStack hand = event.getItem();
 			
-			if (hand.getType() == Material.WOOD_PICKAXE 
-					|| hand.getType() == Material.IRON_PICKAXE 
-					|| hand.getType() == Material.STONE_PICKAXE 
-					|| hand.getType() == Material.DIAMOND_PICKAXE)
+			if (hand.getType() != Material.WOOD_PICKAXE)
 				return;
 			
 			if (event.getAction() == Action.LEFT_CLICK_AIR) {
                 Block block = player.getPlayer().getTargetBlock(null, 300);
                 if (block != null) {
-                	PerkThor.shock(block.getLocation());
+                	Location loc = block.getLocation();
+                    loc.setY(block.getLocation().getY() + 1);
+                    PerkThor.shock(loc);
+                    PerkUtils.OutputToPlayer(player, "you have called a hammer strike");
+                    return;
                 }
             } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 Block block = event.getClickedBlock();
-                PerkThor.shock(block.getLocation());
+                Location loc = block.getLocation();
+                loc.setY(block.getLocation().getY() + 1);
+                PerkUtils.OutputToPlayer(player, "you have called a hammer strike");
+                PerkThor.shock(loc);
+                return;
             }
 		}
 	}
