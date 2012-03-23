@@ -1,92 +1,33 @@
 package me.wisbycraft.perks.donator;
 
 import me.wisbycraft.perks.utils.PerkPlayer;
-import me.wisbycraft.perks.utils.PerkUtils;
-
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 
 public class PerkFlying {
 
-	private static double m_defaultGravity = 0.0f;
-
+	/* Replaced With Bukkit system */
 	public static void fly(PerkPlayer player, PlayerMoveEvent event) {
 
-		if (PerkUtils.spoutEnabled) {
+		// this is the magic carpet version... laggier and poo.
 			
-			SpoutPlayer spoutPlayer = player.getSpoutPlayer();
-	
-			// currently flying is only enabled if you're using spoutcraft
-			// will have to implement a magic carpet
-			if (spoutPlayer.isSpoutCraftEnabled() && !player.getForceCarpet()) {
-	
-				if (m_defaultGravity == 0.0f)
-					m_defaultGravity = spoutPlayer.getGravityMultiplier();
-	
-				// see if the player is flying, if not set all back to default...
-				if (!player.isFlying()) {
-					spoutPlayer.setGravityMultiplier(m_defaultGravity);
-					spoutPlayer.setAirSpeedMultiplier(1);
-					spoutPlayer.setCanFly(false);
-					return;
-				}
-	
-				// turn on flying to stop them getting kicked
-				spoutPlayer.setCanFly(true);
-	
-				// set the fall distance to 0 to stop players dying when they land
-				spoutPlayer.setFallDistance(0.0f);
-	
-				float pitch = spoutPlayer.getLocation().getPitch();
-				if (pitch < 10.0f && pitch > -10.0f)
-					pitch = 0.0f;
-				
-				spoutPlayer.setGravityMultiplier(pitch * 0.005);
-	
-				// speed up through the air
-				spoutPlayer.setAirSpeedMultiplier(2); // increase speed
-			} else {
-				
-				// this is the magic carpet version...
-				
-				// make sure the person is flying...
-				if (!player.isFlying()) {
-					return;
-				}
-	
-				// get where they are going to. if there sneaking go down one.
-				Location to = event.getTo();
-				Location from = event.getFrom();
-				
-				if (player.getPlayer().isSneaking())
-					to.setY(to.getY() - 1);
-				else if(from.getY() > to.getY())
-					to.setY(from.getY());
-				
-				// update the magic carpet
-				player.getMagicCarpet().positionAndShow(event.getTo());
-			}
-		}
-		else
-		{
-			// this is the magic carpet version... laggier and poo.
-			
-			// make sure the person is flying...
-			if (!player.isFlying()) {
-				return;
-			}
+		// make sure the person is using mc
+		if (!player.isForceCarpet())
+			return;
+		
+		// make sure the person is flying
+		if (!player.isFlying())
+			return;
 
-			// get where they are going to. if there sneaking go down one.
-			Location to = event.getTo();
-			if (player.getPlayer().isSneaking())
-				to.setY(to.getY() - 1);
+		// get where they are going to. if there sneaking go down one.
+		Location to = event.getTo();
+		if (player.getPlayer().isSneaking())
+			to.setY(to.getY() - 1);
 
-			// update the magic carpet
-			player.getMagicCarpet().positionAndShow(event.getTo());			
-		}
+		// update the magic carpet
+		player.getMagicCarpet().positionAndShow(event.getTo());			
 
 	}
 

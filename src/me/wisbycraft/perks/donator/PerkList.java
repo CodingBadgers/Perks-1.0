@@ -97,7 +97,7 @@ public class PerkList {
 	            	}
 	            	
 	                out.append("\n");
-	                out.append(getRankColor(entry.getKey())).append(entry.getKey());
+	                out.append(getRank(entry.getKey())).append(entry.getKey());
 	                out.append(ChatColor.WHITE + ": ");
 
 	                // To keep track of commas
@@ -142,22 +142,23 @@ public class PerkList {
 	            }
 	}
 	
-	private static ChatColor getRankColor(String name) {
-		PermissionManager pex = PermissionsEx.getPermissionManager();
-		PermissionGroup group = pex.getGroup(name);
-		
-		String prefix = group.getPrefix();
-		if (prefix.indexOf("&") != -1) {
-			String code = prefix.substring(prefix.indexOf("&") + 1, prefix.indexOf('&') + 2);
-			
-			if (code == null) 
-				return ChatColor.WHITE;
-		
-			return ChatColor.getByChar(code);
-		}
-		
-		return ChatColor.WHITE;
+	private static ChatColor getRank(String name) {
+        PermissionManager pex = PermissionsEx.getPermissionManager();
+        PermissionGroup group = pex.getGroup(name);
+        
+        String prefix = group.getPrefix();
+        if (prefix.indexOf("&") != -1) {
+                String code = prefix.substring(prefix.indexOf("&") + 1, prefix.indexOf('&') + 2);
+                
+                if (code == null) 
+                        return ChatColor.WHITE;
+        
+                return ChatColor.getByChar(code);
+        }
+        
+        return ChatColor.WHITE;
 	}
+
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		

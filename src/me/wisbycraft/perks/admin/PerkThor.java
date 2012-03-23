@@ -65,6 +65,9 @@ public class PerkThor {
 			if (!player.hasPermission("perks.thor.hammer", true))
 				return true;
 			
+			if (PerkUtils.blacklist.contains(player.getPlayer()))
+				return true;
+			
 			if (args.length == 0) {
 				
 				if (player.isThorEnabled()) {

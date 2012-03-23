@@ -1,10 +1,13 @@
 package me.wisbycraft.perks.utils;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import me.wisbycraft.perks.Perks;
 
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.dynmap.DynmapAPI;
@@ -20,6 +23,7 @@ public class PerkUtils {
 	public static DynmapAPI dynmapapi;
 	public static MVWorldManager worldManager;
 	public static boolean vaultEnabled = false;
+	public static ArrayList<OfflinePlayer> blacklist = new ArrayList<OfflinePlayer>();
 
 	static public void DebugConsole(String messsage) {
 		log.log(Level.INFO, "[Perks] " + messsage + ".");
@@ -30,15 +34,15 @@ public class PerkUtils {
 	}
 
 	static public void OutputToPlayer(PerkPlayer player, String messsage) {
-		player.getPlayer().sendMessage("\247b[Perks] \247f" + messsage + ".");
+		player.getPlayer().sendMessage(ChatColor.AQUA + "" +  ChatColor.BOLD + "[Perks] " + ChatColor.RESET + messsage + ".");
 	}
 	
 	static public void OutputToPlayer(Player player, String messsage) {
-		player.sendMessage("\247b[Perks] \247f" + messsage + ".");
+		player.sendMessage(ChatColor.AQUA + "" +  ChatColor.BOLD + "[Perks] " + ChatColor.RESET + messsage + ".");
 	}
 	
 	static public void OutputToAll(String messsage) {
-		plugin.getServer().broadcastMessage("\247b[Perks] \247f" + messsage + ".");
+		plugin.getServer().broadcastMessage(ChatColor.AQUA + "" +  ChatColor.BOLD + "[Perks] " + ChatColor.RESET + messsage + ".");
 	}
 
 	public static PerkPlayer getPlayer(Player player) {

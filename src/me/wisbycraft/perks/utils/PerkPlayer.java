@@ -137,12 +137,12 @@ public class PerkPlayer {
 			m_fly.m_magicCarpet.destroy();
 		}
 		
-		// if player isnt using spout create or destroy there magic carpet
-		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled() || forceCarpet) {
-			if (flying) {
-				m_fly.m_magicCarpet.create(m_player);
-			}
-		}
+		if (flying)
+			m_fly.m_magicCarpet.create(m_player);
+		
+		// new bukkit stuff, is creative and works. WIN!
+		m_player.setAllowFlight(flying);
+		m_player.setFlying(flying);
 
 		// store whether we're flying or not
 		m_fly.m_flying = flying;
@@ -174,7 +174,7 @@ public class PerkPlayer {
 			return true;
 
 		if (reportError)
-			PerkUtils.OutputToPlayer(this, "You require the permission '" + permission + "' to use that command");
+			PerkUtils.OutputToPlayer(this, "You do not have permission to use that command");
 		
 		return false;
 	}
@@ -563,5 +563,13 @@ public class PerkPlayer {
 	
 	public void setThor (boolean thor) {
 		m_thor.thorEnabled = thor;
+	}
+	
+	public boolean isBlacklisted() {
+		return PerkUtils.blacklist.contains(m_player);
+	}
+	
+	public boolean isForceCarpet(){
+		return m_fly.m_forceCarpet;
 	}
 }
