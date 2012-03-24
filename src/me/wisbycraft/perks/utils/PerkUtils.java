@@ -34,15 +34,15 @@ public class PerkUtils {
 	}
 
 	static public void OutputToPlayer(PerkPlayer player, String messsage) {
-		player.getPlayer().sendMessage(ChatColor.AQUA + "" +  ChatColor.BOLD + "[Perks] " + ChatColor.RESET + messsage + ".");
+		player.getPlayer().sendMessage(ChatColor.AQUA + "[Perks] " + ChatColor.RESET + messsage + ".");
 	}
 	
 	static public void OutputToPlayer(Player player, String messsage) {
-		player.sendMessage(ChatColor.AQUA + "" +  ChatColor.BOLD + "[Perks] " + ChatColor.RESET + messsage + ".");
+		player.sendMessage(ChatColor.AQUA + "[Perks] " + ChatColor.RESET + messsage + ".");
 	}
 	
 	static public void OutputToAll(String messsage) {
-		plugin.getServer().broadcastMessage(ChatColor.AQUA + "" +  ChatColor.BOLD + "[Perks] " + ChatColor.RESET + messsage + ".");
+		plugin.getServer().broadcastMessage(ChatColor.AQUA + "[Perks] " + ChatColor.RESET + messsage + ".");
 	}
 
 	public static PerkPlayer getPlayer(Player player) {

@@ -137,8 +137,9 @@ public class PerkPlayer {
 			m_fly.m_magicCarpet.destroy();
 		}
 		
-		if (flying)
+		if (flying && forceCarpet) {
 			m_fly.m_magicCarpet.create(m_player);
+		}
 		
 		// new bukkit stuff, is creative and works. WIN!
 		m_player.setAllowFlight(flying);
