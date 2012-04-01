@@ -30,8 +30,8 @@ public class PerkAFK {
 					player.setAfk(true);
                     
                     // if a players y coord is greater than the highest block at there location, lower them
-                    double y = player.getPlayer().getWorld().getHighestBlockAt(player.getPlayer().getLocation()).getLocation().getY();
-                    if (y > player.getPlayer().getLocation().getY()) {
+                    double y = player.getPlayer().getWorld().getHighestBlockAt(player.getPlayer().getLocation()).getLocation().getY() + 1;
+                    if (player.getPlayer().getLocation().getY() > y) {
                             player.teleport(new Location(player.getPlayer().getLocation().getWorld(),
                                             player.getPlayer().getLocation().getX(), 
                                             y, 
