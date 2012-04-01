@@ -167,7 +167,7 @@ public class PerkPlayer {
 	}
 
 	// checks whether a player has permission to do something or not
-	// tryed to use vault, but failed
+	// tried to use vault, but failed
 	public boolean hasPermission(String permission, boolean reportError) {
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
