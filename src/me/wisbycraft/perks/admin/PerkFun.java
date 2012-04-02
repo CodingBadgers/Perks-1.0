@@ -32,6 +32,9 @@ public class PerkFun {
 			if (!player.hasPermission("perks.fun.slap", true)) 
 				return true;
 			
+			if (player.isBlacklisted(true))
+				return true;
+			
 			if (args.length != 1) {
 				PerkUtils.OutputToPlayer(player, "use /slap <target>");
 				return true;
@@ -52,6 +55,9 @@ public class PerkFun {
 		if (commandLabel.equalsIgnoreCase("rocket")) {
 			 
 			if (!player.hasPermission("perks.fun.rocket", true)) 
+				return true;
+			
+			if (player.isBlacklisted(true))
 				return true;
 			
 			if (args.length != 1) {

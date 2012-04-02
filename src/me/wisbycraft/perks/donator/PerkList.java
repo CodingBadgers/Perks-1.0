@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+// import java.util.TreeMap;
 
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
@@ -31,11 +31,11 @@ public class PerkList {
 		 	StringBuilder out = new StringBuilder();
 		
 		 		List<Player> hidden = new ArrayList<Player>();
-	            Map<String, List<Player>> groups = new HashMap<String, List<Player>>();
+	            Map<PermissionGroup, List<Player>> groups = new HashMap<PermissionGroup, List<Player>>();
 
 	            for (Player player : online) {
 	                PermissionGroup[] playerGroups = pex.getUser(player.getName()).getGroups();
-	                String group = playerGroups.length > 0 ? playerGroups[0].getName() : "Default";
+	                PermissionGroup group = playerGroups.length > 0 ? playerGroups[0] : pex.getDefaultGroup();
 
 	                if (PerkUtils.getPlayer(player).isHidden()){
 	                	hidden.add(player);
@@ -51,12 +51,24 @@ public class PerkList {
 	                
 	            }
 
-	            // This applies mostly to the console, so there might be 0 players
-    	        // online if that's the case!
-    	        if (online.length == 0) {
-    	            sender.getPlayer().sendMessage("0 players are online.");
-    	            return;
-    	        }
+	            String debug = "";
+	            
+	            for (Map.Entry<PermissionGroup, List<Player>> entry : groups.entrySet()) {
+	            	
+	            	boolean first = true;
+	            	
+	            	debug += entry.getKey().getName() + ":";
+	            	
+	            	for (Player player : entry.getValue()) {
+	            		if (!first)
+	            			debug += ", ";
+	            		
+	            		debug += player.getName();
+	            		first = false;
+	            	}
+	            }
+	            
+	            PerkUtils.DebugConsole(debug);
     	        
     	        if (online.length == PerkUtils.server().getMaxPlayers()) {
     	        	// display current users online and max users
@@ -75,12 +87,14 @@ public class PerkList {
     	            	out.append("): ");
     	            out.append(ChatColor.WHITE);
     	        }
-    	               
-    	        Map<String, List<Player>> sortGroups = new TreeMap<String, List<Player>>(groups);
+    	           
+    	        //FIXME get sorting working again, just compresses if more than one person online
+    	        // Map<PermissionGroup, List<Player>> sortGroups = new TreeMap<PermissionGroup, List<Player>>(groups);
+    	   
     	        int inGroup = 0;
     	        List<Player> hiddenGroup = new ArrayList<Player>();
     	        
-	            for (Map.Entry<String, List<Player>> entry : sortGroups.entrySet()) {
+	            for (Map.Entry<PermissionGroup, List<Player>> entry : groups.entrySet()) {
 	    	        
 	            	inGroup = entry.getValue().size();
 	            	
@@ -97,7 +111,7 @@ public class PerkList {
 	            	}
 	            	
 	                out.append("\n");
-	                out.append(getRank(entry.getKey())).append(entry.getKey());
+	                out.append(getRank(entry.getKey()));
 	                out.append(ChatColor.WHITE + ": ");
 
 	                // To keep track of commas
@@ -142,21 +156,31 @@ public class PerkList {
 	            }
 	}
 	
-	private static ChatColor getRank(String name) {
-        PermissionManager pex = PermissionsEx.getPermissionManager();
-        PermissionGroup group = pex.getGroup(name);
+	private static String getRank(PermissionGroup group) {
         
         String prefix = group.getPrefix();
-        if (prefix.indexOf("&") != -1) {
-                String code = prefix.substring(prefix.indexOf("&") + 1, prefix.indexOf('&') + 2);
-                
-                if (code == null) 
-                        return ChatColor.WHITE;
         
-                return ChatColor.getByChar(code);
-        }
+        while(prefix.indexOf("&") != -1) {
+
+			String code = prefix.substring(prefix.indexOf("&") + 1, prefix.indexOf("&") + 2);
+
+			prefix = prefix.substring(0, prefix.indexOf("&")) +  ChatColor.getByChar(code) + prefix.substring(prefix.indexOf("&") + 2);
+								
+		}
         
-        return ChatColor.WHITE;
+        while(prefix.indexOf("[") != -1) {
+
+			prefix = prefix.substring(0, prefix.indexOf("[")) + prefix.substring(prefix.indexOf("[") + 1);
+								
+		}
+        
+        while(prefix.indexOf("]") != -1) {
+
+			prefix = prefix.substring(0, prefix.indexOf("]")) + prefix.substring(prefix.indexOf("]") + 1);
+								
+		}
+        
+        return prefix;
 	}
 
 	

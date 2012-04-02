@@ -10,11 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 
 public class PerksEntityListener implements Listener {
@@ -25,17 +23,17 @@ public class PerksEntityListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEntityDamage(EntityDamageByEntityEvent event) {
-		
+	public void onEntityDamamage(EntityDamageByEntityEvent event) {
+	
 		if (event.getCause() != DamageCause.ENTITY_ATTACK)
 			return;
-		
-		PerkPlayer attacker = PerkUtils.getPlayer((Player)event.getDamager());
+			
+		PerkPlayer attacker = PerkUtils.getPlayer((Player)evnt.getDamager());
 		
 		// don't allow attacking whilst flying or in vanish
-		if (attacker != null && (attacker.isFlying() || attacker.isHidden())) {
-			event.setCancelled(true);
-			PerkUtils.OutputToPlayer(attacker, attacker.isFlying() ? "You can't attack whilst flying!" : "You can't attack whilst vanished!");
+		if (attacker != null (attacker.isFlying() || attacker.isHidden())) {
+			event.setCanceled(true);
+			PerkUtils.OutputToPlayer(attacker, attacker.isFlying() ? "You cannot attack whist flying!" : "You cannot attack whist vanished!");
 		}
 	}
 	

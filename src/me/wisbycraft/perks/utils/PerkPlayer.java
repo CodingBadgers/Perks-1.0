@@ -10,6 +10,7 @@ import me.wisbycraft.perks.donator.PerkMagicCarpet;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -72,6 +73,8 @@ public class PerkPlayer {
 	
 	private class Thor {
 		public boolean thorEnabled = false; 		// !< stores whether the player has thor or not
+		public Material thorHammer = null;			// !< stores what thor item the player is using, defaults to air
+		public int ammount = 0;						// !< the ammount of strikes a player causes on each swing
 	}
 	
 	private Flying m_fly = null;
@@ -115,6 +118,7 @@ public class PerkPlayer {
 		if (m_fly.m_magicCarpet != null) {
 			m_fly.m_magicCarpet.destroy();
 		}
+		m_player.setAllowFlight(false);
 	}
 
 	// returns the bukkit player
@@ -167,7 +171,7 @@ public class PerkPlayer {
 	}
 
 	// checks whether a player has permission to do something or not
-	// tried to use vault, but failed
+	// tryed to use vault, but failed
 	public boolean hasPermission(String permission, boolean reportError) {
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
@@ -566,11 +570,37 @@ public class PerkPlayer {
 		m_thor.thorEnabled = thor;
 	}
 	
-	public boolean isBlacklisted() {
-		return PerkUtils.blacklist.contains(m_player);
+	public boolean isBlacklisted(boolean report) {
+		if (!PerkUtils.blacklist.contains(this))
+			return false;
+		
+		if (report)
+			PerkUtils.OutputToPlayer(this, "Sorry you cannot use this command while blacklisted");
+		
+		return true;
+		
 	}
 	
 	public boolean isForceCarpet(){
 		return m_fly.m_forceCarpet;
+	}
+	
+	public void setThorHammer(Material item) {
+		m_thor.thorHammer = item;
+	}
+	
+	public Material getThorHammer() {
+		if (m_thor.thorHammer == null)
+			m_thor.thorHammer = Material.AIR;
+		
+		return m_thor.thorHammer;
+	}
+	
+	public void setThorAmmount(int ammount) {
+		m_thor.ammount = ammount;
+	}
+	
+	public int getThorAmmount() {
+		return m_thor.ammount;
 	}
 }

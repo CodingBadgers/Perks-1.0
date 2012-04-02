@@ -36,7 +36,6 @@ public class PerkAdmin {
 			player.getPlayer().sendMessage("4 - You're hunger decreases at a much slower rate.");
 			player.getPlayer().sendMessage("5 - /death - to teleport to your last death location.");
 			player.getPlayer().sendMessage("6 - Capes for spoutcraft users donator and above.");
-			player.getPlayer().sendMessage("7 - /tphr <name> - Sends a teleport here request to a player.");
 			
 			return true;
 		}

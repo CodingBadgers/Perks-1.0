@@ -161,6 +161,8 @@ public class PerkConfig {
 				PerkKits.kits.add(kit);
 			}
 			
+			PerkUtils.DebugConsole("Loaded " + PerkKits.kits.size() + " kits.");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -210,6 +212,8 @@ public class PerkConfig {
 				blackListedPlayer = PerkUtils.server().getOfflinePlayer(line);
 				PerkUtils.blacklist.add(blackListedPlayer);
 			}
+			
+			PerkUtils.DebugConsole("Loaded " + PerkUtils.blacklist.size() + " blacklisted players");
 			
 		} catch (IOException e) {
 			e.printStackTrace();

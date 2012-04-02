@@ -45,7 +45,7 @@ public class PerkVanish {
 			if (!player.hasPermission("perks.vanish", true))
 				return true;
 			
-			if (PerkUtils.blacklist.contains(player.getPlayer()))
+			if (player.isBlacklisted(true))
 				return true;
 				
 			if (player.isHidden()) {

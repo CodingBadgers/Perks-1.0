@@ -1,5 +1,7 @@
 package me.wisbycraft.perks.admin;
 
+import java.util.Random;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,6 +15,8 @@ import me.wisbycraft.perks.utils.PerkUtils;
 
 public class PerkThor {
 
+	private static final Random random = new Random();
+	
 	public static void shock(PerkPlayer player) {
 		shock(player.getPlayer().getLocation());
 	}
@@ -35,25 +39,61 @@ public class PerkThor {
 
 			ItemStack hand = event.getItem();
 			
-			if (hand.getType() != Material.WOOD_PICKAXE)
+			if (player.getThorHammer() == null)
+				return;
+			
+			if (hand.getType() != player.getThorHammer())
 				return;
 			
 			if (event.getAction() == Action.LEFT_CLICK_AIR) {
-                Block block = player.getPlayer().getTargetBlock(null, 300);
-                if (block != null) {
-                	Location loc = block.getLocation();
-                    loc.setY(block.getLocation().getY() + 1);
-                    PerkThor.shock(loc);
-                    PerkUtils.OutputToPlayer(player, "you have called a hammer strike");
-                    return;
-                }
+				if (player.getThorAmmount() != 0) {
+					
+					for (int i = 0; i < player.getThorAmmount(); i++) {
+						Block block = player.getPlayer().getTargetBlock(null, 300);
+		                if (block == null) 
+		                	return;
+		                Location loc = block.getLocation();
+	                    loc.setY(block.getLocation().getY() + 1);
+		                
+                        loc.setX(loc.getX() + random.nextDouble() * 20 - 10);
+                        loc.setZ(loc.getZ() + random.nextDouble() * 20 - 10);
+                        
+                        player.getPlayer().getLocation().getWorld().strikeLightning(loc);
+					}
+					return;
+					
+				} else {
+					Block block = player.getPlayer().getTargetBlock(null, 300);
+	                if (block != null) {
+	                	Location loc = block.getLocation();
+	                    loc.setY(block.getLocation().getY() + 1);
+	                    PerkThor.shock(loc);
+	                    return;
+	                }
+				}
             } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                Block block = event.getClickedBlock();
-                Location loc = block.getLocation();
-                loc.setY(block.getLocation().getY() + 1);
-                PerkUtils.OutputToPlayer(player, "you have called a hammer strike");
-                PerkThor.shock(loc);
-                return;
+            	if (player.getThorAmmount() != 0) {
+					
+					for (int i = 0; i < player.getThorAmmount(); i++) {
+						Block block = event.getClickedBlock();
+		                Location loc = block.getLocation();
+	                    loc.setY(block.getLocation().getY() + 1);
+		                
+                        loc.setX(loc.getX() + random.nextDouble() * 20 - 10);
+                        loc.setZ(loc.getZ() + random.nextDouble() * 20 - 10);
+                        
+                        player.getPlayer().getLocation().getWorld().strikeLightning(loc);
+					}
+					return;
+					
+				} else {
+            	
+	            	Block block = event.getClickedBlock();
+	                Location loc = block.getLocation();
+	                loc.setY(block.getLocation().getY() + 1);
+	                PerkThor.shock(loc);
+	                return;
+				}
             }
 		}
 	}
@@ -65,7 +105,7 @@ public class PerkThor {
 			if (!player.hasPermission("perks.thor.hammer", true))
 				return true;
 			
-			if (PerkUtils.blacklist.contains(player.getPlayer()))
+			if (player.isBlacklisted(true))
 				return true;
 			
 			if (args.length == 0) {
@@ -75,37 +115,35 @@ public class PerkThor {
 					player.setThor(false);
 					PerkUtils.OutputToPlayer(player, "The power of thors hammer has been removed");
 					shockEffect(player.getPlayer().getLocation());
+					player.setThorHammer(Material.AIR);
 					return true;
 				} else {
 					
 					player.setThor(true);
 					PerkUtils.OutputToPlayer(player, "You have been given thors hammer, use it wisely");
 					shockEffect(player.getPlayer().getLocation());
+					player.setThorHammer(player.getPlayer().getItemInHand().getType());
 					return true;
 				}
 			} 
 			
 			if (args.length == 1) {
-				PerkPlayer target = PerkUtils.getPlayer(args[0]);
 				
-				if (target == null) {
-					PerkUtils.OutputToPlayer(player, "No player with that name is online.");
-					return true;
-				}
-				
-				if (target.isThorEnabled()) {
+				if (player.isThorEnabled()) {
 					
-					target.setThor(false);
-					PerkUtils.OutputToPlayer(target, "The power of thors hammer has been removed by " + player.getPlayer().getName());
-					PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has had thors hammer removed");
+					player.setThor(false);
+					PerkUtils.OutputToPlayer(player, "The power of thors hammer has been removed");
 					shockEffect(player.getPlayer().getLocation());
+					player.setThorHammer(Material.AIR);
 					return true;
 				} else {
 					
+					int ammount = (Integer.parseInt(args[0]) > 50) ? 50 : Integer.parseInt(args[0]);
+					player.setThorAmmount(ammount);
 					player.setThor(true);
-					PerkUtils.OutputToPlayer(target, "You have been given thors hammer, use it wisely");
-					PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has had thors hammer given to them");
+					PerkUtils.OutputToPlayer(player, "You have been given thors hammer, use it wisely");
 					shockEffect(player.getPlayer().getLocation());
+					player.setThorHammer(player.getPlayer().getItemInHand().getType());
 					return true;
 				}
 			}
@@ -116,16 +154,35 @@ public class PerkThor {
 			if (!player.hasPermission("perks.thor.shock", true))
 				return true;
 			
-			PerkPlayer target = PerkUtils.getPlayer(args[0]);
+			if (player.isBlacklisted(true))
+				return true;
+			
+			int flag;
+			int name;
+			
+			if (args.length == 2) {
+				flag = 0;
+				name = 1;
+			} else {
+				flag = -1;
+				name = 0;
+			}
+			
+			PerkPlayer target = PerkUtils.getPlayer(args[name]);
 			
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "No player with that name is online.");
 				return true;
 			}
 			
+			if (flag != -1 && args[flag].equalsIgnoreCase("-s")) {
+				PerkUtils.OutputToAll(player.getPlayer().getName() + " has shocked " + target.getPlayer().getName());
+				PerkUtils.OutputToPlayer(player, "You have shocked " + target.getPlayer().getName());
+			}
+				
+			
 			shock (target);
-			PerkUtils.OutputToAll(player.getPlayer().getName() + " has shocked " + target.getPlayer().getName());
-			PerkUtils.OutputToPlayer(player, "You have shocked " + target.getPlayer().getName());
+			
 			return true;
 		}
 		

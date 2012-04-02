@@ -12,12 +12,11 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 public class PerkUnlimitedAir {
 
 	static public void drown(EntityDamageEvent event) {
-		
-		if (event.getCause() == DamageCause.DROWNING) {
 
+		if (event.getCause() == DamageCause.DROWNING) {
 			if (!(event.getEntity() instanceof Player))
 				return;
-	
+
 			Player bPlayer = (Player) event.getEntity();
 			
 			if (bPlayer == null)
@@ -27,25 +26,27 @@ public class PerkUnlimitedAir {
 			
 			if (player == null)
 				return;
-	
+
 			if (!player.hasPermission("perks.water", false))
 				return;
-			
-			if (!player.hasPermission("perks.water.plus", false))
-			{
-				if (bPlayer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
-					bPlayer.setRemainingAir(bPlayer.getMaximumAir());
-					event.setCancelled(true);
+
+			if (event.getCause() == DamageCause.DROWNING) {
+				{
+					if (!player.hasPermission("perks.water.plus", false))
+					{
+						if (bPlayer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
+							bPlayer.setRemainingAir(bPlayer.getMaximumAir());
+							event.setCancelled(true);
+						}
+					}
+					else
+					{
+						bPlayer.setRemainingAir(bPlayer.getMaximumAir());
+						event.setCancelled(true);
+					}
 				}
 			}
-			else
-			{
-				bPlayer.setRemainingAir(bPlayer.getMaximumAir());
-				event.setCancelled(true);
-			}
-	
 		}
-		
 	}
 
 }
