@@ -72,7 +72,7 @@ public class PerkThor {
 	                }
 				}
             } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            	if (player.getThorAmmount() != 0) {
+            	if (player.getThorAmmount() != 1) {
 					
 					for (int i = 0; i < player.getThorAmmount(); i++) {
 						Block block = event.getClickedBlock();
@@ -116,6 +116,7 @@ public class PerkThor {
 					PerkUtils.OutputToPlayer(player, "The power of thors hammer has been removed");
 					shockEffect(player.getPlayer().getLocation());
 					player.setThorHammer(Material.AIR);
+					player.setThorAmmount(0);
 					return true;
 				} else {
 					
@@ -123,6 +124,7 @@ public class PerkThor {
 					PerkUtils.OutputToPlayer(player, "You have been given thors hammer, use it wisely");
 					shockEffect(player.getPlayer().getLocation());
 					player.setThorHammer(player.getPlayer().getItemInHand().getType());
+					player.setThorAmmount(1);
 					return true;
 				}
 			} 
@@ -135,6 +137,7 @@ public class PerkThor {
 					PerkUtils.OutputToPlayer(player, "The power of thors hammer has been removed");
 					shockEffect(player.getPlayer().getLocation());
 					player.setThorHammer(Material.AIR);
+					player.setThorAmmount(0);
 					return true;
 				} else {
 					
