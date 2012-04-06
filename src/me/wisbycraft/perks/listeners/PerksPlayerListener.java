@@ -5,7 +5,6 @@ import me.wisbycraft.perks.admin.PerkThor;
 import me.wisbycraft.perks.admin.PerkVanish;
 import me.wisbycraft.perks.donator.PerkCapes;
 import me.wisbycraft.perks.donator.PerkColors;
-import me.wisbycraft.perks.donator.PerkFlying;
 import me.wisbycraft.perks.donator.PerkList;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
@@ -67,33 +66,30 @@ public class PerksPlayerListener implements Listener {
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerMove(PlayerMoveEvent event) {
 
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
-
 		if (player == null)
 			return;
 
-		// handle flying...
-		PerkFlying.fly(player, event);
-		
 		/* Handle afk moving */
 		if (player.isAfk()) {
-			Location from = event.getFrom();
-			Location to = from;
-			event.setTo(to);
+			event.setTo(event.getFrom());
+			return;
 		}
 		
 		/* handle spectate */		
 		if (PerkSpectate.isBeingFolowed(player)) {
 			PerkPlayer stalker = player.getSpecatingPlayer();
 			stalker.teleport(player.getPlayer().getLocation());
+			return;
 		}
 
 		// stop the stalker moving
 		if (player.isSpectating()) {
 			event.setTo(event.getFrom());
+			return;
 		}
 		
 	}

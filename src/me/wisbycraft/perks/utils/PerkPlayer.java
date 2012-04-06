@@ -6,7 +6,6 @@ import java.util.Calendar;
 
 import me.wisbycraft.perks.config.DatabaseManager;
 import me.wisbycraft.perks.config.PerkConfig;
-import me.wisbycraft.perks.donator.PerkMagicCarpet;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -26,8 +25,6 @@ public class PerkPlayer {
 
 	private class Flying {
 		public boolean m_flying = false;				//!< is the player flying?
-		public PerkMagicCarpet m_magicCarpet = null;	//!< A players magic carpet object (Non spout only)
-		public boolean m_forceCarpet = false;			//!< Force magic carpet even when using spout
 	}
 	
 	private class Hunger {
@@ -106,20 +103,14 @@ public class PerkPlayer {
 		m_spec = new Spectate();
 		m_thor = new Thor();
 
-		// if the player isnt using spout make a magic carpet
-		if (!PerkUtils.spoutEnabled || !m_spoutPlayer.isSpoutCraftEnabled()) {
-			m_fly.m_magicCarpet = new PerkMagicCarpet();
-		}
 	}
 	
 	// called when a player is kicked or leaves...
 	// all cleanups should be done in here
 	public void remove() {
-		if (m_fly.m_magicCarpet != null) {
-			m_fly.m_magicCarpet.destroy();
-		}
 		m_player.setAllowFlight(false);
 	}
+
 
 	// returns the bukkit player
 	public Player getPlayer() {
@@ -131,18 +122,13 @@ public class PerkPlayer {
 		return m_spoutPlayer;
 	}
 
-	public void setFlying(boolean flying, boolean forceCarpet) {
+	public void setFlying(boolean flying) {
 		
 		// output a message to the user
 		if (flying) {
 			PerkUtils.OutputToPlayer(this, "Fly mode is now enabled");
 		} else {
 			PerkUtils.OutputToPlayer(this, "Fly mode is now disabled");
-			m_fly.m_magicCarpet.destroy();
-		}
-		
-		if (flying && forceCarpet) {
-			m_fly.m_magicCarpet.create(m_player);
 		}
 		
 		// new bukkit stuff, is creative and works. WIN!
@@ -151,23 +137,10 @@ public class PerkPlayer {
 
 		// store whether we're flying or not
 		m_fly.m_flying = flying;
-		m_fly.m_forceCarpet = forceCarpet;
 	}
 
 	public boolean isFlying() {
 		return m_fly.m_flying;
-	}
-
-	public boolean getForceCarpet() {
-		return m_fly.m_forceCarpet;
-	}
-
-	public void setForceCarpet(boolean forceCarpet) {
-		m_fly.m_forceCarpet = forceCarpet;
-	}
-
-	public PerkMagicCarpet getMagicCarpet() {
-		return m_fly.m_magicCarpet;
 	}
 
 	// checks whether a player has permission to do something or not
@@ -579,10 +552,6 @@ public class PerkPlayer {
 		
 		return true;
 		
-	}
-	
-	public boolean isForceCarpet(){
-		return m_fly.m_forceCarpet;
 	}
 	
 	public void setThorHammer(Material item) {

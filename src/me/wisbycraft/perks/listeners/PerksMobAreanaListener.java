@@ -19,7 +19,7 @@ public class PerksMobAreanaListener implements Listener{
 		
 		if (player.isFlying()) {
 			
-			player.setFlying(false, false);
+			player.setFlying(false);
 		
 			PerkUtils.OutputToPlayer(player,"Your fly mode has been disabled while you are in the arena");
 		}

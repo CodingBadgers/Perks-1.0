@@ -6,7 +6,9 @@ import me.wisbycraft.perks.donator.PerkUnlimitedAir;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,15 +29,25 @@ public class PerksEntityListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamamage(EntityDamageByEntityEvent event) {
 	
-		if (event.getCause() != DamageCause.ENTITY_ATTACK)
+		if (!(event.getCause() == DamageCause.ENTITY_ATTACK || event.getCause() == DamageCause.PROJECTILE || event.getCause() == DamageCause.MAGIC))
 			return;
 			
-		PerkPlayer attacker = PerkUtils.getPlayer((Player)event.getDamager());
+		PerkPlayer attacker = null;
+				
+		if (event.getDamager() instanceof Player)
+			attacker = PerkUtils.getPlayer((Player)event.getDamager());
+		else if (event.getDamager() instanceof Arrow)
+			attacker = PerkUtils.getPlayer((Player)(((Arrow)event.getDamager()).getShooter()));
+		else if (event.getDamager() instanceof ThrownPotion)
+			attacker = PerkUtils.getPlayer((Player)(((ThrownPotion)event.getDamager()).getShooter()));
 		
 		// don't allow attacking whilst flying or in vanish
 		if (attacker != null &&  (attacker.isFlying() || attacker.isHidden())) {
 			event.setCancelled(true);
 			PerkUtils.OutputToPlayer(attacker, attacker.isFlying() ? "You cannot attack whist flying!" : "You cannot attack whist vanished!");
+		}
+			event.setCancelled(true);
+			PerkUtils.OutputToPlayer(attacker, attacker.isFlying() ? "You can't attack whilst flying" : "You can't attack whilst vanished!");
 		}
 	}
 	

@@ -1,35 +1,10 @@
 package me.wisbycraft.perks.donator;
 
 import me.wisbycraft.perks.utils.PerkPlayer;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
-import org.bukkit.event.player.PlayerMoveEvent;
 
 
 public class PerkFlying {
-
-	/* Replaced With Bukkit system */
-	public static void fly(PerkPlayer player, PlayerMoveEvent event) {
-
-		// this is the magic carpet version... laggier and poo.
-			
-		// make sure the person is using mc
-		if (!player.isForceCarpet())
-			return;
-		
-		// make sure the person is flying
-		if (!player.isFlying())
-			return;
-
-		// get where they are going to. if there sneaking go down one.
-		Location to = event.getTo();
-		if (player.getPlayer().isSneaking())
-			to.setY(to.getY() - 1);
-
-		// update the magic carpet
-		player.getMagicCarpet().positionAndShow(event.getTo());			
-
-	}
 
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 				
@@ -41,9 +16,9 @@ public class PerkFlying {
 				return true;
 			
 			if (player.isFlying()) {
-				player.setFlying(false, cmd.getName().equalsIgnoreCase("mc"));
+				player.setFlying(false);
 			} else {
-				player.setFlying(true, cmd.getName().equalsIgnoreCase("mc"));
+				player.setFlying(true);
 			}
 			
 			return true;
@@ -55,7 +30,7 @@ public class PerkFlying {
 			if (!player.hasPermission("perks.fly", true))
 				return true;
 			
-			player.setFlying(false, false);
+			player.setFlying(false);
 			
 			return true;
 		}

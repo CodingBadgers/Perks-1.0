@@ -14,7 +14,6 @@ public class PerkPlayerArray extends ArrayList<PerkPlayer> {
 
 		PerkPlayer perkPlayer = getPlayer(player);
 		if (perkPlayer != null) {
-			perkPlayer.remove();
 			remove(perkPlayer);
 			return true;
 		}
