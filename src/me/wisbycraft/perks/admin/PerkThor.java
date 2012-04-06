@@ -1,5 +1,6 @@
 package me.wisbycraft.perks.admin;
 
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -62,17 +63,9 @@ public class PerkThor {
 					}
 					return;
 					
-				} else {
-					Block block = player.getPlayer().getTargetBlock(null, 300);
-	                if (block != null) {
-	                	Location loc = block.getLocation();
-	                    loc.setY(block.getLocation().getY() + 1);
-	                    PerkThor.shock(loc);
-	                    return;
-	                }
 				}
             } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            	if (player.getThorAmmount() != 1) {
+            	if (player.getThorAmmount() != 0) {
 					
 					for (int i = 0; i < player.getThorAmmount(); i++) {
 						Block block = event.getClickedBlock();
@@ -86,19 +79,12 @@ public class PerkThor {
 					}
 					return;
 					
-				} else {
-            	
-	            	Block block = event.getClickedBlock();
-	                Location loc = block.getLocation();
-	                loc.setY(block.getLocation().getY() + 1);
-	                PerkThor.shock(loc);
-	                return;
 				}
             }
 		}
 	}
 	
-	public static boolean onCommnad(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args, List<String> flags) {
 		
 		if (commandLabel.equalsIgnoreCase("thor")) {
 			
@@ -107,49 +93,34 @@ public class PerkThor {
 			
 			if (player.isBlacklisted(true))
 				return true;
-			
-			if (args.length == 0) {
-				
-				if (player.isThorEnabled()) {
-					
-					player.setThor(false);
-					PerkUtils.OutputToPlayer(player, "The power of thors hammer has been removed");
-					shockEffect(player.getPlayer().getLocation());
-					player.setThorHammer(Material.AIR);
-					player.setThorAmmount(0);
-					return true;
-				} else {
-					
-					player.setThor(true);
-					PerkUtils.OutputToPlayer(player, "You have been given thors hammer, use it wisely");
-					shockEffect(player.getPlayer().getLocation());
-					player.setThorHammer(player.getPlayer().getItemInHand().getType());
-					player.setThorAmmount(1);
-					return true;
-				}
-			} 
-			
-			if (args.length == 1) {
-				
-				if (player.isThorEnabled()) {
-					
-					player.setThor(false);
-					PerkUtils.OutputToPlayer(player, "The power of thors hammer has been removed");
-					shockEffect(player.getPlayer().getLocation());
-					player.setThorHammer(Material.AIR);
-					player.setThorAmmount(0);
-					return true;
-				} else {
-					
-					int ammount = (Integer.parseInt(args[0]) > 50) ? 50 : Integer.parseInt(args[0]);
-					player.setThorAmmount(ammount);
-					player.setThor(true);
-					PerkUtils.OutputToPlayer(player, "You have been given thors hammer, use it wisely");
-					shockEffect(player.getPlayer().getLocation());
-					player.setThorHammer(player.getPlayer().getItemInHand().getType());
-					return true;
+	
+			int ammount = 1; 
+			if (args.length >= 1) {
+				try {
+					ammount = Integer.parseInt(args[1]);
+				} catch (NumberFormatException ex) {
+					ammount = 1;
 				}
 			}
+				
+				if (player.isThorEnabled()) {
+					
+					player.setThor(false);
+					PerkUtils.OutputToPlayer(player, "The power of thors hammer has been removed");
+					shockEffect(player.getPlayer().getLocation());
+					player.setThorHammer(Material.AIR);
+					player.setThorAmmount(0);
+					return true;
+				} else {
+					
+					player.setThor(true);
+					PerkUtils.OutputToPlayer(player, "You have been given thors hammer, use it wisely");
+					shockEffect(player.getPlayer().getLocation());
+					player.setThorHammer(player.getPlayer().getItemInHand().getType());
+					player.setThorAmmount(ammount);
+					return true;
+				}
+
 		}
 		
 		if (commandLabel.equalsIgnoreCase("shock")) {

@@ -1,5 +1,8 @@
 package me.wisbycraft.perks;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import me.wisbycraft.perks.admin.PerkAdmin;
 import me.wisbycraft.perks.admin.PerkClear;
 import me.wisbycraft.perks.admin.PerkDebug;
@@ -106,7 +109,7 @@ public class Perks extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd,
-			String commandLabel, String[] args) {
+			String commandLabel, String[] input) {
 
 		if (!(sender instanceof Player))
 			return false;
@@ -115,6 +118,28 @@ public class Perks extends JavaPlugin {
 		
 		if (player == null)
 			return false;
+		
+		List<String> flags = new ArrayList<String>();
+		String arguments = "";
+		
+		// get the flags provided
+		for (int i = 0; i < input.length; i ++) {
+			boolean first = true;
+			if (input[i].startsWith("-")) {
+				for (int x = 0; x < input[i].length(); x++) {
+					if (input[i].charAt(x) == '-') 
+						continue;
+					flags.add(String.valueOf(input[i].charAt(x)));
+				}
+			} else {
+				if (!first) {
+					arguments += ", ";
+				}
+				arguments += input[i];
+			}
+		}
+		
+		String[] args = arguments.split(",");
 		
 		// handle fly commands
 		if (PerkFlying.onCommand(player, cmd, commandLabel, args))
@@ -157,7 +182,7 @@ public class Perks extends JavaPlugin {
 			return true;
 		
 		// handles inv clear cmds
-		if (PerkClear.onCommand(player, cmd, commandLabel, args))
+		if (PerkClear.onCommand(player, cmd, commandLabel, args, flags))
 			return true;
 		
 		// handles item cmds
@@ -173,11 +198,11 @@ public class Perks extends JavaPlugin {
 			return true;
 		
 		// handles time cmds
-		if (PerkTime.onCommand(player, cmd, commandLabel, args))
+		if (PerkTime.onCommand(player, cmd, commandLabel, args, flags))
 			return true;
 		
 		// handles weather cmds
-		if (PerkWeather.onCommand(player, cmd, commandLabel, args))
+		if (PerkWeather.onCommand(player, cmd, commandLabel, args, flags))
 			return true;
 		
 		// handles admin cmds
@@ -201,11 +226,11 @@ public class Perks extends JavaPlugin {
 			return true;
 		
 		// handles fun cmds
-		if (PerkFun.onCommand(player, cmd, commandLabel, args))
+		if (PerkFun.onCommand(player, cmd, commandLabel, args, flags))
 			return true; 
 		
 		// handles thor cmds
-		if (PerkThor.onCommnad(player, cmd, commandLabel, args))
+		if (PerkThor.onCommand(player, cmd, commandLabel, args, flags))
 			return true;
 		
 		return false;

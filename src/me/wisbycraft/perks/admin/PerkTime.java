@@ -18,6 +18,8 @@ public class PerkTime {
 		List<World> worlds = PerkUtils.server().getWorlds();
 		
 		for (int i = 0; i<worlds.size(); i++) {
+			if (worlds.get(i).getName() == "WisbyPvp") 
+				continue;
 			
 			worlds.get(i).setTime(time);
 		}
@@ -113,7 +115,7 @@ public class PerkTime {
 
     }
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args, List<String> flags) {
 		
 		if (commandLabel.equalsIgnoreCase("time")) {
 			
@@ -121,11 +123,13 @@ public class PerkTime {
 			
 			if (args.length == 0) {
                 timeStr = "current";
-                // If no world was specified, get the world from the sender, but
-                // fail if the sender isn't player
             } else {
                 timeStr = args[0];
             }
+			
+			boolean silent = false;
+			if (flags.contains("s"))
+				silent = true;
 			
 			// Let the player get the time
             if (timeStr.equalsIgnoreCase("current")
@@ -151,8 +155,9 @@ public class PerkTime {
             
            	setTime(time);
            	
-            PerkUtils.OutputToAll(player.getPlayer().getName( )+ " set the time of all worlds "
-        		 	+ " to "
+           	if (!silent)
+           		PerkUtils.OutputToAll(player.getPlayer().getName( )+ " set the time of all worlds "
+        		 	+ "to "
         		 	+ getTimeString(matchTime(timeStr)));
             return true;
 		}
