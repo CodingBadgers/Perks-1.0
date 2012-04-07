@@ -46,7 +46,7 @@ public class PerkAdmin {
 			return true;
 		}
 		
-		if (commandLabel.equalsIgnoreCase("stop") || commandLabel.equalsIgnoreCase("restart")) {
+		if (commandLabel.equalsIgnoreCase("restart")) {
 			PerkUtils.OutputToPlayer(player, "Server is shutting down in 10 seconds");
 			PerkUtils.OutputToAll("The Server is shutting down in 10 seconds");
 			try {

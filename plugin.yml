@@ -180,7 +180,6 @@ commands:
       description: shocks a player
       usage: /<command> <target>
       
-   stop:
+   restart:
       description: stops the server with a delay
-      aliases: [restart]
       usage: /<command>
