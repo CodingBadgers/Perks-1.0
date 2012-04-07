@@ -131,29 +131,30 @@ public class PerkThor {
 			if (player.isBlacklisted(true))
 				return true;
 			
-			int flag;
-			int name;
+			boolean kill = false;
+			boolean silent = false;
 			
-			if (args.length == 2) {
-				flag = 0;
-				name = 1;
-			} else {
-				flag = -1;
-				name = 0;
-			}
+			if (flags.contains("k"))
+				kill = true;
 			
-			PerkPlayer target = PerkUtils.getPlayer(args[name]);
+			if (flags.contains("s"))
+				silent = true;
+			
+			PerkPlayer target = PerkUtils.getPlayer(args[0]);
 			
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "No player with that name is online.");
 				return true;
 			}
 			
-			if (flag != -1 && args[flag].equalsIgnoreCase("-s")) {
+			if (!silent)
 				PerkUtils.OutputToAll(player.getPlayer().getName() + " has shocked " + target.getPlayer().getName());
-				PerkUtils.OutputToPlayer(player, "You have shocked " + target.getPlayer().getName());
-			}
+			
+			PerkUtils.OutputToPlayer(player, "You have shocked " + target.getPlayer().getName());
+			PerkUtils.OutputToPlayer(target, player.getPlayer().getName() + " has shocked you");
 				
+			if (kill)
+				target.getPlayer().setHealth(0);
 			
 			shock (target);
 			
