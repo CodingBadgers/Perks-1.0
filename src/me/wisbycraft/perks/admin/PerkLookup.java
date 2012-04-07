@@ -117,7 +117,6 @@ public class PerkLookup {
 			 * Way to late now though :P
 			 */
 			
-			// if they are online //
 			if (target != null) {
 				
 				group = pex.getUser(target.getPlayer()).getGroups();
@@ -132,10 +131,7 @@ public class PerkLookup {
 				out.append(ChatColor.GOLD + "Health: " + ChatColor.WHITE + represent(health)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Hunger: " + ChatColor.WHITE + represent(hunger)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " x: " + Math.round(loc.getX()) + " y: " + Math.round(loc.getY()) + " z: " + Math.round(loc.getZ())).append(ChatColor.WHITE).append("\n");
-				//out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + target.getPlayer().getFirstPlayed()).append("\n");
-				//out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + target.getPlayer().getLastPlayed()).append("\n");
 				
-			// if they arn't online //
 			} else if (PerkUtils.server().getOfflinePlayer(args[0]) != null) {
 				
 				OfflinePlayer oTarget = PerkUtils.server().getOfflinePlayer(args[0]);
@@ -150,9 +146,6 @@ public class PerkLookup {
 				
 				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
-				//out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + oTarget.getFirstPlayed()).append("\n");
-				//out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + oTarget.getLastPlayed()).append("\n");
-			
 			}
 			
 			String[] lines = out.toString().split("\n");

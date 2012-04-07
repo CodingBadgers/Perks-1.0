@@ -50,6 +50,25 @@ public class PerkList {
 	                }
 	                
 	            }
+
+	            String debug = "";
+	            
+	            for (Map.Entry<PermissionGroup, List<Player>> entry : groups.entrySet()) {
+	            	
+	            	boolean first = true;
+	            	
+	            	debug += entry.getKey().getName() + ":";
+	            	
+	            	for (Player player : entry.getValue()) {
+	            		if (!first)
+	            			debug += ", ";
+	            		
+	            		debug += player.getName();
+	            		first = false;
+	            	}
+	            }
+	            
+	            PerkUtils.DebugConsole(debug);
     	        
     	        if (online.length == PerkUtils.server().getMaxPlayers()) {
     	        	// display current users online and max users

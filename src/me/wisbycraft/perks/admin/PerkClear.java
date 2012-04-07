@@ -1,7 +1,5 @@
 package me.wisbycraft.perks.admin;
 
-import java.util.List;
-
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -10,20 +8,16 @@ import org.bukkit.command.Command;
 
 public class PerkClear {
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args, List<String> flags) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("clear")) {
-			
-			boolean all = false;
-			if (flags.contains("a")) 
-				all = true;
 			
 			if (args.length == 0) {
 				
 				if (!player.hasPermission("perks.clear.own", true))
 					return true;
 				
-				player.clearInv(all);
+				player.clearInv();
 				PerkUtils.OutputToPlayer(player, "Your inventory has been cleared.");
 			}
 			
@@ -39,7 +33,7 @@ public class PerkClear {
 					return true;
 				}
 				
-				target.clearInv(all);
+				target.clearInv();
 				PerkUtils.OutputToPlayer(player, "You have cleared " + target.getPlayer().getName() + "'s inventory.");
 				PerkUtils.OutputToPlayer(target, "Your inventory has been cleared by " + player.getPlayer().getName());
 			}

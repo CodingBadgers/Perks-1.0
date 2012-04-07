@@ -15,18 +15,20 @@ public class PerkWeather {
 		
 		for (int i = 0; i<worlds.size(); i++) {
 			
-			if (worlds.get(i).getName() == "WisbyPvp")
-				continue;
+			//if (worlds.get(i).getName().equalsIgnoreCase(/* pvp world */)) {
+			//	return;
+			//}
 			
 			worlds.get(i).setStorm(storm);
 			
-			if (duration > 0) {
+			if (duration>0) {
+
 				worlds.get(i).setWeatherDuration(duration);
 			}
 		}
 	}
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args, List<String> flags) {
+	public static boolean onCommand(PerkPlayer player, Command cmds, String commandLabel, String[] args) {
 		if (commandLabel.equalsIgnoreCase("weather")) {
 			
 			if (!player.hasPermission("perks.weather", true))
@@ -35,10 +37,6 @@ public class PerkWeather {
 	        String weatherStr = args[0];
 	        int duration = -1;
 	
-	        boolean silent = false;
-	        if (flags.contains("s"))
-	        	silent = true;
-	        
 	        if (args.length == 2) {
 	            duration = Integer.parseInt(args[1]);
 	        }
@@ -52,8 +50,7 @@ public class PerkWeather {
 	
 	        	setStorm(true, duration * 20);
 	            
-	        	if (!silent)
-	        		PerkUtils.OutputToAll(player.getPlayer().getName() + " has started a storm");
+	            PerkUtils.OutputToAll(player.getPlayer().getName() + " has started a storm");
 	            return true;
 	
 	        } else if (weatherStr.equalsIgnoreCase("clear")
@@ -65,8 +62,7 @@ public class PerkWeather {
 	
 	            setStorm(false, duration * 20);
 	            
-	            if (!silent)
-	            	PerkUtils.OutputToAll(player.getPlayer().getName() + " has stopped a storm");
+	            PerkUtils.OutputToAll(player.getPlayer().getName() + " has stopped a storm");
 	            return true;
 	
 	        } else {

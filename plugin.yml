@@ -4,7 +4,7 @@ main: me.wisbycraft.perks.Perks
 version: 1.8
 website: www.wisbycraft.com
 description: A plugin containing all the Donator perks for WisbyCraft
-softdepend: [Spout, MobArena, dynmap, Multiverse-Core]
+softdepend: [Spout, MobArena, dynmap, Multiverse-Core, Vault]
 depend: [BukkitDatabaseManager]
 
 commands:
@@ -179,7 +179,3 @@ commands:
    shock:
       description: shocks a player
       usage: /<command> <target>
-      
-   restart:
-      description: stops the server with a delay
-      usage: /<command>

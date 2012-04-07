@@ -31,8 +31,4 @@ public class PerkThread extends Thread {
 			}		
 		}	
 	}
-	
-	public void destroy(){
-		m_running = false;
-	}
 }

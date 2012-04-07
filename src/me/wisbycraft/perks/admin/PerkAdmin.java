@@ -25,7 +25,6 @@ public class PerkAdmin {
 				return true;
 			}
 			return true;
-			
 		}
 		
 		if (commandLabel.equalsIgnoreCase("perks")) {
@@ -42,19 +41,7 @@ public class PerkAdmin {
 		}
 		
 		if (commandLabel.equalsIgnoreCase("ping")) {
-			PerkUtils.OutputToPlayer(player, "pong");
-			return true;
-		}
-		
-		if (commandLabel.equalsIgnoreCase("restart")) {
-			PerkUtils.OutputToPlayer(player, "Server is shutting down in 10 seconds");
-			PerkUtils.OutputToAll("The Server is shutting down in 10 seconds");
-			try {
-				Thread.sleep(10 * 1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			PerkUtils.server().shutdown();
+			PerkUtils.OutputToPlayer(player, "ping");
 			return true;
 		}
 		return false;

@@ -1,8 +1,5 @@
 package me.wisbycraft.perks;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import me.wisbycraft.perks.admin.PerkAdmin;
 import me.wisbycraft.perks.admin.PerkClear;
 import me.wisbycraft.perks.admin.PerkDebug;
@@ -31,7 +28,6 @@ import me.wisbycraft.perks.donator.PerkTeleport;
 import me.wisbycraft.perks.listeners.PerksEntityListener;
 import me.wisbycraft.perks.listeners.PerksMobAreanaListener;
 import me.wisbycraft.perks.listeners.PerksPlayerListener;
-import me.wisbycraft.perks.listeners.PerksPvpArenaListener;
 import me.wisbycraft.perks.utils.PerkMobArena;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
@@ -52,7 +48,6 @@ public class Perks extends JavaPlugin {
 	private final PerksPlayerListener playerListener = new PerksPlayerListener();
     private final PerksEntityListener entityListener = new PerksEntityListener();
     private final PerksMobAreanaListener maListener = new PerksMobAreanaListener();
-    private final PerksPvpArenaListener paListener = new PerksPvpArenaListener();
     
 	// private final PerkThread m_thread = new PerkThread(this);
 
@@ -72,7 +67,7 @@ public class Perks extends JavaPlugin {
 		// decide wether spout is enabled or not
 		PerkUtils.spoutEnabled = pm.getPlugin("Spout") != null;
 
-		// register the 2 bukkit event listeners
+		// register the 3 event listeners
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
 		
@@ -90,10 +85,6 @@ public class Perks extends JavaPlugin {
 		if (pm.getPlugin("MobArena") != null) {
 			pm.registerEvents(maListener, this);
 			PerkMobArena.setupMobArenaHandler();
-		}
-		
-		if (pm.getPlugin("pvparena") != null) {
-			pm.registerEvents(paListener, this);
 		}
 		
 		// check for multiverse
@@ -115,7 +106,7 @@ public class Perks extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd,
-			String commandLabel, String[] input) {
+			String commandLabel, String[] args) {
 
 		if (!(sender instanceof Player))
 			return false;
@@ -124,28 +115,6 @@ public class Perks extends JavaPlugin {
 		
 		if (player == null)
 			return false;
-		
-		List<String> flags = new ArrayList<String>();
-		String arguments = "";
-		
-		// get the flags provided
-		for (int i = 0; i < input.length; i ++) {
-			boolean first = true;
-			if (input[i].startsWith("-")) {
-				for (int x = 0; x < input[i].length(); x++) {
-					if (input[i].charAt(x) == '-') 
-						continue;
-					flags.add(String.valueOf(input[i].charAt(x)));
-				}
-			} else {
-				if (!first) {
-					arguments += ", ";
-				}
-				arguments += input[i];
-			}
-		}
-		
-		String[] args = arguments.split(",");
 		
 		// handle fly commands
 		if (PerkFlying.onCommand(player, cmd, commandLabel, args))
@@ -188,7 +157,7 @@ public class Perks extends JavaPlugin {
 			return true;
 		
 		// handles inv clear cmds
-		if (PerkClear.onCommand(player, cmd, commandLabel, args, flags))
+		if (PerkClear.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		// handles item cmds
@@ -204,11 +173,11 @@ public class Perks extends JavaPlugin {
 			return true;
 		
 		// handles time cmds
-		if (PerkTime.onCommand(player, cmd, commandLabel, args, flags))
+		if (PerkTime.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		// handles weather cmds
-		if (PerkWeather.onCommand(player, cmd, commandLabel, args, flags))
+		if (PerkWeather.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		// handles admin cmds
@@ -232,11 +201,11 @@ public class Perks extends JavaPlugin {
 			return true;
 		
 		// handles fun cmds
-		if (PerkFun.onCommand(player, cmd, commandLabel, args, flags))
+		if (PerkFun.onCommand(player, cmd, commandLabel, args))
 			return true; 
 		
 		// handles thor cmds
-		if (PerkThor.onCommand(player, cmd, commandLabel, args, flags))
+		if (PerkThor.onCommnad(player, cmd, commandLabel, args))
 			return true;
 		
 		return false;

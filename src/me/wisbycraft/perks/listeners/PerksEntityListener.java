@@ -15,9 +15,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 
 public class PerksEntityListener implements Listener {
@@ -55,19 +55,19 @@ public class PerksEntityListener implements Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent event){
         PerkHunger.onHungerLevelChange(event);
     }
-        
-        @EventHandler(priority = EventPriority.NORMAL)
-        public void onPlayerDeath(EntityDeathEvent event) {
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerDeath(EntityDeathEvent event) {
 
-                if (!(event.getEntity() instanceof Player))
-                        return;
-                
-                PerkPlayer player = PerkUtils.getPlayer((Player)event.getEntity());
-                if (player == null)
-                        return;
-                
-                PerkDeathTP.OnDeath(player, event);
-                
-        }
-        
+		if (!(event.getEntity() instanceof Player))
+			return;
+		
+		PerkPlayer player = PerkUtils.getPlayer((Player)event.getEntity());
+		if (player == null)
+			return;
+		
+		PerkDeathTP.OnDeath(player, event);
+		
+	}
+	
 }

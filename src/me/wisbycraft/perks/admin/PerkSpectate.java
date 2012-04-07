@@ -38,9 +38,8 @@ public class PerkSpectate {
 				Player following = player.getFolowing().getPlayer();
 				
 				// reset your inventory
-				player.clearInv(true);
-				player.getPlayer().getInventory().setContents(player.getInventory());
-				player.getPlayer().getInventory().setArmorContents(player.getAmour());
+				player.getPlayer().getInventory().clear();
+				player.getPlayer().getInventory().setContents(player.getInventory().getContents());
 				
 				// teleport them to there start location
 				player.teleport(player.getStartLocation());

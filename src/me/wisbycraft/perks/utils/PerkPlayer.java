@@ -11,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -63,8 +62,7 @@ public class PerkPlayer {
 	
 	private class Spectate {
 		public boolean spectating = false;			// !< whether the player is spectating or not
-		public ItemStack[] inv = null;				// !< the players inventory
-		public ItemStack[] amour = null;			// !< the players amour
+		public PlayerInventory inv = null;			// !< the players inventory
 		public PerkPlayer folowing = null;			// !< the player this player is folowing
 		public PerkPlayer stalker = null;			// !< the player this player is folowing
 		public Location startLocation = null;  		// !< stores the start location
@@ -420,23 +418,17 @@ public class PerkPlayer {
 		player.getPlayer().teleport(m_player.getPlayer());
 	}
 	
-	public void clearInv(boolean all) {
+	public void clearInv() {
 		m_inv.inv = m_player.getPlayer().getInventory();
-		for (int i = (all ? 0 : 9); i < 36; i++) {
-            m_player.getInventory().setItem(i, null);
-        }
-		if (all) {
-			for (int i = 36; i <= 39; i++) {
-                m_player.getInventory().setItem(i, null);
-            }
-		}
-		
+		m_player.getInventory().clear();
 	}
 	
 	public void colectInv() {
-		clearInv(true);
+		m_player.getInventory().clear();
 		
-		m_player.getInventory().setContents(m_inv.inv.getContents());
+		for (int i = 0; i<m_player.getInventory().getSize(); i++) {
+			m_player.getInventory().addItem(m_inv.inv.getItem(i));
+		}
 	}
 	
 	public boolean isAfk() {
@@ -497,12 +489,8 @@ public class PerkPlayer {
 		return m_spec.spectating;
 	}
 	
-	public ItemStack[] getInventory() {
+	public PlayerInventory getInventory() {
 		return m_spec.inv;
-	}
-	
-	public ItemStack[] getAmour() {
-		return m_spec.amour;
 	}
 	
 	public PerkPlayer getFolowing() {
@@ -514,13 +502,11 @@ public class PerkPlayer {
 	}
 	
 	public void setSpectatingInventory() {
-		m_spec.inv = m_player.getInventory().getContents();
-		m_spec.amour = m_player.getInventory().getArmorContents();
+		m_spec.inv = m_player.getInventory();
 	}
 	
 	public void setSpectatingInventory(PlayerInventory inv) {
-		m_spec.inv = inv.getContents();
-		m_spec.amour = inv.getArmorContents();
+		m_spec.inv = inv;
 	}
 	
 	public void setSpecatingPlayer(PerkPlayer player) {

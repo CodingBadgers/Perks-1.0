@@ -1,6 +1,5 @@
 package me.wisbycraft.perks.admin;
 
-import java.util.List;
 import java.util.Random;
 
 import org.bukkit.command.Command;
@@ -26,7 +25,7 @@ public class PerkFun {
 		player.getPlayer().setVelocity(new Vector(0,50,0));
 	}
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args, List<String> flags) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("slap")) {
 			 
@@ -35,10 +34,6 @@ public class PerkFun {
 			
 			if (player.isBlacklisted(true))
 				return true;
-			
-			boolean silent = false;
-			if (flags.contains("s"))
-				silent = true;
 			
 			if (args.length != 1) {
 				PerkUtils.OutputToPlayer(player, "use /slap <target>");
@@ -53,8 +48,7 @@ public class PerkFun {
 			}
 			
 			slap(target);
-			if (!silent)
-				PerkUtils.OutputToAll(player.getPlayer().getName() + " has slapped " + target.getPlayer().getName());
+			PerkUtils.OutputToAll(player.getPlayer().getName() + " has slapped " + target.getPlayer().getName());
 			return true;
 		}
 		
@@ -65,10 +59,6 @@ public class PerkFun {
 			
 			if (player.isBlacklisted(true))
 				return true;
-			
-			boolean silent = false; 
-			if (flags.contains("s"))
-				silent = true;
 			
 			if (args.length != 1) {
 				PerkUtils.OutputToPlayer(player, "use /rocket <target>");
@@ -83,8 +73,7 @@ public class PerkFun {
 			}
 			
 			slap(target);
-			if (!silent)
-				PerkUtils.OutputToAll(player.getPlayer().getName() + " has rocketed " + target.getPlayer().getName());
+			PerkUtils.OutputToAll(player.getPlayer().getName() + " has rocketed " + target.getPlayer().getName());
 			return true;
 		}
 		

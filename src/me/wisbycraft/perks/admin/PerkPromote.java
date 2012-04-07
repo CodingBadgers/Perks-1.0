@@ -55,7 +55,6 @@ public class PerkPromote {
 					PerkUtils.OutputToPlayer(player, "Sorry there was a error promoting " + args[0].toLowerCase());
 					return true;
 				}
-				
 				if (target == null) {
 					
 					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been promoted to " + targetGroup.getName());
