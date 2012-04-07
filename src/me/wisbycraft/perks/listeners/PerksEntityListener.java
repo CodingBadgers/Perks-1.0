@@ -7,6 +7,7 @@ import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
@@ -36,9 +37,11 @@ public class PerksEntityListener implements Listener {
 				
 		if (event.getDamager() instanceof Player)
 			attacker = PerkUtils.getPlayer((Player)event.getDamager());
-		else if (event.getDamager() instanceof Arrow)
-			attacker = PerkUtils.getPlayer((Player)(((Arrow)event.getDamager()).getShooter()));
-		else if (event.getDamager() instanceof ThrownPotion)
+		else if (event.getDamager() instanceof Arrow) {
+			LivingEntity shooter = ((Arrow)event.getDamager()).getShooter();
+			if (shooter instanceof Player)
+				attacker = PerkUtils.getPlayer((Player)shooter);
+		} else if (event.getDamager() instanceof ThrownPotion)
 			attacker = PerkUtils.getPlayer((Player)(((ThrownPotion)event.getDamager()).getShooter()));
 		
 		// don't allow attacking whilst flying or in vanish
