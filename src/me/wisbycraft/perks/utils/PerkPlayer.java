@@ -418,10 +418,19 @@ public class PerkPlayer {
 		player.getPlayer().teleport(m_player.getPlayer());
 	}
 	
-	public void clearInv() {
-		m_inv.inv = m_player.getPlayer().getInventory();
-		m_player.getInventory().clear();
-	}
+	public void clearInv(boolean all) {
+                m_inv.inv = m_player.getPlayer().getInventory();
+                for (int i = (all ? 0 : 9); i < 36; i++) {
+            m_player.getInventory().setItem(i, null);
+        }
+                if (all) {
+                        for (int i = 36; i <= 39; i++) {
+                m_player.getInventory().setItem(i, null);
+            }
+                }
+                
+        }
+
 	
 	public void colectInv() {
 		m_player.getInventory().clear();

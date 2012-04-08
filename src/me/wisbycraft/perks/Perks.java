@@ -116,7 +116,47 @@ public class Perks extends JavaPlugin {
 		if (player == null)
 			return false;
 		
+		List<String> flags = new ArrayList<String>();
+		/* for some reason this is fucking up, will look into it later
+		 * It ends up defaulting to always having one argument on the command
+		 * and i think it is causing the error of picking a random player
+		String arguments = "";
+		
+		boolean first = true;
+		// get the flags provided
+		for (int i = 0; i < input.length; i ++) {
+			
+			if (input[i].startsWith("-")) {
+				for (int x = 0; x < input[i].length(); x++) {
+					if (input[i].charAt(x) == '-') 
+						continue;
+					flags.add(String.valueOf(input[i].charAt(x)));
+				}
+			} else if (input[i].length() > 0 && input[i] != " "){
+				if (!first) {
+					arguments += ", ";
+				}
+				arguments += input[i];
+				first = false;
+			}
+		}
+		
+		arguments = arguments.trim();
+		
+		String[] args = arguments.split(",");
+
+		// Debug //
+		for (String string : args) {
+			PerkUtils.DebugConsole(string + ", ");
+		}
+		PerkUtils.DebugConsole(String.valueOf(args.length));
+		PerkUtils.DebugConsole(arguments);
+		PerkUtils.DebugConsole(String.valueOf(arguments.length()));
+		*/
+		
+		String[] args = input;
 		// handle fly commands
+		
 		if (PerkFlying.onCommand(player, cmd, commandLabel, args))
 			return true;
 		

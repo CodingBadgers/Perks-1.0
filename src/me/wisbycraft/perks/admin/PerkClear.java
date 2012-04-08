@@ -16,8 +16,9 @@ public class PerkClear {
 				
 				if (!player.hasPermission("perks.clear.own", true))
 					return true;
-				
-				player.clearInv();
+
+				player.clearInv(true);
+
 				PerkUtils.OutputToPlayer(player, "Your inventory has been cleared.");
 			}
 			
