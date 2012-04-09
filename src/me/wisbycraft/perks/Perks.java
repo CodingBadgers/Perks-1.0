@@ -29,6 +29,7 @@ import me.wisbycraft.perks.donator.PerkTeleport;
 import me.wisbycraft.perks.listeners.PerksEntityListener;
 import me.wisbycraft.perks.listeners.PerksMobAreanaListener;
 import me.wisbycraft.perks.listeners.PerksPlayerListener;
+import me.wisbycraft.perks.listeners.PerksPvpArenaListener;
 import me.wisbycraft.perks.utils.PerkMobArena;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
@@ -49,6 +50,7 @@ public class Perks extends JavaPlugin {
 	private final PerksPlayerListener playerListener = new PerksPlayerListener();
     private final PerksEntityListener entityListener = new PerksEntityListener();
     private final PerksMobAreanaListener maListener = new PerksMobAreanaListener();
+    private final PerksPvpArenaListener paListener = new PerksPvpArenaListener();
     
 	// private final PerkThread m_thread = new PerkThread(this);
 
@@ -86,6 +88,11 @@ public class Perks extends JavaPlugin {
 		if (pm.getPlugin("MobArena") != null) {
 			pm.registerEvents(maListener, this);
 			PerkMobArena.setupMobArenaHandler();
+		}
+		
+		// set up pvparena
+		if (pm.getPlugin("pvparena") != null) {
+			pm.registerEvents(paListener, this);
 		}
 		
 		// check for multiverse
