@@ -41,9 +41,10 @@ public class PerkAdmin {
 		}
 		
 		if (commandLabel.equalsIgnoreCase("ping")) {
-			PerkUtils.OutputToPlayer(player, "ping");
+			PerkUtils.OutputToPlayer(player, "pong");
 			return true;
 		}
+				
 		return false;
 	}
 	

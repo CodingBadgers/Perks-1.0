@@ -1,8 +1,5 @@
 package me.wisbycraft.perks;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.wisbycraft.perks.admin.PerkAdmin;
 import me.wisbycraft.perks.admin.PerkClear;
 import me.wisbycraft.perks.admin.PerkDebug;
@@ -13,6 +10,7 @@ import me.wisbycraft.perks.admin.PerkItem;
 import me.wisbycraft.perks.admin.PerkLookup;
 import me.wisbycraft.perks.admin.PerkPromote;
 import me.wisbycraft.perks.admin.PerkSpectate;
+import me.wisbycraft.perks.admin.PerkStop;
 import me.wisbycraft.perks.admin.PerkThor;
 import me.wisbycraft.perks.admin.PerkTime;
 import me.wisbycraft.perks.admin.PerkVanish;
@@ -111,6 +109,9 @@ public class Perks extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] input) {
 
+		if (PerkStop.onCommand(sender, cmd, commandLabel, input))
+			return true;
+		
 		if (!(sender instanceof Player))
 			return false;
 		
@@ -119,8 +120,8 @@ public class Perks extends JavaPlugin {
 		if (player == null)
 			return false;
 		
-		List<String> flags = new ArrayList<String>();
-		/* for some reason this is fucking up, will look into it later
+		/*List<String> flags = new ArrayList<String>();
+		 for some reason this is fucking up, will look into it later
 		 * It ends up defaulting to always having one argument on the command
 		 * and i think it is causing the error of picking a random player
 		String arguments = "";

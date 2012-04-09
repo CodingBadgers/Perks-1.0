@@ -179,3 +179,7 @@ commands:
    shock:
       description: shocks a player
       usage: /<command> <target>
+      
+   stop:
+      description: Tops the server taking an optional delay time
+      usage: /<command> [time]
