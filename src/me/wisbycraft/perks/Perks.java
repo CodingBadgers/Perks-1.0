@@ -1,5 +1,8 @@
 package me.wisbycraft.perks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.wisbycraft.perks.admin.PerkAdmin;
 import me.wisbycraft.perks.admin.PerkClear;
 import me.wisbycraft.perks.admin.PerkDebug;
@@ -106,7 +109,7 @@ public class Perks extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd,
-			String commandLabel, String[] args) {
+			String commandLabel, String[] input) {
 
 		if (!(sender instanceof Player))
 			return false;

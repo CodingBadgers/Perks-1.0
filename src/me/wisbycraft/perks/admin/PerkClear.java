@@ -34,7 +34,7 @@ public class PerkClear {
 					return true;
 				}
 				
-				target.clearInv();
+				target.clearInv(true);
 				PerkUtils.OutputToPlayer(player, "You have cleared " + target.getPlayer().getName() + "'s inventory.");
 				PerkUtils.OutputToPlayer(target, "Your inventory has been cleared by " + player.getPlayer().getName());
 			}

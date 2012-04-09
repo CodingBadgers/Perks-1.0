@@ -419,17 +419,17 @@ public class PerkPlayer {
 	}
 	
 	public void clearInv(boolean all) {
-                m_inv.inv = m_player.getPlayer().getInventory();
-                for (int i = (all ? 0 : 9); i < 36; i++) {
+        m_inv.inv = m_player.getPlayer().getInventory();
+        for (int i = (all ? 0 : 9); i < 36; i++) {
             m_player.getInventory().setItem(i, null);
         }
-                if (all) {
-                        for (int i = 36; i <= 39; i++) {
+        if (all) {
+            for (int i = 36; i <= 39; i++) {
                 m_player.getInventory().setItem(i, null);
             }
-                }
-                
         }
+                
+    }
 
 	
 	public void colectInv() {
