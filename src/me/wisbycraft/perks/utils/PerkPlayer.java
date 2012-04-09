@@ -102,6 +102,8 @@ public class PerkPlayer {
 		m_inv = new Inventory();
 		m_spec = new Spectate();
 		m_thor = new Thor();
+		
+		DatabaseManager.loadKit(this);
 
 	}
 	
@@ -467,7 +469,7 @@ public class PerkPlayer {
 	public boolean canUseKit(PerkKit requestedKit) {
 		
 		for (int i = 0; i < m_kits.usedKit.size(); ++i) {
-			
+
 			if (requestedKit.getName().equalsIgnoreCase(m_kits.usedKit.get(i).getName())) {
 				
 				Calendar cal = Calendar.getInstance();

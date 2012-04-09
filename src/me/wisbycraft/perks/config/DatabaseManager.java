@@ -409,7 +409,7 @@ public class DatabaseManager {
 				"'" + time + 
 				"');";
 		
-		m_kitdb.Query(query);
+		m_kitdb.Query(query, true);
 		
 	}
 	
@@ -422,8 +422,29 @@ public class DatabaseManager {
 				"'" + kit.getName() +
 				"';";
 		
-		m_kitdb.Query(query);
+		m_kitdb.Query(query, true);
 		
+	}
+	
+	public static void loadKit(PerkPlayer player) {
+		
+		String query = "SELECT * FROM kit WHERE player = '" + player.getPlayer().getName() + "'";
+		ResultSet result = m_kitdb.QueryResult(query);
+		
+		try {
+			// while we have another result, read in the data
+			while (result.next()) {
+	            String kitName = result.getString("kitname");
+	            Long time = result.getLong("time");
+	            
+	            PerkKits.load(player, kitName, time);
+	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}		
+		
+		m_kitdb.FreeResult(result);
 	}
 
 }
