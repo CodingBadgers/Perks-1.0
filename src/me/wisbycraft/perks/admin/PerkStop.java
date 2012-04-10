@@ -12,6 +12,12 @@ public class PerkStop {
 		
 		if (commandLabel.equalsIgnoreCase("stop")) {
 			
+			if (sender instanceof Player) {
+				if (!PerkUtils.getPlayer((Player)sender).hasPermission("perks.serveradmin.stop", true))
+					return true;
+			}
+			
+			/*
 			int time = 10;
 			if (args.length == 1) {
 				try {
@@ -24,7 +30,10 @@ public class PerkStop {
 					return true;
 				}
 			}
+			*/
 			
+			// needs moving to own thread
+			/*
 			PerkUtils.OutputToAll("The Server will shutdown in " + time + " seconds...");
 						
 			while (time > 0) {
@@ -38,12 +47,13 @@ public class PerkStop {
 					e.printStackTrace();
 				}
 			}
+			*/
 			
 			PerkUtils.server().shutdown();
 			return true;
 		}
 		
-		return false;		
+		return false;
 	}
 
 }

@@ -11,6 +11,7 @@ import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -142,23 +143,28 @@ public class PerksPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerChat(PlayerChatEvent event) {
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
-		
-		if (player.isAfk()) {
-			
+		if (player.isAfk()) {	
 			event.setCancelled(true);
 		}
-		
-		if (player.isHidden()) {
-			
-			event.setCancelled(true);
-		}
-		
 	}
 	
 	@EventHandler (priority = EventPriority.NORMAL)
 	public void onPlayerInteraction(PlayerInteractEvent event) {
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+		PerkThor.onPlayerInteract(player, event);		
 		
-		PerkThor.onPlayerInteract(player, event);
+		if (player != null && (player.isFlying() || player.isHidden())) {
+			
+			Player p = player.getPlayer();			
+			if (p.getItemInHand().getType() == Material.LAVA_BUCKET || 
+				p.getItemInHand().getType() == Material.FLINT_AND_STEEL ||
+				p.getItemInHand().getType().getId() == 385) {	
+				PerkUtils.OutputToPlayer(player, player.isFlying() ? "You can't start fires whilst flying" : "You can't start fires whilst vanished");
+				event.setCancelled(true);	
+				return;
+			}
+		}
 	}
+	
+	
 }
