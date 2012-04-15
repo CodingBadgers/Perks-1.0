@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -107,25 +108,31 @@ public class PerkTime {
             return (0 - 8 + 24) * 1000;
         } else if (timeStr.equalsIgnoreCase("s1m") || timeStr.equalsIgnoreCase("sim")) {
         	return (7 - 8 + 24) * 1000;
+        } else if (timeStr.equalsIgnoreCase("sexytime")){
+        	// to be handled later, first I need to finish flags/args
         }
         
 		return -1;
 
     }
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("time")) {
 			
 			String timeStr;
 			
-			if (args.length == 0) {
+			if (args.size() == 0) {
                 timeStr = "current";
                 // If no world was specified, get the world from the sender, but
                 // fail if the sender isn't player
             } else {
-                timeStr = args[0];
+                timeStr = args.getString(0);
             }
+			
+			boolean silent = false;
+			if (args.hasFlag("s"))
+				silent = true;
 			
 			// Let the player get the time
             if (timeStr.equalsIgnoreCase("current")
@@ -150,10 +157,10 @@ public class PerkTime {
             }
             
            	setTime(time);
-           	
+
+           	if (!silent) 
             PerkUtils.OutputToAll(player.getPlayer().getName( )+ " set the time of all worlds "
-        		 	+ " to "
-        		 	+ getTimeString(matchTime(timeStr)));
+        		 	+ "to " + getTimeString(matchTime(timeStr)));
             return true;
 		}
 		

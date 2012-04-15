@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 // import java.util.TreeMap;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -165,7 +166,7 @@ public class PerkList {
 	}
 
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("who") || commandLabel.equalsIgnoreCase("list") || commandLabel.equalsIgnoreCase("players")) {
 			

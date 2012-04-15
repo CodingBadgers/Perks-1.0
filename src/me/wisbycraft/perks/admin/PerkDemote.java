@@ -2,12 +2,11 @@ package me.wisbycraft.perks.admin;
 
 import me.wisbycraft.perks.donator.PerkCapes;
 import me.wisbycraft.perks.donator.PerkColors;
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.command.Command;
-import org.bukkit.entity.Player;
-
 
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
@@ -17,47 +16,35 @@ import ru.tehkode.permissions.exceptions.RankingException;
 
 public class PerkDemote {
 	
-	private static PermissionGroup demote(Player sender, String name, String ladder) {
-		PermissionManager pex = PermissionsEx.getPermissionManager();
-		PermissionUser user = pex.getUser(name);
-		PermissionUser promoter = pex.getUser(sender);
-		
-		try {
-			PermissionGroup targetGroup = user.demote(promoter, ladder);	
-			
-			return targetGroup;
-		} catch (RankingException ex) {
-			return null;
-		}
-	}
-	
-	private static PermissionGroup demote(Player sender, String name) {
-		return demote(sender, name, "default");
-	}
-	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("demote")) {
 			if (!player.hasPermission("perks.demote", true))
 				return true;
 			
-			if (args.length == 0) {
+			if (args.size() == 0) {
 				PerkUtils.OutputToPlayer(player, "/demote <name> [ladder]");
 				return true;
 			}
 			
-			if (args.length == 1) {
-				PerkPlayer target = PerkUtils.getPlayer(args[0]);
+			if (args.size() == 1) {
+				PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 				
-				PermissionGroup targetGroup = demote(player.getPlayer(), args[0]);
+				PermissionManager pex = PermissionsEx.getPermissionManager();
+				PermissionUser user = pex.getUser(args.getString(0));
+				PermissionUser demoter = pex.getUser(player.getPlayer());
+				PermissionGroup targetGroup;
 				
-				if (targetGroup == null) {
-					PerkUtils.OutputToPlayer(player, "Sorry there was a error demoting " + args[0].toLowerCase());
+				try {
+					targetGroup = user.demote(demoter, "default");	
+				} catch (RankingException ex) {
+					PerkUtils.OutputToPlayer(player, ex.getMessage());
 					return true;
 				}
+				
 				if (target == null) {
 					
-					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been demoted to " + targetGroup.getName());
+					PerkUtils.OutputToPlayer(player, args.getString(0).toLowerCase() + " has been demoted to " + targetGroup.getName());
 					return true;
 				} else {
 					
@@ -70,19 +57,25 @@ public class PerkDemote {
 				}	
 			}
 			
-			if (args.length == 2) {
-				PerkPlayer target = PerkUtils.getPlayer(args[0]);
-				String ladder = args[1].toLowerCase();
+			if (args.size() == 2) {
+				PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 				
-				PermissionGroup targetGroup = demote(player.getPlayer(), args[0], ladder);
+				PermissionManager pex = PermissionsEx.getPermissionManager();
+				PermissionUser user = pex.getUser(args.getString(0));
+				PermissionUser demoter = pex.getUser(player.getPlayer());
+				PermissionGroup targetGroup;
+				String ladder = args.getString(2);
 				
-				if (targetGroup == null) {
-					PerkUtils.OutputToPlayer(player, "Sorry there was a error demoting " + args[0].toLowerCase());
+				try {
+					targetGroup = user.demote(demoter, ladder);	
+				} catch (RankingException ex) {
+					PerkUtils.OutputToPlayer(player, ex.getMessage());
 					return true;
 				}
+				
 				if (target == null) {
 					
-					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been demoted to " + targetGroup.getName());
+					PerkUtils.OutputToPlayer(player, args.getString(0).toLowerCase() + " has been demoted to " + targetGroup.getName());
 					return true;
 				} else {
 					

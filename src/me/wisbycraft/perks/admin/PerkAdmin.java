@@ -3,16 +3,17 @@ package me.wisbycraft.perks.admin;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.PluginManager;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 public class PerkAdmin {
 
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("perksadmin") || commandLabel.equalsIgnoreCase("padmin")) {
 			
-			if (args[0].equalsIgnoreCase("reload")) {
+			if (args.getString(0).equalsIgnoreCase("reload")) {
 				
 				if (!player.hasPermission("perks.admin.reload", true))
 					return true;

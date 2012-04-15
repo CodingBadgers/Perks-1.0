@@ -9,6 +9,7 @@ import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -88,20 +89,20 @@ public class PerkLookup {
 		return gui;
 	}
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("lookup")) {
 			
 			if (!player.hasPermission("perks.lookup", true))
 				return true;
 			
-			if (args.length !=  1) {
+			if (args.size() !=  1) {
 				PerkUtils.OutputToPlayer(player, "use /lookup <player>");
 				return true;
 			}
 			
 			StringBuilder out = new StringBuilder();
-			PerkPlayer target = PerkUtils.getPlayer(args[0]);
+			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 			PermissionManager pex = PermissionsEx.getPermissionManager();
 			
 			PermissionGroup[] group = null;
@@ -132,9 +133,9 @@ public class PerkLookup {
 				out.append(ChatColor.GOLD + "Hunger: " + ChatColor.WHITE + represent(hunger)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " x: " + Math.round(loc.getX()) + " y: " + Math.round(loc.getY()) + " z: " + Math.round(loc.getZ())).append(ChatColor.WHITE).append("\n");
 				
-			} else if (PerkUtils.server().getOfflinePlayer(args[0]) != null) {
+			} else if (PerkUtils.server().getOfflinePlayer(args.getString(0)) != null) {
 				
-				OfflinePlayer oTarget = PerkUtils.server().getOfflinePlayer(args[0]);
+				OfflinePlayer oTarget = PerkUtils.server().getOfflinePlayer(args.getString(0));
 				
 				group = pex.getUser(oTarget.getName()).getGroups();
 				name = oTarget.getName();

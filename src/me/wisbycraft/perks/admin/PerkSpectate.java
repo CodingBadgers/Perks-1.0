@@ -3,6 +3,7 @@ package me.wisbycraft.perks.admin;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -18,11 +19,11 @@ public class PerkSpectate {
 		return false;
 	}
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args)  {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args)  {
 		
 		if (commandLabel.equalsIgnoreCase("spectate")) {
 			
-			if (args.length > 1) {
+			if (args.size() > 1) {
 				PerkUtils.OutputToPlayer(player, "use /spectate [player]");
 				return true;
 			}
@@ -57,8 +58,8 @@ public class PerkSpectate {
 			}
 			
 			PerkPlayer target = null;
-			if (args.length > 0)
-				target = PerkUtils.getPlayer(args[0]);
+			if (args.size() > 0)
+				target = PerkUtils.getPlayer(args.getString(0));
 			
 			if (target == player) {
 				PerkUtils.OutputToPlayer(player, "You cant spectate yourself.");

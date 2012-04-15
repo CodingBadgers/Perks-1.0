@@ -21,9 +21,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-
 
 public class PerksPlayerListener implements Listener {
 
@@ -166,5 +166,13 @@ public class PerksPlayerListener implements Listener {
 		}
 	}
 	
+	@EventHandler (priority = EventPriority.NORMAL)
+	public void onPlayerPickUpItem(PlayerPickupItemEvent event) {
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+		
+		if (player.isHidden())
+			event.setCancelled(true);
+		
+	}
 	
 }

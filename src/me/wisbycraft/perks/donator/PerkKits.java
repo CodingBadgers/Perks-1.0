@@ -2,6 +2,7 @@ package me.wisbycraft.perks.donator;
 
 import java.util.ArrayList;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkKit;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
@@ -69,19 +70,19 @@ public class PerkKits {
 		
 	}
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("kit")) {
 			
-			if (args.length == 0) {
+			if (args.size() == 0) {
 				
 				listKits(player);
 				return true;
 				
-			} else if (args.length == 1) {
+			} else if (args.size() == 1) {
 			
 			
-				String name = args[0];
+				String name = args.getString(0);
 				
 				if (!kitExists(name)) {
 					PerkUtils.OutputToPlayer(player, "That kit does not exist.");

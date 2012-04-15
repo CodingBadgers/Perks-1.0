@@ -2,6 +2,7 @@ package me.wisbycraft.perks.admin;
 
 import java.util.List;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -15,9 +16,9 @@ public class PerkWeather {
 		
 		for (int i = 0; i<worlds.size(); i++) {
 			
-			//if (worlds.get(i).getName().equalsIgnoreCase(/* pvp world */)) {
-			//	return;
-			//}
+			if (worlds.get(i).getName().equalsIgnoreCase("WisbyPvp")) {
+				return;
+			}
 			
 			worlds.get(i).setStorm(storm);
 			
@@ -28,17 +29,21 @@ public class PerkWeather {
 		}
 	}
 	
-	public static boolean onCommand(PerkPlayer player, Command cmds, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmds, String commandLabel, PerkArgSet args) {
 		if (commandLabel.equalsIgnoreCase("weather")) {
 			
 			if (!player.hasPermission("perks.weather", true))
 				return true;
 			
-	        String weatherStr = args[0];
+	        String weatherStr = args.getString(0);
 	        int duration = -1;
 	
-	        if (args.length == 2) {
-	            duration = Integer.parseInt(args[1]);
+	        if (args.size() == 2) {
+	        	try {
+	            	duration = args.getInt(1);
+	        	} catch (NumberFormatException ex) {
+	        		duration = 0;
+	        	}
 	        }
 	
 	        if (weatherStr.equalsIgnoreCase("stormy")

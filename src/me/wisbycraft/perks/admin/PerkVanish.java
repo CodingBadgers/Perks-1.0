@@ -1,6 +1,7 @@
 package me.wisbycraft.perks.admin;
 
 import me.wisbycraft.perks.config.DatabaseManager;
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -11,6 +12,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class PerkVanish {
 	
 	public static void vanishJoin (PerkPlayer player, PlayerJoinEvent event) {
+
+		if (DatabaseManager.isVanished(player)) {
+			player.hidePlayer(false);			
+		}
+		
 		if (player.hasPermission("perks.vanish.view", false))
 			return;
 		
@@ -26,19 +32,9 @@ public class PerkVanish {
 				player.getPlayer().hidePlayer(p.getPlayer());
 			}			
 		}
-		
-		/*
-		if (DatabaseManager.isVanished(player)) {
-			player.hidePlayer();			
-		}
-		
-		if (player.isHidden()) {
-			PerkUtils.OutputToPlayer(player, "You are still hidden, well done me for making this FUCKING WORK");
-		}
-		*/
 	}
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (cmd.getName().equalsIgnoreCase("vanish")) {
 								 
@@ -64,8 +60,6 @@ public class PerkVanish {
 		return false;
 		
 	}
-	
-	/* Not needed yet, only when we log who is in vanish */
 	
 	public static void addPlayer(PerkPlayer player) {
 		DatabaseManager.addVanishPlayer(player);

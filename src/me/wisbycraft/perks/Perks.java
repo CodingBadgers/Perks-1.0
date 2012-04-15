@@ -1,12 +1,15 @@
 package me.wisbycraft.perks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.wisbycraft.perks.admin.PerkAdmin;
 import me.wisbycraft.perks.admin.PerkClear;
 import me.wisbycraft.perks.admin.PerkDebug;
 import me.wisbycraft.perks.admin.PerkDemote;
 import me.wisbycraft.perks.admin.PerkFun;
 import me.wisbycraft.perks.admin.PerkGameMode;
-import me.wisbycraft.perks.admin.PerkItem;
+import me.wisbycraft.perks.admin.PerkInventory;
 import me.wisbycraft.perks.admin.PerkLookup;
 import me.wisbycraft.perks.admin.PerkPromote;
 import me.wisbycraft.perks.admin.PerkSpectate;
@@ -18,7 +21,6 @@ import me.wisbycraft.perks.admin.PerkWeather;
 import me.wisbycraft.perks.config.DatabaseManager;
 import me.wisbycraft.perks.config.PerkConfig;
 import me.wisbycraft.perks.donator.PerkAFK;
-import me.wisbycraft.perks.donator.PerkCapes;
 import me.wisbycraft.perks.donator.PerkDeathTP;
 import me.wisbycraft.perks.donator.PerkFlying;
 import me.wisbycraft.perks.donator.PerkHomeAndBuild;
@@ -30,6 +32,7 @@ import me.wisbycraft.perks.listeners.PerksEntityListener;
 import me.wisbycraft.perks.listeners.PerksMobAreanaListener;
 import me.wisbycraft.perks.listeners.PerksPlayerListener;
 import me.wisbycraft.perks.listeners.PerksPvpArenaListener;
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkMobArena;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
@@ -127,14 +130,11 @@ public class Perks extends JavaPlugin {
 		if (player == null)
 			return false;
 		
-		/*List<String> flags = new ArrayList<String>();
-		 for some reason this is fucking up, will look into it later
-		 * It ends up defaulting to always having one argument on the command
-		 * and i think it is causing the error of picking a random player
-		String arguments = "";
-		
-		boolean first = true;
+		List<String> flags = new ArrayList<String>();
+		String[] parsedArgs = new String[input.length];
+
 		// get the flags provided
+		int k = 0;
 		for (int i = 0; i < input.length; i ++) {
 			
 			if (input[i].startsWith("-")) {
@@ -143,35 +143,25 @@ public class Perks extends JavaPlugin {
 						continue;
 					flags.add(String.valueOf(input[i].charAt(x)));
 				}
-			} else if (input[i].length() > 0 && input[i] != " "){
-				if (!first) {
-					arguments += ", ";
-				}
-				arguments += input[i];
-				first = false;
+			} else if (input[i].length() > 0 && input[i] != null){
+				parsedArgs[k] = input[i];
+				k++;
 			}
 		}
 		
-		arguments = arguments.trim();
+		PerkArgSet args = new PerkArgSet(parsedArgs, flags);
 		
-		String[] args = arguments.split(",");
-
-		// Debug //
-		for (String string : args) {
-			PerkUtils.DebugConsole(string + ", ");
+		// Start Debug 
+		for(int i = 0; i < args.getFlags().size(); i ++) {
+			PerkUtils.DebugConsole(args.getFlags().get(i));
 		}
-		PerkUtils.DebugConsole(String.valueOf(args.length));
-		PerkUtils.DebugConsole(arguments);
-		PerkUtils.DebugConsole(String.valueOf(arguments.length()));
-		*/
+		// END debug
 		
-		String[] args = input;
 		// handle fly commands
-		
 		if (PerkFlying.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
-		// handle tp commands
+		// handle teleport commands
 		if (PerkTeleport.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
@@ -186,11 +176,7 @@ public class Perks extends JavaPlugin {
 		// handles home and build commands
 		if (PerkHomeAndBuild.onCommand(player, cmd, commandLabel, args))
 			return true;
-		
-		// handles cape and color commands
-		if (PerkCapes.onCommand(player, cmd, commandLabel, args))
-			return true;
-		
+
 		// handles promote commands
 		if (PerkPromote.onCommand(player, cmd, commandLabel, args))
 			return true;
@@ -212,7 +198,7 @@ public class Perks extends JavaPlugin {
 			return true;
 		
 		// handles item cmds
-		if (PerkItem.onCommand(player, cmd, commandLabel, args))
+		if (PerkInventory.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		// handles afk cmds
@@ -258,7 +244,7 @@ public class Perks extends JavaPlugin {
 		// handles thor cmds
 		if (PerkThor.onCommnad(player, cmd, commandLabel, args))
 			return true;
-		
+
 		return false;
 	}
 

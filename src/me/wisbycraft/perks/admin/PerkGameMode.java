@@ -1,5 +1,6 @@
 package me.wisbycraft.perks.admin;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -7,14 +8,9 @@ import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
-
-/**
- * 
- * @author James
- */
 public class PerkGameMode {
 
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (cmd.getName().equalsIgnoreCase("gmtoggle")) {
 			// permission perks.gamemode.toggle.<world_name> eg perks.gamemode.toggle.WisbyWorld
@@ -34,17 +30,17 @@ public class PerkGameMode {
 
 		// checks the players gamemode
 		if (cmd.getName().equalsIgnoreCase("gm") || cmd.getName().equalsIgnoreCase("gamemode")) {
-			if (args.length == 0) {
+			if (args.size() == 0) {
 				if (player.hasPermission("perks.gamemode.check", true)) {
 					// outputs the players gamemode
 					PerkUtils.OutputToPlayer(player, "You are in " + player.getPlayer().getGameMode());
 				}
-			} else if (args.length == 1) {
+			} else if (args.size() == 1) {
 				if (player.hasPermission("perks.gamemode.check.other", true)) {
 					// this will check another players gamemode.
-					Player otherPlayer = PerkUtils.getPlayer(args[0]).getPlayer();
+					Player otherPlayer = PerkUtils.getPlayer(args.getString(0)).getPlayer();
 					if (otherPlayer == null) {
-						PerkUtils.OutputToPlayer(player, "Could not find a player with the name " + args[0]);
+						PerkUtils.OutputToPlayer(player, "Could not find a player with the name " + args.getString(0));
 					}
 					
 					PerkUtils.OutputToPlayer(player, otherPlayer.getName()+ " is in " + otherPlayer.getGameMode());

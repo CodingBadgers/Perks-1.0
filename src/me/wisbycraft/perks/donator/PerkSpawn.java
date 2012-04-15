@@ -5,12 +5,13 @@ import org.bukkit.command.Command;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 public class PerkSpawn {
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("spawn")) {
 			
@@ -31,8 +32,22 @@ public class PerkSpawn {
 				return true;
 			}
 			
-			player.teleport(spawn);
-			PerkUtils.OutputToPlayer(player, "Teleported to spawn");
+			PerkPlayer target;
+			if (args.size() == 0) {
+				target = player;
+			} else {
+				if (!player.hasPermission("perks.spawn.other", true))
+					return true;
+				
+				target = PerkUtils.getPlayer(args.getString(0));
+			}
+			
+			if (target == null) {
+				PerkUtils.OutputToPlayer(player, "Sorry that player is not online");
+			}
+			
+			target.teleport(spawn);
+			PerkUtils.OutputToPlayer(target, "Teleported to spawn");
 			return true;
 		}
 

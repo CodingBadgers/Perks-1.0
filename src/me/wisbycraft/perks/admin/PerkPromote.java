@@ -2,12 +2,11 @@ package me.wisbycraft.perks.admin;
 
 import me.wisbycraft.perks.donator.PerkCapes;
 import me.wisbycraft.perks.donator.PerkColors;
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.command.Command;
-import org.bukkit.entity.Player;
-
 
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
@@ -17,47 +16,35 @@ import ru.tehkode.permissions.exceptions.RankingException;
 
 public class PerkPromote {
 	
-	private static PermissionGroup promote(Player sender, String name, String ladder) {
-		PermissionManager pex = PermissionsEx.getPermissionManager();
-		PermissionUser user = pex.getUser(name);
-		PermissionUser promoter = pex.getUser(sender);
-		
-		try {
-			PermissionGroup targetGroup = user.promote(promoter, ladder);	
-			
-			return targetGroup;
-		} catch (RankingException ex) {
-			return null;
-		}
-	}
-	
-	private static PermissionGroup promote(Player sender, String name) {
-		return promote(sender, name, "default");
-	}
-	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("promote")) {
 			if (!player.hasPermission("perks.promote", true))
 				return true;
 			
-			if (args.length == 0) {
+			if (args.size() == 0) {
 				PerkUtils.OutputToPlayer(player, "/promote <name> [ladder]");
 				return true;
 			}
 			
-			if (args.length == 1) {
-				PerkPlayer target = PerkUtils.getPlayer(args[0]);
+			if (args.size() == 1) {
+				PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 				
-				PermissionGroup targetGroup = promote(player.getPlayer(), args[0]);
+				PermissionManager pex = PermissionsEx.getPermissionManager();
+				PermissionUser user = pex.getUser(args.getString(0));
+				PermissionUser promoter = pex.getUser(player.getPlayer());
+				PermissionGroup targetGroup;
 				
-				if (targetGroup == null) {
-					PerkUtils.OutputToPlayer(player, "Sorry there was a error promoting " + args[0].toLowerCase());
+				try {
+					targetGroup = user.promote(promoter, "default");	
+				} catch (RankingException ex) {
+					PerkUtils.OutputToPlayer(player, ex.getMessage());
 					return true;
 				}
+				
 				if (target == null) {
 					
-					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been promoted to " + targetGroup.getName());
+					PerkUtils.OutputToPlayer(player, args.getString(0).toLowerCase() + " has been promoted to " + targetGroup.getName());
 					return true;
 				} else {
 					
@@ -70,19 +57,25 @@ public class PerkPromote {
 				}	
 			}
 			
-			if (args.length == 2) {
-				PerkPlayer target = PerkUtils.getPlayer(args[0]);
-				String ladder = args[1].toLowerCase();
+			if (args.size() == 2) {
+				PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 				
-				PermissionGroup targetGroup = promote(player.getPlayer(), args[0], ladder);
+				PermissionManager pex = PermissionsEx.getPermissionManager();
+				PermissionUser user = pex.getUser(args.getString(0));
+				PermissionUser promoter = pex.getUser(player.getPlayer());
+				PermissionGroup targetGroup;
+				String ladder = args.getString(2);
 				
-				if (targetGroup == null) {
-					PerkUtils.OutputToPlayer(player, "Sorry there was a error promoting " + args[0].toLowerCase());
+				try {
+					targetGroup = user.promote(promoter, ladder);	
+				} catch (RankingException ex) {
+					PerkUtils.OutputToPlayer(player, ex.getMessage());
 					return true;
 				}
+				
 				if (target == null) {
 					
-					PerkUtils.OutputToPlayer(player, args[0].toLowerCase() + " has been promoted to " + targetGroup.getName());
+					PerkUtils.OutputToPlayer(player, args.getString(0).toLowerCase() + " has been promoted to " + targetGroup.getName());
 					return true;
 				} else {
 					

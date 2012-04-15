@@ -27,5 +27,12 @@ public class PerksPvpArenaListener implements Listener {
 			
 			PerkUtils.OutputToPlayer(player, "Your vanish mode has been disabled while you are in the arena");
 		}
+		
+		if (player.isAfk()) {
+			
+			player.setAfk(false);
+			
+			PerkUtils.OutputToPlayer(player, "You are back while you are in the arena while you are in the arena");
+		}
 	}
 }

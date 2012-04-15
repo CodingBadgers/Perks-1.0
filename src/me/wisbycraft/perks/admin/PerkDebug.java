@@ -1,5 +1,6 @@
 package me.wisbycraft.perks.admin;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -9,19 +10,19 @@ import org.bukkit.command.Command;
 
 public class PerkDebug {
 
-	public static boolean onCommand(final PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(final PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("debug")) { 
 			
-			if (args[0].equalsIgnoreCase("clock")) {
+			if (args.getString(0).equalsIgnoreCase("clock")) {
 				
 				if (!player.hasPermission("perks.debug.clock", true))
 					return true;
 				
 				 int expected = 5;
 
-		         if (args.length == 2) {
-		             expected = Math.min(30, Math.max(1, Integer.parseInt(args[1])));
+		         if (args.size() == 2) {
+		             expected = Math.min(30, Math.max(1, args.getInt(1)));
 		         }
 		
 		         player.getPlayer().sendMessage(ChatColor.DARK_RED
@@ -87,7 +88,7 @@ public class PerkDebug {
 		         return true;
 			}
 			
-			if (args[0].equalsIgnoreCase("info")) {
+			if (args.getString(0).equalsIgnoreCase("info")) {
 				
 				if (!player.hasPermission("perks.debug.info", true))
 					return true;

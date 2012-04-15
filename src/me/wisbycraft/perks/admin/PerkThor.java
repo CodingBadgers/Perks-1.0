@@ -10,6 +10,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -46,7 +47,7 @@ public class PerkThor {
 				return;
 			
 			if (event.getAction() == Action.LEFT_CLICK_AIR) {
-				if (player.getThorAmmount() != 0) {
+				if (player.getThorAmmount() != 1) {
 					
 					for (int i = 0; i < player.getThorAmmount(); i++) {
 						Block block = player.getPlayer().getTargetBlock(null, 300);
@@ -77,7 +78,7 @@ public class PerkThor {
 					for (int i = 0; i < player.getThorAmmount(); i++) {
 						Block block = event.getClickedBlock();
 		                Location loc = block.getLocation();
-	                    loc.setY(block.getLocation().getY() + 1);
+	                    loc.setY(block.getLocation().getY());
 		                
                         loc.setX(loc.getX() + random.nextDouble() * 20 - 10);
                         loc.setZ(loc.getZ() + random.nextDouble() * 20 - 10);
@@ -98,7 +99,7 @@ public class PerkThor {
 		}
 	}
 	
-	public static boolean onCommnad(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommnad(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("thor")) {
 			
@@ -108,7 +109,7 @@ public class PerkThor {
 			if (player.isBlacklisted(true))
 				return true;
 			
-			if (args.length == 0) {
+			if (args.size() == 0) {
 				
 				if (player.isThorEnabled()) {
 					
@@ -129,7 +130,7 @@ public class PerkThor {
 				}
 			} 
 			
-			if (args.length == 1) {
+			if (args.size() == 1) {
 				
 				if (player.isThorEnabled()) {
 					
@@ -141,7 +142,12 @@ public class PerkThor {
 					return true;
 				} else {
 					
-					int ammount = (Integer.parseInt(args[0]) > 50) ? 50 : Integer.parseInt(args[0]);
+					int ammount;
+					try {
+						ammount = (args.getInt(0) > 50) ? 50 : args.getInt(0);
+					} catch(NumberFormatException ex) {
+						ammount = 1;
+					}
 					player.setThorAmmount(ammount);
 					player.setThor(true);
 					PerkUtils.OutputToPlayer(player, "You have been given thors hammer, use it wisely");
@@ -160,28 +166,22 @@ public class PerkThor {
 			if (player.isBlacklisted(true))
 				return true;
 			
-			int flag;
-			int name;
+			boolean silent = false;
+			if (args.hasFlag("s"))
+				silent = true;
 			
-			if (args.length == 2) {
-				flag = 0;
-				name = 1;
-			} else {
-				flag = -1;
-				name = 0;
-			}
-			
-			PerkPlayer target = PerkUtils.getPlayer(args[name]);
+			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 			
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "No player with that name is online.");
 				return true;
 			}
 			
-			if (flag != -1 && args[flag].equalsIgnoreCase("-s")) {
+			if (!silent) 
 				PerkUtils.OutputToAll(player.getPlayer().getName() + " has shocked " + target.getPlayer().getName());
-				PerkUtils.OutputToPlayer(player, "You have shocked " + target.getPlayer().getName());
-			}
+				
+			PerkUtils.OutputToPlayer(player, "You have shocked " + target.getPlayer().getName());
+
 				
 			
 			shock (target);

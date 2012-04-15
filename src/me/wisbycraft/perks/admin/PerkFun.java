@@ -5,6 +5,7 @@ import java.util.Random;
 import org.bukkit.command.Command;
 import org.bukkit.util.Vector;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -16,7 +17,7 @@ public class PerkFun {
 		
 		player.getPlayer().setVelocity(new Vector(
                 random.nextDouble() * 10.0 - 5,
-                random.nextDouble() * 2,
+                random.nextDouble() * 5,
                 random.nextDouble() * 10.0 - 5));
 	}
 	
@@ -25,7 +26,7 @@ public class PerkFun {
 		player.getPlayer().setVelocity(new Vector(0,50,0));
 	}
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("slap")) {
 			 
@@ -35,12 +36,12 @@ public class PerkFun {
 			if (player.isBlacklisted(true))
 				return true;
 			
-			if (args.length != 1) {
+			if (args.size() != 1) {
 				PerkUtils.OutputToPlayer(player, "use /slap <target>");
 				return true;
 			}
 			
-			PerkPlayer target = PerkUtils.getPlayer(args[0]);
+			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 			
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "That player is not online");
@@ -60,19 +61,19 @@ public class PerkFun {
 			if (player.isBlacklisted(true))
 				return true;
 			
-			if (args.length != 1) {
+			if (args.size() != 1) {
 				PerkUtils.OutputToPlayer(player, "use /rocket <target>");
 				return true;
 			}
 			
-			PerkPlayer target = PerkUtils.getPlayer(args[0]);
+			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 			
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "That player is not online");
 				return true;
 			}
 			
-			slap(target);
+			rocket(target);
 			PerkUtils.OutputToAll(player.getPlayer().getName() + " has rocketed " + target.getPlayer().getName());
 			return true;
 		}

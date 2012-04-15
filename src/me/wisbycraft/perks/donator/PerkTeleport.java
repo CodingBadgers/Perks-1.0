@@ -1,5 +1,6 @@
  package me.wisbycraft.perks.donator;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -10,7 +11,7 @@ import org.bukkit.command.Command;
 
 public class PerkTeleport {
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args) {
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 
 		
 		if (cmd.getName().equalsIgnoreCase("tpr") || 
@@ -20,8 +21,8 @@ public class PerkTeleport {
 		{
 			PerkPlayer toPlayer = null;
 			
-			if (args.length == 1) {
-				String playerName = args[0];
+			if (args.size() == 1) {
+				String playerName = args.getString(0);
 				toPlayer = PerkUtils.getPlayer(PerkUtils.server().getPlayer(playerName));
 				
 				if (toPlayer == null || toPlayer.isHidden()) {
@@ -32,7 +33,7 @@ public class PerkTeleport {
 			
 			if (cmd.getName().equalsIgnoreCase("tpr")) {
 				
-				if (args.length != 1) {
+				if (args.size() != 1) {
 					PerkUtils.OutputToPlayer(player, "In correct usage of command");
 					return true;
 				}
@@ -48,7 +49,7 @@ public class PerkTeleport {
 			
 			if (cmd.getName().equalsIgnoreCase("tphr")) {
 				
-				if (args.length != 1) {
+				if (args.size() != 1) {
 					PerkUtils.OutputToPlayer(player, "In correct usage of command");
 					return true;
 				}
@@ -84,7 +85,7 @@ public class PerkTeleport {
 			if (!player.hasPermission("perks.teleport.tp", true))
 				return true;
 			
-			if (args.length != 1) {
+			if (args.size() != 1) {
 				PerkUtils.OutputToPlayer(player, ChatColor.RED + "/tp <name>");
 				return true;
 			}
@@ -92,10 +93,10 @@ public class PerkTeleport {
 			Location loc = null;
 			
 			// Handle coordinates
-	        if (args[0].matches("^[\\-0-9\\.]+,[\\-0-9\\.]+,[\\-0-9\\.]+(?:.+)?$")) {
+	        if (args.getString(0).matches("^[\\-0-9\\.]+,[\\-0-9\\.]+,[\\-0-9\\.]+(?:.+)?$")) {
 
-	            String[] arg = args[0].split(":");
-	            String[] parts = args[0].split(",");
+	            String[] arg = args.getString(0).split(":");
+	            String[] parts = args.getString(0).split(",");
 	            double x = 0, y = 0, z = 0;
 
 	            try {
@@ -119,7 +120,7 @@ public class PerkTeleport {
 				return true;
 	        }
 			
-	        PerkPlayer target = PerkUtils.getPlayer(args[0]);
+	        PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "That player is not online");
 				return true;
@@ -139,12 +140,12 @@ public class PerkTeleport {
 			if (!player.hasPermission("perks.teleport.tphere", true))
 				return true;
 			
-			if (args.length != 1) {
+			if (args.size() != 1) {
 				PerkUtils.OutputToPlayer(player, ChatColor.RED + "/tphere <name>");
 				return true;
 			}
 			
-			PerkPlayer target = PerkUtils.getPlayer(args[0]);
+			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 			
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "That player is not online");

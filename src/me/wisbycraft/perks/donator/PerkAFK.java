@@ -1,5 +1,6 @@
 package me.wisbycraft.perks.donator;
 
+import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
@@ -10,14 +11,14 @@ import org.bukkit.command.Command;
 public class PerkAFK {
 
 	
-	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, String[] args){
+	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args){
 		
 		if (commandLabel.equalsIgnoreCase("afk")) {
 			
 			if (!player.hasPermission("perks.afk", true))
 				return true;
 			
-			if (args.length == 0) {
+			if (args.size() == 0) {
 				
 				if (player.isAfk()) {
 					
