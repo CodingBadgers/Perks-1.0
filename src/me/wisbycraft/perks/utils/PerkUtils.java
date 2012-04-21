@@ -70,4 +70,26 @@ public class PerkUtils {
 		return true;
 	}
 
+	public static String parseTime(long timeTillNext) {
+		long seconds = timeTillNext;
+		long minutes = timeTillNext / 60;
+		long hours = timeTillNext / 60 / 60;
+		long days = timeTillNext / 60 / 60 / 24;
+		
+		hours = hours - days*24;
+		minutes = minutes - hours*60;
+		seconds = seconds - minutes*60;
+		
+		String time = "";
+		if (days > 1) 
+			time += days + " day" + (days == 1 ? "" : "s");
+		if (hours > 1)
+			time += hours + " hour"  + (hours == 1 ? "" : "s");
+		if (minutes > 1)
+			time += minutes + " minute"  + (minutes == 1 ? "" : "s");
+		time += seconds + " second"  + (seconds == 1 ? "" : "s");
+		
+		return time;
+	}
+
 }

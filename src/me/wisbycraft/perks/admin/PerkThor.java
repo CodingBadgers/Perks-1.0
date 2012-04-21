@@ -163,19 +163,23 @@ public class PerkThor {
 			if (args.hasFlag("s"))
 				silent = true;
 			
-			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
-			
-			if (target == null) {
-				PerkUtils.OutputToPlayer(player, "No player with that name is online.");
-				return true;
+			PerkPlayer target;
+			if (args.size() != 1) {
+				target = player;
+			} else {
+				target = PerkUtils.getPlayer(args.getString(0));
+				if (target == null) {
+					PerkUtils.OutputToPlayer(player, args.getString(0) + " is not online");
+					return true;
+				}
 			}
 			
-			if (!silent) 
+			if (!silent)
 				PerkUtils.OutputToAll(player.getPlayer().getName() + " has shocked " + target.getPlayer().getName());
-				
-			PerkUtils.OutputToPlayer(player, "You have shocked " + target.getPlayer().getName());
-
-				
+			
+			if (target != player)
+				PerkUtils.OutputToPlayer(target, "You have been shocked by " + player.getPlayer().getName());
+			PerkUtils.OutputToPlayer(player, "You have shocked " + (target != player ? target.getPlayer().getName() : "Yourself"));
 			
 			target.getPlayer().getLocation().getWorld().strikeLightning(target.getPlayer().getLocation());
 			

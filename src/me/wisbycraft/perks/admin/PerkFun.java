@@ -13,11 +13,6 @@ public class PerkFun {
 
 	private static final Random random = new Random();
 	
-	public static void rocket(PerkPlayer player) {
-		
-		player.getPlayer().setVelocity(new Vector(0,50,0));
-	}
-	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("slap")) {
@@ -28,35 +23,45 @@ public class PerkFun {
 			if (player.isBlacklisted(true))
 				return true;
 			
+			PerkPlayer target;
 			if (args.size() != 1) {
-				PerkUtils.OutputToPlayer(player, "use /slap <target>");
-				return true;
+				target = player;
+			} else {
+				target = PerkUtils.getPlayer(args.getString(0));
+				if (target == null) {
+					PerkUtils.OutputToPlayer(player, args.getString(0) + " is not online");
+					return true;
+				}
 			}
 			
-			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
-			
-			if (target == null) {
-				PerkUtils.OutputToPlayer(player, "That player is not online");
-				return true;
+			boolean silent = false;
+			if (args.hasFlag('s')) {
+				silent = true;
 			}
 			
 			if (args.hasFlag('v')) {
-                player.getPlayer().setVelocity(new Vector(
+                target.getPlayer().setVelocity(new Vector(
                         random.nextDouble() * 10.0 - 5,
                         random.nextDouble() * 10,
                         random.nextDouble() * 10.0 - 5));
             } else if (args.hasFlag('h')) {
-                player.getPlayer().setVelocity(new Vector(
+                target.getPlayer().setVelocity(new Vector(
                         random.nextDouble() * 5.0 - 2.5,
                         random.nextDouble() * 5,
                         random.nextDouble() * 5.0 - 2.5));
             } else {
-                player.getPlayer().setVelocity(new Vector(
+                target.getPlayer().setVelocity(new Vector(
                         random.nextDouble() * 2.0 - 1,
-                        random.nextDouble() * 1,
+                        random.nextDouble() * 2.5,
                         random.nextDouble() * 2.0 - 1));
             }
-			PerkUtils.OutputToAll(player.getPlayer().getName() + " has slapped " + target.getPlayer().getName());
+			
+			if (!silent)
+				PerkUtils.OutputToAll(player.getPlayer().getName() + " has slapped " + target.getPlayer().getName());
+			
+			if (target != player)
+				PerkUtils.OutputToPlayer(target, "You have been slapped by " + player.getPlayer().getName());
+			PerkUtils.OutputToPlayer(player, "You have slapped " + (target != player ? target.getPlayer().getName() : "Yourself"));
 			return true;
 		}
 		
@@ -68,21 +73,34 @@ public class PerkFun {
 			if (player.isBlacklisted(true))
 				return true;
 			
+			PerkPlayer target;
 			if (args.size() != 1) {
-				PerkUtils.OutputToPlayer(player, "use /rocket <target>");
-				return true;
+				target = player;
+			} else {
+				target = PerkUtils.getPlayer(args.getString(0));
+				if (target == null) {
+					PerkUtils.OutputToPlayer(player, args.getString(0) + " is not online");
+					return true;
+				}
 			}
 			
-			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
-			
-			if (target == null) {
-				PerkUtils.OutputToPlayer(player, "That player is not online");
-				return true;
+			boolean silent = false;
+			if (args.hasFlag('s')) {
+				silent = true;
 			}
 			
-			rocket(target);
-			PerkUtils.OutputToAll(player.getPlayer().getName() + " has rocketed " + target.getPlayer().getName());
-			return true;
+			if (args.hasFlag('h')) {
+                target.getPlayer().setVelocity(new Vector(0, 50, 0));
+            } else {
+                target.getPlayer().setVelocity(new Vector(0, 20, 0));
+            }
+			
+			if (!silent)
+				PerkUtils.OutputToAll(player.getPlayer().getName() + " has rocketed " + target.getPlayer().getName());
+			
+			if (target != player)
+				PerkUtils.OutputToPlayer(target, "You have been rocketed by " + player.getPlayer().getName());
+			PerkUtils.OutputToPlayer(player, "You have rocketed " + (target != player ? target.getPlayer().getName() : "Yourself"));return true;
 		}
 		
 		return false;

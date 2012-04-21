@@ -483,7 +483,9 @@ public class PerkPlayer {
 					return true;
 				}
 				
-				PerkUtils.OutputToPlayer(this, "You can't use kit '" + requestedKit.getName() + "' for another " + ((m_kits.usedKit.get(i).getTimeout() - timeDifference) + 1) + " seconds");
+				long timeTillNext = (m_kits.usedKit.get(i).getTimeout() - timeDifference) + 1;
+				String timeString = PerkUtils.parseTime(timeTillNext);
+				PerkUtils.OutputToPlayer(this, "You can't use kit '" + requestedKit.getName() + "' for another " + timeString);
 				
 				return false;
 			}
