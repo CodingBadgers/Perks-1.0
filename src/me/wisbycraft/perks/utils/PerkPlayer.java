@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 
@@ -29,7 +29,7 @@ public class PerkPlayer {
 	
 	private class Hunger {
 		public float m_hungerRate = PerkConfig.hungerRate;				//!< means hunger goes down at 1/4 the normal rate <- Loads from config
-		public float m_hungerCounter  =PerkConfig.hungerCounter;			//!< stores the last hunger counter, if this is equal to 1.0 (100%) let a hunger event work as normal
+		public float m_hungerCounter = PerkConfig.hungerCounter;			//!< stores the last hunger counter, if this is equal to 1.0 (100%) let a hunger event work as normal
 	}
 	
 	private class TP {
@@ -57,12 +57,12 @@ public class PerkPlayer {
 	}
 	
 	private class Inventory {
-		public PlayerInventory inv = null;			// !< stores the players inventory
+		public ItemStack[] inv = null;			// !< stores the players inventory
 	}
 	
 	private class Spectate {
 		public boolean spectating = false;			// !< whether the player is spectating or not
-		public PlayerInventory inv = null;			// !< the players inventory
+		public ItemStack[] inv = null;			// !< the players inventory
 		public PerkPlayer folowing = null;			// !< the player this player is folowing
 		public PerkPlayer stalker = null;			// !< the player this player is folowing
 		public Location startLocation = null;  		// !< stores the start location
@@ -421,7 +421,7 @@ public class PerkPlayer {
 	}
 	
 	public void clearInv(boolean all) {
-        m_inv.inv = m_player.getPlayer().getInventory();
+        m_inv.inv = m_player.getPlayer().getInventory().getContents();
         for (int i = (all ? 0 : 9); i < 36; i++) {
             m_player.getInventory().setItem(i, null);
         }
@@ -437,9 +437,7 @@ public class PerkPlayer {
 	public void colectInv() {
 		m_player.getInventory().clear();
 		
-		for (int i = 0; i<m_player.getInventory().getSize(); i++) {
-			m_player.getInventory().addItem(m_inv.inv.getItem(i));
-		}
+		m_player.getInventory().setContents(m_inv.inv);
 	}
 	
 	public boolean isAfk() {
@@ -500,7 +498,7 @@ public class PerkPlayer {
 		return m_spec.spectating;
 	}
 	
-	public PlayerInventory getInventory() {
+	public ItemStack[] getInventory() {
 		return m_spec.inv;
 	}
 	
@@ -513,10 +511,10 @@ public class PerkPlayer {
 	}
 	
 	public void setSpectatingInventory() {
-		m_spec.inv = m_player.getInventory();
+		m_spec.inv = m_player.getInventory().getContents();
 	}
 	
-	public void setSpectatingInventory(PlayerInventory inv) {
+	public void setSpectatingInventory(ItemStack[] inv) {
 		m_spec.inv = inv;
 	}
 	

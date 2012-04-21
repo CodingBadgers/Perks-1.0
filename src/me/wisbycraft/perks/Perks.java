@@ -3,40 +3,11 @@ package me.wisbycraft.perks;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.wisbycraft.perks.admin.PerkAdmin;
-import me.wisbycraft.perks.admin.PerkClear;
-import me.wisbycraft.perks.admin.PerkDebug;
-import me.wisbycraft.perks.admin.PerkDemote;
-import me.wisbycraft.perks.admin.PerkFun;
-import me.wisbycraft.perks.admin.PerkGameMode;
-import me.wisbycraft.perks.admin.PerkInventory;
-import me.wisbycraft.perks.admin.PerkLookup;
-import me.wisbycraft.perks.admin.PerkPromote;
-import me.wisbycraft.perks.admin.PerkSpectate;
-import me.wisbycraft.perks.admin.PerkStop;
-import me.wisbycraft.perks.admin.PerkThor;
-import me.wisbycraft.perks.admin.PerkTime;
-import me.wisbycraft.perks.admin.PerkVanish;
-import me.wisbycraft.perks.admin.PerkWeather;
-import me.wisbycraft.perks.config.DatabaseManager;
-import me.wisbycraft.perks.config.PerkConfig;
-import me.wisbycraft.perks.donator.PerkAFK;
-import me.wisbycraft.perks.donator.PerkDeathTP;
-import me.wisbycraft.perks.donator.PerkFlying;
-import me.wisbycraft.perks.donator.PerkHomeAndBuild;
-import me.wisbycraft.perks.donator.PerkKits;
-import me.wisbycraft.perks.donator.PerkList;
-import me.wisbycraft.perks.donator.PerkSpawn;
-import me.wisbycraft.perks.donator.PerkTeleport;
-import me.wisbycraft.perks.listeners.PerksEntityListener;
-import me.wisbycraft.perks.listeners.PerksMobAreanaListener;
-import me.wisbycraft.perks.listeners.PerksPlayerListener;
-import me.wisbycraft.perks.listeners.PerksPvpArenaListener;
-import me.wisbycraft.perks.utils.PerkArgSet;
-import me.wisbycraft.perks.utils.PerkMobArena;
-import me.wisbycraft.perks.utils.PerkPlayer;
-import me.wisbycraft.perks.utils.PerkUtils;
-import me.wisbycraft.perks.utils.PerkVault;
+import me.wisbycraft.perks.admin.*;
+import me.wisbycraft.perks.config.*;
+import me.wisbycraft.perks.donator.*;
+import me.wisbycraft.perks.listeners.*;
+import me.wisbycraft.perks.utils.*;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -119,8 +90,8 @@ public class Perks extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] input) {
 
-		if (PerkStop.onCommand(sender, cmd, commandLabel, input))
-			return true;
+		//if (PerkStop.onCommand(sender, cmd, commandLabel, input))
+		//	return true;
 		
 		if (!(sender instanceof Player))
 			return false;
@@ -137,9 +108,9 @@ public class Perks extends JavaPlugin {
 		int k = 0;
 		for (int i = 0; i < input.length; i ++) {
 			
-			if (input[i].startsWith("-")) {
+			if (input[i].startsWith("-") && !input[i].matches("^[\\-0-9\\.]+,[\\-0-9\\.]+,[\\-0-9\\.]+(?:.+)?$")) {
 				for (int x = 0; x < input[i].length(); x++) {
-					if (input[i].charAt(x) == '-') 
+					if (input[i].charAt(x) == '+') 
 						continue;
 					flags.add(String.valueOf(input[i].charAt(x)));
 				}
@@ -150,12 +121,6 @@ public class Perks extends JavaPlugin {
 		}
 		
 		PerkArgSet args = new PerkArgSet(parsedArgs, flags);
-		
-		// Start Debug 
-		for(int i = 0; i < args.getFlags().size(); i ++) {
-			PerkUtils.DebugConsole(args.getFlags().get(i));
-		}
-		// END debug
 		
 		// handle fly commands
 		if (PerkFlying.onCommand(player, cmd, commandLabel, args))

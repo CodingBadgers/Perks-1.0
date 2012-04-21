@@ -1,5 +1,7 @@
 package me.wisbycraft.perks.listeners;
 
+import java.util.StringTokenizer;
+
 import me.wisbycraft.perks.admin.PerkSpectate;
 import me.wisbycraft.perks.admin.PerkThor;
 import me.wisbycraft.perks.admin.PerkVanish;
@@ -7,6 +9,7 @@ import me.wisbycraft.perks.donator.PerkCapes;
 import me.wisbycraft.perks.donator.PerkColors;
 import me.wisbycraft.perks.donator.PerkList;
 import me.wisbycraft.perks.utils.PerkPlayer;
+import me.wisbycraft.perks.utils.PerkUrlShortener;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.GameMode;
@@ -146,6 +149,54 @@ public class PerksPlayerListener implements Listener {
 		if (player.isAfk()) {	
 			event.setCancelled(true);
 		}
+		
+		/* URL Shortener */
+		if (player.hasPermission("perks.chat.shorten", false)) {
+			
+			String msg = event.getMessage();
+			// if it uses http
+			if(msg.indexOf("http://") != -1){
+				StringBuilder result = new StringBuilder(msg.length());
+					for(StringTokenizer tokenizer = new StringTokenizer(msg, " ", true); tokenizer.hasMoreTokens();)
+					{
+						String token = tokenizer.nextToken();
+						if(token.startsWith("http://")) {
+							try	{
+								// shorten the url and add it into the message
+								result.append(PerkUrlShortener.tinyUrl(token));
+							} catch(Exception e) {
+								result.append(token);
+								e.printStackTrace();
+							}
+						} else {
+						result.append(token);
+						}
+				 
+					}
+				event.setMessage(result.toString());
+			}
+			
+			// if it uses https
+			if(msg.indexOf("https://") != -1){
+				StringBuilder result = new StringBuilder(msg.length());
+					for(StringTokenizer tokenizer = new StringTokenizer(msg, " ", true); tokenizer.hasMoreTokens();){
+						String token = tokenizer.nextToken();
+						if(token.startsWith("https://")) {
+							try	{
+								// shorten the url and add it into the message
+								result.append(PerkUrlShortener.tinyUrl(token));
+							} catch(Exception e) {
+								result.append(token);
+								e.printStackTrace();
+							}
+						} else {
+						result.append(token);
+						}
+				 
+					}
+				event.setMessage(result.toString());
+			}
+		}
 	}
 	
 	@EventHandler (priority = EventPriority.NORMAL)
@@ -174,5 +225,4 @@ public class PerksPlayerListener implements Listener {
 			event.setCancelled(true);
 		
 	}
-	
 }

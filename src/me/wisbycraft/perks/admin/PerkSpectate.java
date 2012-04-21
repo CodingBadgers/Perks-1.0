@@ -40,7 +40,7 @@ public class PerkSpectate {
 				
 				// reset your inventory
 				player.getPlayer().getInventory().clear();
-				player.getPlayer().getInventory().setContents(player.getInventory().getContents());
+				player.getPlayer().getInventory().setContents(player.getInventory());
 				
 				// teleport them to there start location
 				player.teleport(player.getStartLocation());

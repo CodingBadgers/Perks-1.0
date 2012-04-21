@@ -30,6 +30,10 @@ public class PerkArgSet {
 		return false;
 	}
 	
+	public boolean hasFlag(char ch) {
+		return hasFlag(String.valueOf(ch));
+	}
+	
 	public List<String> getFlags() {
 		return m_flags;
 	}

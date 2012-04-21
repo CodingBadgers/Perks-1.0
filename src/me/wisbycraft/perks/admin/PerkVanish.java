@@ -1,10 +1,13 @@
 package me.wisbycraft.perks.admin;
 
+import java.util.Random;
+
 import me.wisbycraft.perks.config.DatabaseManager;
 import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
+import org.bukkit.Effect;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -43,13 +46,31 @@ public class PerkVanish {
 			
 			if (player.isBlacklisted(true))
 				return true;
+			
+			Random rand = new Random();
 				
+			if (args.hasFlag('s')) {
+				player.getPlayer().getLocation().getWorld().playEffect(player.getPlayer().getLocation(),
+																		Effect.SMOKE,
+																		rand.nextInt(18));
+			} 
+			
+			if (args.hasFlag('l')) {
+				player.getPlayer().getLocation().getWorld().strikeLightningEffect(player.getPlayer().getLocation());
+			} 
+			
+			if (args.hasFlag('f')) {
+				player.getPlayer().getLocation().getWorld().playEffect(player.getPlayer().getLocation(),
+																		Effect.MOBSPAWNER_FLAMES,
+																		rand.nextInt(18));
+			}
+			
 			if (player.isHidden()) {
 				
 				player.showPlayer(true);
 				removePlayer(player);
 			} else {
-				
+
 				player.hidePlayer(true);
 				addPlayer(player);
 			}

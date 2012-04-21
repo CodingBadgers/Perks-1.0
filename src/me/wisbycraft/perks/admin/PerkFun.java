@@ -13,14 +13,6 @@ public class PerkFun {
 
 	private static final Random random = new Random();
 	
-	public static void slap(PerkPlayer player) {
-		
-		player.getPlayer().setVelocity(new Vector(
-                random.nextDouble() * 10.0 - 5,
-                random.nextDouble() * 5,
-                random.nextDouble() * 10.0 - 5));
-	}
-	
 	public static void rocket(PerkPlayer player) {
 		
 		player.getPlayer().setVelocity(new Vector(0,50,0));
@@ -48,7 +40,22 @@ public class PerkFun {
 				return true;
 			}
 			
-			slap(target);
+			if (args.hasFlag('v')) {
+                player.getPlayer().setVelocity(new Vector(
+                        random.nextDouble() * 10.0 - 5,
+                        random.nextDouble() * 10,
+                        random.nextDouble() * 10.0 - 5));
+            } else if (args.hasFlag('h')) {
+                player.getPlayer().setVelocity(new Vector(
+                        random.nextDouble() * 5.0 - 2.5,
+                        random.nextDouble() * 5,
+                        random.nextDouble() * 5.0 - 2.5));
+            } else {
+                player.getPlayer().setVelocity(new Vector(
+                        random.nextDouble() * 2.0 - 1,
+                        random.nextDouble() * 1,
+                        random.nextDouble() * 2.0 - 1));
+            }
 			PerkUtils.OutputToAll(player.getPlayer().getName() + " has slapped " + target.getPlayer().getName());
 			return true;
 		}
