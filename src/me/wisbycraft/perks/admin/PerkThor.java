@@ -2,6 +2,7 @@ package me.wisbycraft.perks.admin;
 
 import java.util.Random;
 
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,22 +18,6 @@ import me.wisbycraft.perks.utils.PerkUtils;
 public class PerkThor {
 
 	private static final Random random = new Random();
-	
-	public static void shock(PerkPlayer player) {
-		shock(player.getPlayer().getLocation());
-	}
-	
-	public static void shock(Location location) {
-		location.getWorld().strikeLightning(location);
-	}
-	
-	public static void shockEffect(PerkPlayer player) {
-		shockEffect(player.getPlayer().getLocation());
-	}
-	
-	public static void shockEffect(Location location) {
-		location.getWorld().strikeLightningEffect(location);
-	}
 	
 	public static void onPlayerInteract (PerkPlayer player, PlayerInteractEvent event) {
 		
@@ -68,7 +53,7 @@ public class PerkThor {
 	                if (block != null) {
 	                	Location loc = block.getLocation();
 	                    loc.setY(block.getLocation().getY() + 1);
-	                    PerkThor.shock(loc);
+	                    loc.getWorld().strikeLightning(loc);
 	                    return;
 	                }
 				}
@@ -92,7 +77,7 @@ public class PerkThor {
 	            	Block block = event.getClickedBlock();
 	                Location loc = block.getLocation();
 	                loc.setY(block.getLocation().getY() + 1);
-	                PerkThor.shock(loc);
+	                loc.getWorld().strikeLightning(loc);
 	                return;
 				}
             }
@@ -115,7 +100,9 @@ public class PerkThor {
 					
 					player.setThor(false);
 					PerkUtils.OutputToPlayer(player, "The power of thors hammer has been removed");
-					shockEffect(player.getPlayer().getLocation());
+					player.getPlayer().getLocation().getWorld().playEffect(player.getPlayer().getLocation(), 
+																			Effect.MOBSPAWNER_FLAMES,
+																			new Random().nextInt(9));
 					player.setThorHammer(Material.AIR);
 					player.setThorAmmount(0);
 					return true;
@@ -123,7 +110,9 @@ public class PerkThor {
 					
 					player.setThor(true);
 					PerkUtils.OutputToPlayer(player, "You have been given thors hammer, use it wisely");
-					shockEffect(player.getPlayer().getLocation());
+					player.getPlayer().getLocation().getWorld().playEffect(player.getPlayer().getLocation(), 
+																			Effect.MOBSPAWNER_FLAMES,
+																			new Random().nextInt(9));
 					player.setThorHammer(player.getPlayer().getItemInHand().getType());
 					player.setThorAmmount(1);
 					return true;
@@ -136,7 +125,9 @@ public class PerkThor {
 					
 					player.setThor(false);
 					PerkUtils.OutputToPlayer(player, "The power of thors hammer has been removed");
-					shockEffect(player.getPlayer().getLocation());
+					player.getPlayer().getLocation().getWorld().playEffect(player.getPlayer().getLocation(), 
+																			Effect.MOBSPAWNER_FLAMES,
+																			new Random().nextInt(9));
 					player.setThorHammer(Material.AIR);
 					player.setThorAmmount(0);
 					return true;
@@ -151,7 +142,9 @@ public class PerkThor {
 					player.setThorAmmount(ammount);
 					player.setThor(true);
 					PerkUtils.OutputToPlayer(player, "You have been given thors hammer, use it wisely");
-					shockEffect(player.getPlayer().getLocation());
+					player.getPlayer().getLocation().getWorld().playEffect(player.getPlayer().getLocation(), 
+																			Effect.MOBSPAWNER_FLAMES,
+																			new Random().nextInt(9));
 					player.setThorHammer(player.getPlayer().getItemInHand().getType());
 					return true;
 				}
@@ -184,7 +177,7 @@ public class PerkThor {
 
 				
 			
-			shock (target);
+			target.getPlayer().getLocation().getWorld().strikeLightning(target.getPlayer().getLocation());
 			
 			return true;
 		}
