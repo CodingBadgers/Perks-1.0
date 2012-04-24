@@ -24,7 +24,7 @@ public class PerkTeleport {
 				String playerName = args.getString(0);
 				toPlayer = PerkUtils.getPlayer(PerkUtils.server().getPlayer(playerName));
 				
-				if (toPlayer == null || toPlayer.isHidden()) {
+				if (toPlayer == null || toPlayer.isVanished()) {
 					PerkUtils.OutputToPlayer(player, playerName + " isn't online.");
 					return true;
 				}

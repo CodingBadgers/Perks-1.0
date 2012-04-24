@@ -20,9 +20,6 @@ public class PerkFun {
 			if (!player.hasPermission("perks.fun.slap", true)) 
 				return true;
 			
-			if (player.isBlacklisted(true))
-				return true;
-			
 			PerkPlayer target;
 			if (args.size() == 0) {
 				target = player;
@@ -68,9 +65,6 @@ public class PerkFun {
 		if (commandLabel.equalsIgnoreCase("rocket")) {
 			 
 			if (!player.hasPermission("perks.fun.rocket", true)) 
-				return true;
-			
-			if (player.isBlacklisted(true))
 				return true;
 			
 			PerkPlayer target;

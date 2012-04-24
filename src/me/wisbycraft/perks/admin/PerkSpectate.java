@@ -30,9 +30,6 @@ public class PerkSpectate {
 			
 			if (!player.hasPermission("perks.spectate", true))
 				return true;
-			
-			if (player.isBlacklisted(true))
-				return true;
 						
 			if (player.isSpectating()) {
 				

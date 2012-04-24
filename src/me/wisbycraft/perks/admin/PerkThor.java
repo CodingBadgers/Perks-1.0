@@ -91,9 +91,6 @@ public class PerkThor {
 			if (!player.hasPermission("perks.thor.hammer", true))
 				return true;
 			
-			if (player.isBlacklisted(true))
-				return true;
-			
 			if (args.size() == 0) {
 				
 				if (player.isThorEnabled()) {
@@ -154,9 +151,6 @@ public class PerkThor {
 		if (commandLabel.equalsIgnoreCase("shock")) {
 			
 			if (!player.hasPermission("perks.thor.shock", true))
-				return true;
-			
-			if (player.isBlacklisted(true))
 				return true;
 			
 			boolean silent = false;

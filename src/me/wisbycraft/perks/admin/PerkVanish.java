@@ -31,7 +31,7 @@ public class PerkVanish {
 			if (p == player)
 				continue;
 			
-			if (p.isHidden()) {
+			if (p.isVanished()) {
 				player.getPlayer().hidePlayer(p.getPlayer());
 			}			
 		}
@@ -42,9 +42,6 @@ public class PerkVanish {
 		if (cmd.getName().equalsIgnoreCase("vanish")) {
 								 
 			if (!player.hasPermission("perks.vanish", true))
-				return true;
-			
-			if (player.isBlacklisted(true))
 				return true;
 			
 			Random rand = new Random();
@@ -65,7 +62,7 @@ public class PerkVanish {
 																		rand.nextInt(18));
 			}
 			
-			if (player.isHidden()) {
+			if (player.isVanished()) {
 				
 				player.showPlayer(true);
 				removePlayer(player);

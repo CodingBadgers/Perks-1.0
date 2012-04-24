@@ -24,7 +24,7 @@ public class PerksMobAreanaListener implements Listener{
 			PerkUtils.OutputToPlayer(player,"Your fly mode has been disabled while you are in the arena");
 		}
 		
-		if (player.isHidden()) {
+		if (player.isVanished()) {
 			
 			player.showPlayer(true);
 			

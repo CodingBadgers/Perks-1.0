@@ -46,7 +46,8 @@ public class PerksPlayerListener implements Listener {
 		if (event.getPlayer() instanceof Player) {
 			PerkList.showOnlineList(player);
 		}
-
+		
+		player.dynmapHide();
 	}	
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -149,7 +150,7 @@ public class PerksPlayerListener implements Listener {
 		if (player.isAfk()) {	
 			event.setCancelled(true);
 		}
-		if (player.isHidden()) {
+		if (player.isVanished()) {
 			event.setCancelled(true);
 		}
 		
@@ -229,7 +230,7 @@ public class PerksPlayerListener implements Listener {
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
 		PerkThor.onPlayerInteract(player, event);		
 		
-		if (player != null && (player.isFlying() || player.isHidden())) {
+		if (player != null && (player.isFlying() || player.isVanished())) {
 			
 			Player p = player.getPlayer();			
 			if (p.getItemInHand().getType() == Material.LAVA_BUCKET || 
@@ -246,7 +247,7 @@ public class PerksPlayerListener implements Listener {
 	public void onPlayerPickUpItem(PlayerPickupItemEvent event) {
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
 		
-		if (player.isHidden())
+		if (player.isVanished())
 			event.setCancelled(true);
 		
 	}

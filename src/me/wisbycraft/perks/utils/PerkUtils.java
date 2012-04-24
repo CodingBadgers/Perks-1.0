@@ -1,13 +1,11 @@
 package me.wisbycraft.perks.utils;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import me.wisbycraft.perks.Perks;
 
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -24,7 +22,6 @@ public class PerkUtils {
 	public static DynmapAPI dynmapapi;
 	public static MVWorldManager worldManager;
 	public static boolean vaultEnabled = false;
-	public static ArrayList<OfflinePlayer> blacklist = new ArrayList<OfflinePlayer>();
 
 	static public void DebugConsole(String messsage) {
 		log.log(Level.INFO, "[Perks] " + messsage + ".");
@@ -118,6 +115,7 @@ public class PerkUtils {
 			time += hours + " hour"  + (hours == 1 ? "" : "s" ) + " ";
 		if (minutes > 1)
 			time += minutes + " minute"  + (minutes == 1 ? "" : "s") + " ";
+		time += " and ";
 		time += seconds + " second"  + (seconds == 1 ? "" : "s");
 		
 		return time;

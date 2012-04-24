@@ -75,6 +75,10 @@ public class PerkPlayer {
 		public int ammount = 0;						// !< the ammount of strikes a player causes on each swing
 	}
 	
+	private class Dynmap {
+		public boolean hidden = false;
+	}
+	
 	private Flying m_fly = null;
 	private Hunger m_hunger = null;
 	private TP m_tp = null;
@@ -85,6 +89,8 @@ public class PerkPlayer {
 	private Inventory m_inv = null;
 	private Spectate m_spec = null;
 	private Thor m_thor = null;
+	private Dynmap m_map = null;
+	
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
@@ -103,6 +109,7 @@ public class PerkPlayer {
 		m_inv = new Inventory();
 		m_spec = new Spectate();
 		m_thor = new Thor();
+		m_map = new Dynmap();
 		
 		DatabaseManager.loadKit(this);
 
@@ -407,7 +414,7 @@ public class PerkPlayer {
 		setHidden(false);
 	}
 	
-	public boolean isHidden() {
+	public boolean isVanished() {
 		return m_vanish.vanished;
 	}
 	
@@ -557,17 +564,6 @@ public class PerkPlayer {
 		m_thor.thorEnabled = thor;
 	}
 	
-	public boolean isBlacklisted(boolean report) {
-		if (!PerkUtils.blacklist.contains(this))
-			return false;
-		
-		if (report)
-			PerkUtils.OutputToPlayer(this, "Sorry you cannot use this command while blacklisted");
-		
-		return true;
-		
-	}
-	
 	public void setThorHammer(Material item) {
 		m_thor.thorHammer = item;
 	}
@@ -585,5 +581,19 @@ public class PerkPlayer {
 	
 	public int getThorAmmount() {
 		return m_thor.ammount;
+	}
+	
+	public void dynmapHide() {
+		PerkUtils.dynmapapi.setPlayerVisiblity(m_player, false);
+		m_map.hidden = false;
+	}
+	
+	public void dynmapShow() {
+		PerkUtils.dynmapapi.setPlayerVisiblity(m_player, true);
+		m_map.hidden = true;
+	}
+	
+	public boolean isDynmapHidden() {
+		return m_map.hidden;
 	}
 }
