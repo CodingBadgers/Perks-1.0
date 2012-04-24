@@ -90,8 +90,8 @@ public class Perks extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] input) {
 
-		//if (PerkStop.onCommand(sender, cmd, commandLabel, input))
-		//	return true;
+		if (PerkStop.onCommand(sender, cmd, commandLabel, input))
+			return true;
 		
 		if (!(sender instanceof Player))
 			return false;

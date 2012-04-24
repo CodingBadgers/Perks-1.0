@@ -1,5 +1,6 @@
 package me.wisbycraft.perks.admin;
 
+import me.wisbycraft.perks.config.PerkConfig;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.Bukkit;
@@ -19,10 +20,10 @@ public class PerkStop extends Thread{
 			}
 			
 			
-			int time = 10;
+			int time = 15;
 			if (args.length == 1) {
 				try {
-				time = Integer.parseInt(args[0]);
+					time = Integer.parseInt(args[0]);
 				} catch(Exception ex) {
 					if (sender instanceof Player)
 						PerkUtils.OutputToPlayer((Player)sender, "Invalid timeout '" + args[0] + "'");
@@ -37,8 +38,8 @@ public class PerkStop extends Thread{
 			else
 				PerkUtils.ErrorConsole("Shutting server down in " + time + " seconds");
 			
-			//PerkStop thread = new PerkStop(time);
-			//thread.start();
+			PerkStop thread = new PerkStop(time);
+			thread.start();
 
 			return true;
 		}
@@ -46,7 +47,7 @@ public class PerkStop extends Thread{
 		return false;
 	}
 
-	protected int time;
+	private int time;
 
 	public PerkStop (int time) {
 		this.time = time;
@@ -68,6 +69,16 @@ public class PerkStop extends Thread{
 			}
 		}
 		
+		for (Player player : PerkUtils.server().getOnlinePlayers()) {
+			player.kickPlayer(PerkConfig.shutdownMessage);
+		}
+		
+		try {
+			Thread.sleep(75);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		Bukkit.shutdown();		
 	}
 }

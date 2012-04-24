@@ -44,6 +44,10 @@ commands:
       description: Request to teleport a player to you
       usage: /<command> <player>
       
+   put:
+      description: Put a player where you are looking
+      usage: /<command> <player>
+      
    tpa:
       description: Accept a players teleport request
       usage: /<command> [player]
@@ -55,11 +59,7 @@ commands:
    death:
       description: Teleport to your last death point
       usage: /<command>
-      
-   capes:
-      description: cape overide commands
-      usage: /<command> <update/remove> [player]
-      
+       
    home:
       description: Teleport you to your current worlds home
       usage: /<command> [world]
@@ -76,10 +76,6 @@ commands:
       description: Sets your build location
       usage: /<command>
   
-   capes:
-      description: cape override commands
-      usage: /<command> <update/remove> [player]
-
    promote:
       description: promote command
       usage: /<command> <player> [ladder]
@@ -103,7 +99,7 @@ commands:
       
    item:
       description: gives yourself items 
-      usage: /<command> <id> <ammount>
+      usage: /<command> [-do] <item> [ammount] [player]
       aliases: [i]
    
    afk:
@@ -125,7 +121,7 @@ commands:
       
    clear:
       description: Clears a players inventory
-      usage: /<command> [player]
+      usage: /<command> [-sa] [player]
       
    time:
       description: changes the time
@@ -133,7 +129,7 @@ commands:
       
    weather:
       description: changes the weather
-      usage: /<command> <state> [duration] [world]
+      usage: /<command> [-s] <state> [duration] [world]
       
    perksadmin:
       description: admin commands
@@ -166,11 +162,11 @@ commands:
       
    slap:
       description: slap
-      usage: /<command> <target>
+      usage: /<command> [-hvs] <target>
       
    rocket:
       description: rocket
-      usage: /<command> <target>
+      usage: /<command> [-hs] <target>
       
    thor:
       description: grants the use of thors hammer
@@ -178,7 +174,7 @@ commands:
       
    shock:
       description: shocks a player
-      usage: /<command> <target>
+      usage: /<command> [-s] <target>
       
    stop:
       description: Tops the server taking an optional delay time

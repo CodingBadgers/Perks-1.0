@@ -25,6 +25,7 @@ public class PerkConfig {
 	public static float hungerRate;
 	public static String capesURL;
 	public static int capeRefresh;
+	public static String shutdownMessage;
 	
 	public static boolean loadConfig () {
 		
@@ -37,6 +38,7 @@ public class PerkConfig {
 			config.addDefault("Hunger.rate", "0.25");
 			config.addDefault("Hunger.counter", "0.0");
 			config.addDefault("Capes.RefreshTime", 5);
+			config.addDefault("Shutdown.message", "Server shutting down");
 
 			config.options().copyDefaults(true);
 			PerkUtils.plugin.saveConfig();
@@ -51,6 +53,7 @@ public class PerkConfig {
 		hungerCounter = Float.parseFloat(config.getString("Hunger.counter"));
 		hungerRate = Float.parseFloat(config.getString("Hunger.rate"));
 		capeRefresh = Integer.parseInt(config.getString("Capes.RefreshTime"));
+		shutdownMessage = config.getString("Shutdown.message");
 		
 		File kitConfig = new File(PerkUtils.plugin.getDataFolder() + "/" + "kits.cfg");
 		if (!kitConfig.exists()) {

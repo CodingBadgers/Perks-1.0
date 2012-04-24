@@ -86,9 +86,7 @@ public class PerkDebug {
 		         PerkUtils.server().getScheduler().scheduleSyncDelayedTask(PerkUtils.plugin, task, expectedTicks);
 		         
 		         return true;
-			}
-			
-			if (args.getString(0).equalsIgnoreCase("info")) {
+			} else if (args.getString(0).equalsIgnoreCase("info")) {
 				
 				if (!player.hasPermission("perks.debug.info", true))
 					return true;
@@ -124,10 +122,11 @@ public class PerkDebug {
 	                    + Math.floor(rt.freeMemory() / 1024.0 / 1024.0) + " MB");
 	            
 	            return true;
-	        }
+	        } else {
 			
-			PerkUtils.OutputToPlayer(player, ChatColor.RED + "/debug <clock/info>");
-			return true;
+	        	PerkUtils.OutputToPlayer(player, PerkUtils.getUsage(cmd));
+				return true;
+	        }
 		}
 		
 		return false;

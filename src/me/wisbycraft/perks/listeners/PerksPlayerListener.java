@@ -149,6 +149,9 @@ public class PerksPlayerListener implements Listener {
 		if (player.isAfk()) {	
 			event.setCancelled(true);
 		}
+		if (player.isHidden()) {
+			event.setCancelled(true);
+		}
 		
 		/* URL Shortener */
 		if (player.hasPermission("perks.chat.shorten", false)) {
@@ -196,6 +199,28 @@ public class PerksPlayerListener implements Listener {
 					}
 				event.setMessage(result.toString());
 			}
+			
+			// if it uses www.
+			if(msg.indexOf("www.") != -1){
+				StringBuilder result = new StringBuilder(msg.length());
+					for(StringTokenizer tokenizer = new StringTokenizer(msg, " ", true); tokenizer.hasMoreTokens();){
+						String token = tokenizer.nextToken();
+						if(token.startsWith("www.")) {
+							try	{
+								// shorten the url and add it into the message
+								result.append(PerkUrlShortener.tinyUrl("http://" + token));
+							} catch(Exception e) {
+								result.append(token);
+								e.printStackTrace();
+							}
+						} else {
+							result.append(token);
+						}
+							 
+					}
+				event.setMessage(result.toString());
+			}
+					
 		}
 	}
 	

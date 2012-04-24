@@ -28,7 +28,7 @@ public class PerkHomeAndBuild {
 				}
 				DatabaseManager.gotoHome(player.getPlayer(), world);
 			} else {
-				PerkUtils.OutputToPlayer(player, "use /home [world]");
+				PerkUtils.OutputToPlayer(player, cmd.getUsage());
 			}
 			
 			return true;

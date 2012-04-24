@@ -9,6 +9,7 @@ import me.wisbycraft.perks.Perks;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
+import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.dynmap.DynmapAPI;
 
@@ -60,7 +61,7 @@ public class PerkUtils {
 		return perkPlayers.getPlayer(server().getPlayer(name));
 	}
 	
-	static public boolean isNumeric(String i) {
+	static public boolean isInt(String i) {
 		try {
 			Integer.parseInt(i);
 		} catch(NumberFormatException ex) {
@@ -69,27 +70,61 @@ public class PerkUtils {
 		
 		return true;
 	}
+	
+	static public boolean isFloat(String i) {
+		try {
+			Float.parseFloat(i);
+		} catch(NumberFormatException ex) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	static public boolean isDouble(String i) {
+		try {
+			Double.parseDouble(i);
+		} catch(NumberFormatException ex) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	static public boolean isNumeric(String i) {
+		return isInt(i) || isFloat(i) || isDouble(i);
+	}
 
+	// TODO Still doesn't display the correct time
 	public static String parseTime(long timeTillNext) {
 		long seconds = timeTillNext;
 		long minutes = timeTillNext / 60;
 		long hours = timeTillNext / 60 / 60;
 		long days = timeTillNext / 60 / 60 / 24;
 		
+		Math.floor(seconds);
+		Math.floor(minutes);
+		Math.floor(hours);
+		Math.floor(days);
+		
 		hours = hours - days*24;
-		minutes = minutes - hours*60;
-		seconds = seconds - minutes*60;
+		minutes = minutes - (hours*60 + days*24);
+		seconds = seconds - (minutes*60 + hours*60 + days*24);
 		
 		String time = "";
 		if (days > 1) 
-			time += days + " day" + (days == 1 ? "" : "s");
+			time += days + " day" + (days == 1 ? "" : "s") + " ";
 		if (hours > 1)
-			time += hours + " hour"  + (hours == 1 ? "" : "s");
+			time += hours + " hour"  + (hours == 1 ? "" : "s" ) + " ";
 		if (minutes > 1)
-			time += minutes + " minute"  + (minutes == 1 ? "" : "s");
+			time += minutes + " minute"  + (minutes == 1 ? "" : "s") + " ";
 		time += seconds + " second"  + (seconds == 1 ? "" : "s");
 		
 		return time;
+	}
+	
+	public static String getUsage(Command cmd) {
+		return cmd.getUsage().replace("<command>", cmd.getName());
 	}
 
 }

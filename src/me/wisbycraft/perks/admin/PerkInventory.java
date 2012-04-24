@@ -1,10 +1,12 @@
 package me.wisbycraft.perks.admin;
+
 import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkItem;
 import me.wisbycraft.perks.utils.PerkItems;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.inventory.ItemStack;
 
@@ -83,39 +85,53 @@ public class PerkInventory {
 			if (!player.hasPermission("perks.item", true))
 				return true;
 			
-			if (args.size() == 1) {
+			if (args.size() >= 1 && args.size() <= 3) {
 				
-				ItemStack item = matchItem(args.getString(0), 1);
-				String name = getName(args.getString(0));
+				PerkPlayer target;
+				if (args.hasFlag('o')) {
+					if (!player.hasPermission("perks.item.other", true))
+						return true;
+					
+					if (PerkUtils.isNumeric(args.getString(1))) {
+						target = PerkUtils.getPlayer(args.getString(2));
+					} else {
+						target = PerkUtils.getPlayer(args.getString(1));
+					}
+				} else {
+					target = player;
+				}
+				
+				String itemString = args.getString(0);
+				int amount = 0;
+				if (args.size() >= 2) {
+					if (PerkUtils.isNumeric(args.getString(1))) {
+						amount = args.getInt(1);
+					}
+				}
+				
+				ItemStack item = matchItem(itemString, amount);
 				
 				if (item == null) {
-					PerkUtils.OutputToPlayer(player, "Could not find item");
+					PerkUtils.OutputToPlayer(player, "That item doesn't exist");
 					return true;
 				}
 				
-				player.getPlayer().getInventory().addItem(item);
-				
-				PerkUtils.OutputToPlayer(player, "You have been given "  + 1 + " " + name );
-				
-			} else if (args.size() == 2) {
-				int ammount;
-				try {
-					ammount = args.getInt(1);
-				} catch(NumberFormatException ex) {
-					PerkUtils.OutputToPlayer(player, "The ammount you entered was not a number, using 1 as the ammount");
-					ammount = 1;
-				}
-				ItemStack item = matchItem(args.getString(0),ammount);
-				String name = getName(args.getString(0));
-				
-				if (item == null) {
-					PerkUtils.OutputToPlayer(player, "Could not find item");
-					return true;
+				if (args.hasFlag('d')) {
+					Location loc = target.getPlayer().getLocation();
+					loc.getWorld().dropItemNaturally(loc, item);
+				} else {
+					target.getPlayer().getInventory().addItem(item);
 				}
 				
-				player.getPlayer().getInventory().addItem(item);
+				if (player == target) {
+					PerkUtils.OutputToPlayer(player, "You have been given " + (amount == 0 ? '1' : amount) + " " + getName(itemString));
+				} else {
+					PerkUtils.OutputToPlayer(target, player.getPlayer().getName() + " gave you " + (amount == 0 ? '1' : amount) + " " + getName(itemString));
+					PerkUtils.OutputToPlayer(player, "You gave " + target.getPlayer().getName() + " " + (amount == 0 ? '1' : amount) + " " + getName(itemString));
+				}
+			} else {
 				
-				PerkUtils.OutputToPlayer(player, "You have been given "  + item.getAmount()   + " " + name );
+				PerkUtils.OutputToPlayer(player, PerkUtils.getUsage(cmd));
 			}
 			
 			return true;

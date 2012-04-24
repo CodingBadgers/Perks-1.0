@@ -16,9 +16,9 @@ public class PerkVanish {
 	
 	public static void vanishJoin (PerkPlayer player, PlayerJoinEvent event) {
 
-		if (DatabaseManager.isVanished(player)) {
-			player.hidePlayer(false);			
-		}
+		//if (DatabaseManager.isVanished(player)) {
+		//	player.hidePlayer(false);			
+		//}
 		
 		if (player.hasPermission("perks.vanish.view", false))
 			return;

@@ -24,7 +24,7 @@ public class PerkFun {
 				return true;
 			
 			PerkPlayer target;
-			if (args.size() != 1) {
+			if (args.size() == 0) {
 				target = player;
 			} else {
 				target = PerkUtils.getPlayer(args.getString(0));
@@ -74,7 +74,7 @@ public class PerkFun {
 				return true;
 			
 			PerkPlayer target;
-			if (args.size() != 1) {
+			if (args.size() == 0) {
 				target = player;
 			} else {
 				target = PerkUtils.getPlayer(args.getString(0));

@@ -97,7 +97,7 @@ public class PerkLookup {
 				return true;
 			
 			if (args.size() !=  1) {
-				PerkUtils.OutputToPlayer(player, "use /lookup <player>");
+				PerkUtils.OutputToPlayer(player, PerkUtils.plugin.getCommand("item").getUsage());
 				return true;
 			}
 			

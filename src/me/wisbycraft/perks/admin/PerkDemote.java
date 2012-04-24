@@ -23,7 +23,7 @@ public class PerkDemote {
 				return true;
 			
 			if (args.size() == 0) {
-				PerkUtils.OutputToPlayer(player, "/demote <name> [ladder]");
+				PerkUtils.OutputToPlayer(player, PerkUtils.getUsage(cmd));
 				return true;
 			}
 			

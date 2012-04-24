@@ -23,8 +23,8 @@ public class PerkSpectate {
 		
 		if (commandLabel.equalsIgnoreCase("spectate")) {
 			
-			if (args.size() > 1) {
-				PerkUtils.OutputToPlayer(player, "use /spectate [player]");
+			if (args.size() > 1 && args.size() <= 2) {
+				PerkUtils.OutputToPlayer(player, cmd.getUsage());
 				return true;
 			}
 			

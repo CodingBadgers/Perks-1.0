@@ -4,7 +4,6 @@ import me.wisbycraft.perks.utils.PerkArgSet;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUtils;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 
@@ -34,7 +33,7 @@ public class PerkTeleport {
 			if (cmd.getName().equalsIgnoreCase("tpr")) {
 				
 				if (args.size() != 1) {
-					PerkUtils.OutputToPlayer(player, "In correct usage of command");
+					PerkUtils.OutputToPlayer(player, cmd.getUsage());
 					return true;
 				}
 				
@@ -50,7 +49,7 @@ public class PerkTeleport {
 			if (cmd.getName().equalsIgnoreCase("tphr")) {
 				
 				if (args.size() != 1) {
-					PerkUtils.OutputToPlayer(player, "In correct usage of command");
+					PerkUtils.OutputToPlayer(player, cmd.getUsage());
 					return true;
 				}
 				
@@ -86,7 +85,7 @@ public class PerkTeleport {
 				return true;
 			
 			if (args.size() != 1) {
-				PerkUtils.OutputToPlayer(player, ChatColor.RED + "/tp <name>");
+				PerkUtils.OutputToPlayer(player, cmd.getUsage());
 				return true;
 			}
 			
@@ -141,7 +140,7 @@ public class PerkTeleport {
 				return true;
 			
 			if (args.size() != 1) {
-				PerkUtils.OutputToPlayer(player, ChatColor.RED + "/tphere <name>");
+				PerkUtils.OutputToPlayer(player, cmd.getUsage());
 				return true;
 			}
 			
@@ -156,6 +155,27 @@ public class PerkTeleport {
 			
 			PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has been teleported to you.");
 			
+			return true;
+		}
+		
+		if (cmd.getName().equalsIgnoreCase("put")) {
+			
+			if (!player.hasPermission("perks.teleport.put", true))
+				return true;
+			
+			if (args.size() != 1) {
+				PerkUtils.OutputToPlayer(player, cmd.getUsage());
+				return true;
+			}
+			
+			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
+			
+			if (target == null) {
+				PerkUtils.OutputToPlayer(player, "That player is not online");
+				return true;
+			}
+			
+			target.getPlayer().teleport(player.getPlayer().getTargetBlock(null, 300).getLocation());
 			return true;
 		}
 

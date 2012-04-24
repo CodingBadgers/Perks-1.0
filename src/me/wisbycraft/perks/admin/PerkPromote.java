@@ -23,7 +23,7 @@ public class PerkPromote {
 				return true;
 			
 			if (args.size() == 0) {
-				PerkUtils.OutputToPlayer(player, "/promote <name> [ladder]");
+				PerkUtils.OutputToPlayer(player, PerkUtils.getUsage(cmd));
 				return true;
 			}
 			

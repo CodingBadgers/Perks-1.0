@@ -8,6 +8,7 @@ import me.wisbycraft.perks.config.DatabaseManager;
 import me.wisbycraft.perks.config.PerkConfig;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -134,8 +135,10 @@ public class PerkPlayer {
 		}
 		
 		// new bukkit stuff, is creative and works. WIN!
-		m_player.setAllowFlight(flying);
-		m_player.setFlying(flying);
+		if (m_player.getGameMode() != GameMode.CREATIVE) {
+			m_player.setAllowFlight(flying);	
+			m_player.setFlying(flying);
+		}
 
 		// store whether we're flying or not
 		m_fly.m_flying = flying;
@@ -207,7 +210,7 @@ public class PerkPlayer {
 		}
 				
 		PerkUtils.OutputToPlayer(this, player.getPlayer().getName() + " have sent you a tp request");
-		PerkUtils.OutputToPlayer(this, "Type '/tpa " + player.getPlayer().getName() + "' to accept there request");
+		PerkUtils.OutputToPlayer(this, "Type '/tpa' to accept there request");
 		
 		PerkUtils.OutputToPlayer(player, "Your tp request has been sent to " + m_player.getName());
 	}
@@ -295,7 +298,7 @@ public class PerkPlayer {
 		}
 				
 		PerkUtils.OutputToPlayer(this, player.getPlayer().getName() + " have sent you a tp here request");
-		PerkUtils.OutputToPlayer(this, "Type '/tpa " + player.getPlayer().getName() + "' to accept there request");
+		PerkUtils.OutputToPlayer(this, "Type '/tpa' to accept there request");
 		
 		PerkUtils.OutputToPlayer(player, "Your tp here request has been sent to " + m_player.getName());
 		
