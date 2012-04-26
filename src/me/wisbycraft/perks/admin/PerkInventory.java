@@ -116,6 +116,8 @@ public class PerkInventory {
 					return true;
 				}
 				
+				amount = item.getAmount();
+				
 				if (args.hasFlag('d')) {
 					Location loc = target.getPlayer().getLocation();
 					loc.getWorld().dropItemNaturally(loc, item);

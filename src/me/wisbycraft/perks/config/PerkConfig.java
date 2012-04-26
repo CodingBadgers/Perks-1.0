@@ -14,7 +14,6 @@ import me.wisbycraft.perks.utils.PerkKit;
 import me.wisbycraft.perks.utils.PerkUtils;
 
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -60,12 +59,6 @@ public class PerkConfig {
 			createDefaultKitConfig(kitConfig);
 		}
 		loadKitsConfig(kitConfig);
-		
-		File blacklist = new File(PerkUtils.plugin.getDataFolder() + "/" + "blacklist.cfg");
-		if (!blacklist.exists()) {
-			createDefaultBlacklist(blacklist);
-		}
-		loadBlacklist(blacklist);
 		
 		return true;
 		
@@ -170,56 +163,5 @@ public class PerkConfig {
 			e.printStackTrace();
 		}
 					
-	}
-	
-	public static void createDefaultBlacklist(File blacklist) {
-		
-		PerkUtils.log.info("Creating blacklist.");
-		
-		try {
-			blacklist.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
-
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(blacklist.getPath()));
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static void loadBlacklist(File blacklist) {
-		
-		if (!blacklist.exists()) {
-			PerkUtils.log.log(Level.SEVERE, "Config file 'blacklist.cfg' does not exist");
-			return;
-		}
-
-		PerkUtils.log.log(Level.INFO, "Loading config file 'blacklist.cfg'");
-	
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(blacklist.getPath()));
-			
-			OfflinePlayer blackListedPlayer = null;
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				if (line.length() == 0)
-					continue;
-				
-				if (PerkUtils.server().getOfflinePlayer(line) == null)
-					continue;
-				
-				blackListedPlayer = PerkUtils.server().getOfflinePlayer(line);
-				PerkUtils.blacklist.add(blackListedPlayer);
-			}
-			
-			PerkUtils.DebugConsole("Loaded " + PerkUtils.blacklist.size() + " blacklisted players");
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

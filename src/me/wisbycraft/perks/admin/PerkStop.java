@@ -20,7 +20,7 @@ public class PerkStop extends Thread{
 			}
 			
 			
-			int time = 15;
+			int time = 10;
 			if (args.length == 1) {
 				try {
 					time = Integer.parseInt(args[0]);
@@ -36,7 +36,7 @@ public class PerkStop extends Thread{
 			if (sender instanceof Player)
 				PerkUtils.OutputToPlayer((Player)sender, "Shutting server down in " + time + " seconds");
 			else
-				PerkUtils.ErrorConsole("Shutting server down in " + time + " seconds");
+				PerkUtils.DebugConsole("Shutting server down in " + time + " seconds");
 			
 			PerkStop thread = new PerkStop(time);
 			thread.start();

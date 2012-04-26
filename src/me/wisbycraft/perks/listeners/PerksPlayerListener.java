@@ -41,6 +41,10 @@ public class PerksPlayerListener implements Listener {
 		
 		PerkVanish.vanishJoin(player, event);
 		
+		if (player.isVanished()) {
+			event.setJoinMessage(null);
+		}
+		
 		PerkColors.addColor(player.getPlayer());
 		
 		if (event.getPlayer() instanceof Player) {
@@ -53,21 +57,31 @@ public class PerksPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		
-		Player bPlayer = event.getPlayer();
-		if (bPlayer == null)
-			return;
-		
-		PerkPlayer player = PerkUtils.getPlayer(bPlayer);
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
 		if (player == null)
 			return;
 		
+		if (player.isVanished()) {
+			event.setQuitMessage(null);
+		}
+		
 		player.showPlayer(false);
-		PerkUtils.perkPlayers.removePlayer(bPlayer);
+		PerkUtils.perkPlayers.removePlayer(player.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerKick(PlayerKickEvent event) {
-		PerkUtils.getPlayer(event.getPlayer()).showPlayer(false);
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+		
+		if (player == null) 
+			return;
+		
+		if (player.isVanished()) {
+			event.setLeaveMessage(null);
+		}
+		
+		player.showPlayer(false);
+			
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
 
@@ -147,10 +161,8 @@ public class PerksPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerChat(PlayerChatEvent event) {
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+		
 		if (player.isAfk()) {	
-			event.setCancelled(true);
-		}
-		if (player.isVanished()) {
 			event.setCancelled(true);
 		}
 		

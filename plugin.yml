@@ -15,11 +15,7 @@ commands:
    fly:
       description: Turns fly mode on.
       usage: /<command>
-     
-   mc:
-      description: Turns magic carpet mode on.
-      usage: /<command>
-      
+  
    gmtoggle:
       description: Toggles a players gamemode
       usage: /<command>
@@ -179,3 +175,12 @@ commands:
    stop:
       description: Tops the server taking an optional delay time
       usage: /<command> [time]
+      
+   hide:
+      description: hide's yourself from livemap
+      usage: /<command>
+      
+   show:
+      description: show's yourself on livemap
+      usage: /<command>
+ 

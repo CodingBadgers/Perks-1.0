@@ -25,13 +25,9 @@ public class Perks extends JavaPlugin {
     private final PerksEntityListener entityListener = new PerksEntityListener();
     private final PerksMobAreanaListener maListener = new PerksMobAreanaListener();
     private final PerksPvpArenaListener paListener = new PerksPvpArenaListener();
+    private final PerksHeroChatListener hcListener = new PerksHeroChatListener();
     
 	// private final PerkThread m_thread = new PerkThread(this);
-
-	@Override
-	public void onDisable() {
-
-	}
 
 	@Override
 	public void onEnable() {
@@ -39,41 +35,20 @@ public class Perks extends JavaPlugin {
 		PerkUtils.plugin = this;
 		
 		// get the plugin manager
-		PluginManager pm = this.getServer().getPluginManager();
-		
-		// decide wether spout is enabled or not
-		PerkUtils.spoutEnabled = pm.getPlugin("Spout") != null;
+		PluginManager pm = getServer().getPluginManager();
 
-		// register the 3 event listeners
+		// register the 2 bukkit event listeners
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
 		
-		// setup vault
-		if (pm.getPlugin("Vault") != null) {
-			PerkUtils.vaultEnabled = true;
-			PerkVault.setupPerms();
-		} else {
-			PerkUtils.DebugConsole("Vault not found disabling vault stuff");
-		}
+		loadDependencies(pm);
+		loadConfigs();
 		
-        PerkUtils.dynmapapi = (DynmapAPI)pm.getPlugin("dynmap");
-		
-		// set up mob arena
-		if (pm.getPlugin("MobArena") != null) {
-			pm.registerEvents(maListener, this);
-			PerkMobArena.setupMobArenaHandler();
-		}
-		
-		// set up pvparena
-		if (pm.getPlugin("pvparena") != null) {
-			pm.registerEvents(paListener, this);
-		}
-		
-		// check for multiverse
-		if (pm.getPlugin("Multiverse") != null) {
-			PerkUtils.worldManager = (MVWorldManager) pm.getPlugin("Multiverse-Core");
-		}
-		
+		// Set our thread going
+		// m_thread.start();
+	}
+
+	private void loadConfigs() {
 		// load the homes from the database
 		DatabaseManager.loadDatabases();
 		
@@ -81,9 +56,55 @@ public class Perks extends JavaPlugin {
 		if (!PerkConfig.loadConfig()) {
 			PerkUtils.ErrorConsole("Could not load config");
 		}
+	}
+
+	private void loadDependencies(PluginManager pm) {
+		// setup vault
+		if (pm.getPlugin("Vault") != null) {
+			PerkUtils.DebugConsole("Vault found, setting up vault dependency");
+			PerkUtils.vaultEnabled = true;
+			PerkVault.setupPerms();
+		} else {
+			PerkUtils.DebugConsole("Vault not found disabling vault stuff");
+		}
 		
-		// Set our thread going
-		// m_thread.start();
+		// setup Spout		
+		if (pm.getPlugin("Spout") != null) {
+			PerkUtils.DebugConsole("Spout found, setting up Spout dependency");
+			PerkUtils.spoutEnabled = pm.getPlugin("Spout") != null;
+		}
+				
+		// setup dynmap
+		if (pm.getPlugin("dynmap") != null) {
+			PerkUtils.DebugConsole("Dynmap found, setting up Dynmap dependency");
+			PerkUtils.dynmapapi = (DynmapAPI)pm.getPlugin("dynmap");
+		}	
+				
+		// setup mob arena
+		if (pm.getPlugin("MobArena") != null) {
+			PerkUtils.DebugConsole("MobArena found, setting up MobArena dependency");
+			pm.registerEvents(maListener, this);
+			PerkMobArena.setupMobArenaHandler();
+		}
+				
+		// setup pvparena
+		if (pm.getPlugin("pvparena") != null) {
+			PerkUtils.DebugConsole("PvpArena found, setting up PvpArena dependency");
+			pm.registerEvents(paListener, this);
+		}
+				
+		// setup multiverse
+		if (pm.getPlugin("Multiverse") != null) {
+			PerkUtils.DebugConsole("Multiverse found, setting up multiverse dependency");
+			PerkUtils.worldManager = (MVWorldManager) pm.getPlugin("Multiverse-Core");
+		}
+				
+		// setup herochat
+		if (pm.getPlugin("Herochat") != null) {
+			PerkUtils.DebugConsole("HeroChat found, setting up HeroChat dependency");
+			pm.registerEvents(hcListener, this);
+		}
+		
 	}
 
 	@Override
@@ -106,8 +127,7 @@ public class Perks extends JavaPlugin {
 
 		// get the flags provided
 		int k = 0;
-		for (int i = 0; i < input.length; i ++) {
-			
+		for (int i = 0; i < input.length; i ++) {	
 			if (input[i].startsWith("-") && !input[i].matches("^[\\-0-9\\.]+,[\\-0-9\\.]+,[\\-0-9\\.]+(?:.+)?$")) {
 				for (int x = 0; x < input[i].length(); x++) {
 					if (input[i].charAt(x) == '+') 
@@ -210,6 +230,10 @@ public class Perks extends JavaPlugin {
 		if (PerkThor.onCommnad(player, cmd, commandLabel, args))
 			return true;
 
+		// handles dynmap
+		if (PerkDynmap.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
 		return false;
 	}
 

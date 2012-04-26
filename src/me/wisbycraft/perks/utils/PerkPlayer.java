@@ -379,8 +379,7 @@ public class PerkPlayer {
 			players[i].hidePlayer(m_player);
 		} 
 		
-		if (PerkUtils.dynmapapi != null)
-			PerkUtils.dynmapapi.setPlayerVisiblity(m_player, false);
+		dynmapHide();
 		
 		if (broadcast)
 			PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " left the game.");
@@ -403,8 +402,7 @@ public class PerkPlayer {
 			players[i].showPlayer(m_player);
 		}
 		
-		if (PerkUtils.dynmapapi != null)
-			PerkUtils.dynmapapi.setPlayerVisiblity(m_player, true);
+		dynmapShow();
 		
 		if (broadcast)
 			PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " joined the game.");
@@ -584,11 +582,17 @@ public class PerkPlayer {
 	}
 	
 	public void dynmapHide() {
+		if (PerkUtils.dynmapapi == null)
+			return;
+		
 		PerkUtils.dynmapapi.setPlayerVisiblity(m_player, false);
 		m_map.hidden = false;
 	}
 	
 	public void dynmapShow() {
+		if (PerkUtils.dynmapapi == null)
+			return;
+		
 		PerkUtils.dynmapapi.setPlayerVisiblity(m_player, true);
 		m_map.hidden = true;
 	}
