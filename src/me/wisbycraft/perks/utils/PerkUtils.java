@@ -94,35 +94,21 @@ public class PerkUtils {
 
 	// TODO Still doesn't display the correct time
 	public static String parseTime(long timeTillNext) {
-		long seconds = timeTillNext;
-		long minutes = timeTillNext / 60;
-		long hours = timeTillNext / 60 / 60;
-		long days = timeTillNext / 60 / 60 / 24;
-		
-		Math.floor(seconds);
-		Math.floor(minutes);
-		Math.floor(hours);
-		Math.floor(days);
-		
-		hours = hours - days*24;
-		minutes = minutes - (hours*60 + days*24);
-		seconds = seconds - (minutes*60 + hours*60 + days*24);
-		
-		String time = "";
-		if (days > 1) 
-			time += days + " day" + (days == 1 ? "" : "s") + " ";
-		if (hours > 1)
-			time += hours + " hour"  + (hours == 1 ? "" : "s" ) + " ";
-		if (minutes > 1)
-			time += minutes + " minute"  + (minutes == 1 ? "" : "s") + " ";
-		time += " and ";
-		time += seconds + " second"  + (seconds == 1 ? "" : "s");
-		
-		return time;
+		long elapsedTime = timeTillNext;  
+	    String format = String.format("%%0%dd", 2);  
+	    String seconds = String.format(format, elapsedTime % 60);  
+	    String minutes = String.format(format, (elapsedTime % 3600) / 60);  
+	    String hours = String.format(format, elapsedTime / 3600);  
+	    String time =  hours + ":" + minutes + ":" + seconds;  
+	    return time;  
 	}
 	
 	public static String getUsage(Command cmd) {
 		return cmd.getUsage().replace("<command>", cmd.getName());
+	}
+
+	public static void shutdownServer() {
+		plugin.getServer().shutdown();
 	}
 
 }

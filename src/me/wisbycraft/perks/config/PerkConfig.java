@@ -37,7 +37,7 @@ public class PerkConfig {
 			config.addDefault("Hunger.rate", "0.25");
 			config.addDefault("Hunger.counter", "0.0");
 			config.addDefault("Capes.RefreshTime", 5);
-			config.addDefault("Shutdown.message", "Server shutting down");
+			config.addDefault("Shutdown.message", "The server has been shutdown");
 
 			config.options().copyDefaults(true);
 			PerkUtils.plugin.saveConfig();

@@ -15,8 +15,7 @@ public class PerksHeroChatListener implements Listener {
 	public void onPlayerChat(ChannelChatEvent event) {
 		PerkPlayer player = PerkUtils.getPlayer(event.getBukkitEvent().getPlayer());
 		
-		if (player.isVanished() 
-				&& !event.getChannel().getName().equalsIgnoreCase("Staff")) {
+		if (player.isVanished() && !event.getChannel().getName().equalsIgnoreCase("Staff")) {
 			event.getBukkitEvent().setCancelled(true);
 			PerkUtils.OutputToPlayer(player, "You cannot talk whist vanished");
 		}

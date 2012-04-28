@@ -159,8 +159,7 @@ public class PerkTime {
            	setTime(time);
 
            	if (!silent) 
-            PerkUtils.OutputToAll(player.getPlayer().getName( )+ " set the time of all worlds "
-        		 	+ "to " + getTimeString(matchTime(timeStr)));
+            PerkUtils.OutputToAll(player.getPlayer().getName( )+ " set the time of all worlds to " + getTimeString(matchTime(timeStr)));
             return true;
 		}
 		

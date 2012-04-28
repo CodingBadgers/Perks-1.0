@@ -3,7 +3,6 @@ package me.wisbycraft.perks.admin;
 import me.wisbycraft.perks.config.PerkConfig;
 import me.wisbycraft.perks.utils.PerkUtils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,7 +19,7 @@ public class PerkStop extends Thread{
 			}
 			
 			
-			int time = 10;
+			int time = 20;
 			if (args.length == 1) {
 				try {
 					time = Integer.parseInt(args[0]);
@@ -47,22 +46,25 @@ public class PerkStop extends Thread{
 		return false;
 	}
 
-	private int time;
+	private int m_time;
 
 	public PerkStop (int time) {
-		this.time = time;
+		m_time = time;
 	}
 
 	public void run() {
 		
-		PerkUtils.OutputToAll("The Server will shutdown in " + time + " seconds...");
+		PerkUtils.OutputToAll("The Server will shutdown in " + m_time + " seconds...");
 		
-		while (time > 0) {
+		while (m_time > 0) {
 			try {
 				Thread.sleep(1000);
-				time--;
-				if (time <= 5 && time != 0) {
-					PerkUtils.OutputToAll("The Server will shutdown in " + time + " seconds...");
+				m_time--;
+				
+				if (m_time % 10 == 0 && m_time != 0) {
+					PerkUtils.OutputToAll("The Server will shutdown in " + m_time + " seconds...");
+				} else if (m_time <= 5 && m_time != 0) {
+					PerkUtils.OutputToAll("The Server will shutdown in " + m_time + " seconds...");
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -74,11 +76,11 @@ public class PerkStop extends Thread{
 		}
 		
 		try {
-			Thread.sleep(75);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		Bukkit.shutdown();		
+		
+		PerkUtils.shutdownServer();
 	}
 }
