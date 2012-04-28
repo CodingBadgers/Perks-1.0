@@ -1,5 +1,8 @@
 package me.wisbycraft.perks.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +25,7 @@ public class PerkUtils {
 	public static DynmapAPI dynmapapi;
 	public static MVWorldManager worldManager;
 	public static boolean vaultEnabled = false;
+	public static ArrayList<PerkWebChatPlayer> webChatPlayers = new ArrayList<PerkWebChatPlayer>();
 
 	static public void DebugConsole(String messsage) {
 		log.log(Level.INFO, "[Perks] " + messsage + ".");
@@ -102,6 +106,13 @@ public class PerkUtils {
 	    String time =  hours + ":" + minutes + ":" + seconds;  
 	    return time;  
 	}
+	
+	public static String parseDate(long time)throws Exception {
+		   SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy ");
+	 
+		   Date resultdate = new Date(time);
+		   return sdf.format(resultdate);
+	} 
 	
 	public static String getUsage(Command cmd) {
 		return cmd.getUsage().replace("<command>", cmd.getName());

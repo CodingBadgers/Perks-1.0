@@ -7,6 +7,7 @@ import me.wisbycraft.perks.admin.PerkThor;
 import me.wisbycraft.perks.admin.PerkVanish;
 import me.wisbycraft.perks.donator.PerkCapes;
 import me.wisbycraft.perks.donator.PerkColors;
+//import me.wisbycraft.perks.donator.PerkJoining;
 import me.wisbycraft.perks.donator.PerkList;
 import me.wisbycraft.perks.utils.PerkPlayer;
 import me.wisbycraft.perks.utils.PerkUrlShortener;
@@ -23,10 +24,15 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+//import org.bukkit.event.player.PlayerLoginEvent;
+//import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
+//import ru.tehkode.permissions.PermissionManager;
+//import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class PerksPlayerListener implements Listener {
 
@@ -54,6 +60,27 @@ public class PerksPlayerListener implements Listener {
 		player.dynmapHide();
 	}	
 
+	/* Not tested yet, need to max out a server to try though :P
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerLogin(PlayerLoginEvent event) {
+		PermissionManager pex = PermissionsEx.getPermissionManager();
+		
+		if (PerkUtils.server().getOnlinePlayers().length != PerkUtils.server().getMaxPlayers())
+			return;
+		
+		if (!pex.has(event.getPlayer(), "perks.forcejoin")) {
+			event.disallow(Result.KICK_FULL, "Sorry the server is full");
+			return;
+		}
+
+		if (PerkJoining.kickPlayer()){
+			event.allow();
+		} else {
+			event.disallow(Result.KICK_FULL, "Sorry the server is full");
+		}
+	}
+	*/
+	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		

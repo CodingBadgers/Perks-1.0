@@ -111,12 +111,8 @@ public class PerkLookup {
 			int hunger = 0;
 			Location loc = null;
 			// boolean banned; <- will be used when we come to writing the new admin plugin
-			
-			/* 
-			 * Need to add more to this at some point 
-			 * 
-			 * Way to late now though :P
-			 */
+			String firstPlayed = null;
+			String lastPlayed = null;
 			
 			if (target != null) {
 				
@@ -125,6 +121,17 @@ public class PerkLookup {
 				health = target.getPlayer().getHealth();
 				hunger= target.getPlayer().getFoodLevel();
 				loc = target.getPlayer().getLocation();
+				
+				try {
+					firstPlayed = PerkUtils.parseDate(target.getPlayer().getFirstPlayed());
+				} catch (Exception ex){
+					firstPlayed = ChatColor.RED + "Error";
+				}
+				try {
+					lastPlayed = PerkUtils.parseDate(target.getPlayer().getLastPlayed());
+				} catch (Exception ex){
+					lastPlayed = ChatColor.RED + "Error";
+				}
 			
 				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
@@ -132,21 +139,35 @@ public class PerkLookup {
 				out.append(ChatColor.GOLD + "Health: " + ChatColor.WHITE + represent(health)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Hunger: " + ChatColor.WHITE + represent(hunger)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " x: " + Math.round(loc.getX()) + " y: " + Math.round(loc.getY()) + " z: " + Math.round(loc.getZ())).append(ChatColor.WHITE).append("\n");
-				
+				out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + firstPlayed).append("\n");
+				out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + lastPlayed).append("\n");
+			
 			} else if (PerkUtils.server().getOfflinePlayer(args.getString(0)) != null) {
 				
-				OfflinePlayer oTarget = PerkUtils.server().getOfflinePlayer(args.getString(0));
-				
-				group = pex.getUser(oTarget.getName()).getGroups();
-				name = oTarget.getName();
+				OfflinePlayer oTarget = PerkUtils.server().getOfflinePlayer(args.getString(0));				
 			
 				if (!oTarget.hasPlayedBefore()) {
 					PerkUtils.OutputToPlayer(player, "That player has not played on this server");
 					return true;
 				}
 				
+				group = pex.getUser(oTarget.getName()).getGroups();
+				name = oTarget.getName();
+				try {
+					firstPlayed = PerkUtils.parseDate(oTarget.getFirstPlayed());
+				} catch (Exception ex){
+					firstPlayed = ChatColor.RED + "Error";
+				}
+				try {
+					lastPlayed = PerkUtils.parseDate(oTarget.getLastPlayed());
+				} catch (Exception ex){
+					lastPlayed = ChatColor.RED + "Error";
+				}
+				
 				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
+				out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + firstPlayed).append("\n");
+				out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + lastPlayed).append("\n");
 			}
 			
 			String[] lines = out.toString().split("\n");
