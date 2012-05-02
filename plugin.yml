@@ -1,9 +1,9 @@
 name: Perks
 authors: [N3wton, wman2]
-main: me.wisbycraft.perks.Perks
+main: me.wman.perks.Perks
 version: 1.9
-website: www.wisbycraft.com
-description: A plugin containing all the Donator perks for WisbyCraft
+website: www.mcbadgercraft.com
+description: A plugin containing all the Donator perks for McBadgerCraft
 softdepend: [Spout, MobArena, dynmap, Multiverse-Core, Vault]
 depend: [BukkitDatabaseManager]
 
@@ -184,3 +184,6 @@ commands:
       description: show's yourself on livemap
       usage: /<command>
  
+   setspawn:
+      description: sets the spawn for the world you are in
+      usage: /<command>
