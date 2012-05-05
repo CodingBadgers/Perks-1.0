@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import org.dynmap.DynmapAPI;
 
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
@@ -242,9 +243,13 @@ public class Perks extends JavaPlugin {
 		if (PerkThor.onCommnad(player, cmd, commandLabel, args))
 			return true;
 
-		// handles dynmap
+		// handles dynmap cmds
 		if (PerkDynmap.onCommand(player, cmd, commandLabel, args))
 			return true;
+		
+		/*// handles plugins cmd
+		if (PerkPlugins.onCommand(player, cmd, commandLabel, args))		
+			return true;*/
 		
 		return false;
 	}

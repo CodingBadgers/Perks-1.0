@@ -13,8 +13,7 @@ public class PerkGameMode {
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (cmd.getName().equalsIgnoreCase("gmtoggle")) {
-			// permission perks.gamemode.toggle.<world_name> eg perks.gamemode.toggle.WisbyWorld
-			if (player.hasPermission("perks.gamemode.toggle." + player.getPlayer().getWorld().getName(), true)) {
+			if (player.hasPermission("perks.gamemode.toggle", true)) {
 
 				if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
 					PerkUtils.OutputToPlayer(player, "Now in Survival Mode");
@@ -52,8 +51,7 @@ public class PerkGameMode {
 
 		// change to creative mode
 		if (cmd.getName().equalsIgnoreCase("creative")) {
-			// permission perks.gamemode.creative.<world_name> eg perks.gamemode.creative.WisbyWorld
-			if (player.hasPermission("perks.gamemode.creative." + player.getPlayer().getWorld().getName(), true)) {
+			if (player.hasPermission("perks.gamemode.creative", true)) {
                 if (!(player.getPlayer().getGameMode() == GameMode.CREATIVE)) {
                 	player.getPlayer().setGameMode(GameMode.CREATIVE);
                 	PerkUtils.OutputToPlayer(player, "Now in creative mode");
@@ -66,8 +64,7 @@ public class PerkGameMode {
 
 		// change to survival mode
 		if (cmd.getName().equalsIgnoreCase("survival")) {
-			// permission perks.gamemode.survival.<world_name> eg perks.gamemode.survival.WisbyWorld
-			if (player.hasPermission("perks.gamemode.survival." + player.getPlayer().getWorld().getName(), true)) {
+			if (player.hasPermission("perks.gamemode.survival", true)) {
 				if (!(player.getPlayer().getGameMode() == GameMode.SURVIVAL)) {
 					player.getPlayer().setGameMode(GameMode.SURVIVAL);
 					PerkUtils.OutputToPlayer(player, "Now in survial mode");

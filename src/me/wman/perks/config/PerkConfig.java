@@ -25,6 +25,7 @@ public class PerkConfig {
 	public static String capesURL;
 	public static int capeRefresh;
 	public static String shutdownMessage;
+	public static int shutdownTimeout;
 	
 	public static boolean loadConfig () {
 		
@@ -38,7 +39,8 @@ public class PerkConfig {
 			config.addDefault("Hunger.counter", "0.0");
 			config.addDefault("Capes.RefreshTime", 5);
 			config.addDefault("Shutdown.message", "The server has been shutdown");
-
+			config.addDefault("Shutdown.defaultTimeout", 30);
+			
 			config.options().copyDefaults(true);
 			PerkUtils.plugin.saveConfig();
 		} catch (Exception ex) {
@@ -53,17 +55,74 @@ public class PerkConfig {
 		hungerRate = Float.parseFloat(config.getString("Hunger.rate"));
 		capeRefresh = Integer.parseInt(config.getString("Capes.RefreshTime"));
 		shutdownMessage = config.getString("Shutdown.message");
+		shutdownTimeout = config.getInt("Shutdown.timeout");
 		
-		File kitConfig = new File(PerkUtils.plugin.getDataFolder() + "/" + "kits.cfg");
+		File kitConfig = new File(PerkUtils.plugin.getDataFolder() + File.separator + "kits.cfg");
 		if (!kitConfig.exists()) {
 			createDefaultKitConfig(kitConfig);
 		}
 		loadKitsConfig(kitConfig);
 		
+		File pluginBlacklist = new File(PerkUtils.plugin.getDataFolder()+ File.separator + "plugins.cfg");
+		if (!pluginBlacklist.exists()) {
+			createDefaultPluginBlackList(pluginBlacklist);
+		}
+		loadPluginBlacklist(pluginBlacklist);
+		
 		return true;
 		
 	}
 	
+	private static void createDefaultPluginBlackList(File pluginBlacklist) {
+		PerkUtils.log.info("Creating default kit config.");
+		
+		try {
+			pluginBlacklist.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(pluginBlacklist.getPath()));
+			
+			writer.write("# plugin blacklist file, please use exact plugin names");
+			writer.write("# if you dont the plugin will still be displayed in the /plugins command");
+			
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void loadPluginBlacklist(File pluginBlacklist) {
+
+		if (!pluginBlacklist.exists()) {
+			PerkUtils.log.log(Level.SEVERE, "Config file 'plugins.cfg' does not exist");
+			return;
+		}
+
+		PerkUtils.log.log(Level.INFO, "Loading config file 'plugins.cfg'");
+		
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(pluginBlacklist.getPath()));
+			String line = null;
+			
+			while((line = reader.readLine()) != null) {
+				if (line.startsWith("#"))
+					continue;
+				
+				if (line.length() == 0)
+					continue;
+					
+				PerkUtils.pluginBlacklist.add(line);
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+
 	public static void createDefaultKitConfig(File kitConfig) {
 		
 		PerkUtils.log.info("Creating default kit config.");

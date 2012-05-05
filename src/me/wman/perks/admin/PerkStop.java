@@ -42,6 +42,17 @@ public class PerkStop extends Thread{
 			return true;
 		}
 		
+		if (commandLabel.equalsIgnoreCase("forcestop")) {
+			
+			if (sender instanceof Player) {
+				if (!PerkUtils.getPlayer((Player) sender).hasPermission("perks.serveradmin.forcestop", true));
+					return true;
+			}
+			
+			PerkUtils.shutdownServer();
+			return true;
+		}
+		
 		return false;
 	}
 

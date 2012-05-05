@@ -13,8 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -59,6 +59,7 @@ public class PerkPlayer {
 	
 	private class Inventory {
 		public ItemStack[] inv = null;			// !< stores the players inventory
+		public ItemStack[] armour;
 	}
 	
 	private class Spectate {
@@ -76,7 +77,7 @@ public class PerkPlayer {
 	}
 	
 	private class Dynmap {
-		public boolean hidden = false;
+		public boolean hidden = false;				// !< stores whether the player is hidden from live map or not
 	}
 	
 	private Flying m_fly = null;
@@ -95,9 +96,8 @@ public class PerkPlayer {
 	public PerkPlayer(Player player) {
 		m_player = player;
 		
-		if (PerkUtils.spoutEnabled) {
+		if (PerkUtils.spoutEnabled) 
 			m_spoutPlayer = (SpoutPlayer) player;
-		}
 		
 		m_fly = new Flying();
 		m_hunger = new Hunger();
@@ -112,6 +112,9 @@ public class PerkPlayer {
 		m_map = new Dynmap();
 		
 		DatabaseManager.loadKit(this);
+		
+		if (PerkUtils.dynmapapi != null)
+			m_map.hidden = PerkUtils.dynmapapi.getPlayerVisbility(player);
 
 	}
 	
@@ -156,7 +159,6 @@ public class PerkPlayer {
 	}
 
 	// checks whether a player has permission to do something or not
-	// tryed to use vault, but failed
 	public boolean hasPermission(String permission, boolean reportError) {
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
@@ -336,6 +338,7 @@ public class PerkPlayer {
 	
 	public void resetDeath() {
 		m_deathTP.m_hasDied = false;
+		m_deathTP.m_location = null;
 	}
 	
 	public void setBuildLocation(Location loc, boolean announce) {
@@ -430,9 +433,12 @@ public class PerkPlayer {
 	
 	public void clearInv(boolean all) {
         m_inv.inv = m_player.getPlayer().getInventory().getContents();
+        m_inv.armour = m_player.getPlayer().getInventory().getArmorContents();
+        
         for (int i = (all ? 0 : 9); i < 36; i++) {
             m_player.getInventory().setItem(i, null);
         }
+        
         if (all) {
             for (int i = 36; i <= 39; i++) {
                 m_player.getInventory().setItem(i, null);
@@ -443,9 +449,10 @@ public class PerkPlayer {
 
 	
 	public void colectInv() {
-		m_player.getInventory().clear();
+		clearInv(true);
 		
 		m_player.getInventory().setContents(m_inv.inv);
+		m_player.getInventory().setArmorContents(m_inv.armour);
 	}
 	
 	public boolean isAfk() {
@@ -504,6 +511,7 @@ public class PerkPlayer {
 		return true;
 	}
 	
+	// Spectating 
 	public boolean isSpectating() {
 		return m_spec.spectating;
 	}
@@ -586,7 +594,7 @@ public class PerkPlayer {
 			return;
 		
 		PerkUtils.dynmapapi.setPlayerVisiblity(m_player, false);
-		m_map.hidden = false;
+		m_map.hidden = true;
 	}
 	
 	public void dynmapShow() {
@@ -594,7 +602,7 @@ public class PerkPlayer {
 			return;
 		
 		PerkUtils.dynmapapi.setPlayerVisiblity(m_player, true);
-		m_map.hidden = true;
+		m_map.hidden = false;
 	}
 	
 	public boolean isDynmapHidden() {

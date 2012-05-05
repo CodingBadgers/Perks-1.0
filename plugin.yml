@@ -15,22 +15,32 @@ commands:
    fly:
       description: Turns fly mode on.
       usage: /<command>
-  
+      permission: perks.fly
+        
+   land:
+      description: forces your fly mode off
+      usage: /<command>
+      permission: perks.fly
+      
    gmtoggle:
       description: Toggles a players gamemode
       usage: /<command>
+      permission: perks.gamemode.toggle
 
    gm:
       description: Lets you see a players gamemode
       usage: /<command> [player]
+      permission: perks.gamemode.check
    
    creative:
       description: puts you into creative mode
       usage: /<command>
+      permission: perks.gamemode.creative
 
    survival:
       description: puts you into survival mode
       usage: /<command>
+      permission: perks.gamemode.survival
       
    tpr:
       description: Request to be teleported to player
@@ -87,10 +97,6 @@ commands:
    list:
       description: lists all online players
       aliases: [who,players]
-      usage: /<command>
-      
-   land:
-      description: forces your fly mode off
       usage: /<command>
       
    item:
@@ -186,4 +192,13 @@ commands:
  
    setspawn:
       description: sets the spawn for the world you are in
+      usage: /<command>
+      
+   plugins:
+      description: lists all plugins that arn't blacklisted
+      usage: /<command>
+      aliases: [pl, pldebug]
+      
+   forcestop:
+      description: force stop the server without timeout
       usage: /<command>

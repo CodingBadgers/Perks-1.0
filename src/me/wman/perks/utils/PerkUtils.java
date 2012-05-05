@@ -23,11 +23,12 @@ public class PerkUtils {
 	static public PerkPlayerArray perkPlayers = new PerkPlayerArray();
 	static public Perks plugin = null;
 	static public boolean spoutEnabled = false;
-	public static DynmapAPI dynmapapi;
+	public static DynmapAPI dynmapapi = null;
 	public static MVWorldManager worldManager;
 	public static boolean vaultEnabled = false;
 	public static ArrayList<PerkWebChatPlayer> webChatPlayers = new ArrayList<PerkWebChatPlayer>();
-
+	public static ArrayList<String> pluginBlacklist = new ArrayList<String>();
+	
 	static public void DebugConsole(String messsage) {
 		log.log(Level.INFO, "[Perks] " + messsage + ".");
 	}

@@ -2,10 +2,10 @@ package me.wman.perks.listeners;
 
 import java.util.StringTokenizer;
 
-//import me.wisbycraft.perks.donator.PerkJoining;
 import me.wman.perks.admin.PerkSpectate;
 import me.wman.perks.admin.PerkThor;
 import me.wman.perks.admin.PerkVanish;
+import me.wman.perks.donator.PerkJoining;
 import me.wman.perks.donator.PerkCapes;
 import me.wman.perks.donator.PerkColors;
 import me.wman.perks.donator.PerkList;
@@ -24,15 +24,15 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-//import org.bukkit.event.player.PlayerLoginEvent;
-//import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-//import ru.tehkode.permissions.PermissionManager;
-//import ru.tehkode.permissions.bukkit.PermissionsEx;
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class PerksPlayerListener implements Listener {
 
@@ -60,7 +60,7 @@ public class PerksPlayerListener implements Listener {
 		player.dynmapHide();
 	}	
 
-	/* Not tested yet, need to max out a server to try though :P
+	// Not tested yet, need to max out a server to try though :P
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerLogin(PlayerLoginEvent event) {
 		PermissionManager pex = PermissionsEx.getPermissionManager();
@@ -79,7 +79,6 @@ public class PerksPlayerListener implements Listener {
 			event.disallow(Result.KICK_FULL, "Sorry the server is full");
 		}
 	}
-	*/
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
