@@ -27,7 +27,7 @@ public class Perks extends JavaPlugin {
     private final PerksMobAreanaListener maListener = new PerksMobAreanaListener();
     private final PerksPvpArenaListener paListener = new PerksPvpArenaListener();
     private final PerksHeroChatListener hcListener = new PerksHeroChatListener();
-    private final PerksWebChatListener wcListener = new PerksWebChatListener();
+    //private final PerksWebChatListener wcListener = new PerksWebChatListener();
     
 	// private final PerkThread m_thread = new PerkThread(this);
 
@@ -115,7 +115,7 @@ public class Perks extends JavaPlugin {
 		if (pm.getPlugin("WebListener") != null 
 				&& pm.getPlugin("WebListener").getDescription().getVersion() == "1.20") {
 			PerkUtils.DebugConsole("WebListener found, setting up WebListener dependency");
-			pm.registerEvents(wcListener, this);
+			//pm.registerEvents(wcListener, this);
 		}
 		
 	}

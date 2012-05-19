@@ -104,7 +104,14 @@ public class PerkUtils {
 	    String seconds = String.format(format, elapsedTime % 60);  
 	    String minutes = String.format(format, (elapsedTime % 3600) / 60);  
 	    String hours = String.format(format, elapsedTime / 3600);  
-	    String time =  hours + ":" + minutes + ":" + seconds;  
+	    String time = "";
+	    
+	    boolean showHours = !hours.equalsIgnoreCase("00");
+	    boolean showMinutes = showHours || !minutes.equalsIgnoreCase("00");
+	    
+	    time += showHours ? hours + " hours, " : "";
+	    time += showMinutes ? minutes + " minutes and " : "";
+	    time += seconds + " seconds";  
 	    return time;  
 	}
 	
@@ -122,10 +129,15 @@ public class PerkUtils {
 	}
 
 	// shutdown and kick all players with the shutdown message
-	public static void shutdownServer() {
+	public synchronized static void shutdownServer() {
 		
-		for (PerkPlayer player : perkPlayers) {
-			player.getPlayer().kickPlayer(PerkConfig.shutdownMessage);
+		try {
+			Player[] players = plugin.getServer().getOnlinePlayers();
+			for (int i = 0; i < players.length; ++i) {
+				players[i].kickPlayer(PerkConfig.shutdownMessage);
+			}
+		} catch (Exception ex) {
+			// this try is to just stop spamming, if it fails, it will just send the default minecraft java exception to the client
 		}
 		
 		plugin.getServer().shutdown();
