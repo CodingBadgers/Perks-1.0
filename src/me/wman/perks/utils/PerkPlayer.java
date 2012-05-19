@@ -152,6 +152,9 @@ public class PerkPlayer {
 
 		// store whether we're flying or not
 		m_fly.m_flying = flying;
+		
+		// update it in database
+		DatabaseManager.setFlying(this, flying);
 	}
 
 	public boolean isFlying() {

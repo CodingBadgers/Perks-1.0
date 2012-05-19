@@ -41,8 +41,8 @@ public class PerkThor {
 		                Location loc = block.getLocation();
 	                    loc.setY(block.getLocation().getY() + 1);
 		                
-                        loc.setX(loc.getX() + random.nextDouble() * 20 - 10);
-                        loc.setZ(loc.getZ() + random.nextDouble() * 20 - 10);
+                        loc.setX(loc.getX() + random.nextDouble() * (player.getThorAmmount() > 1 ? player.getThorAmmount()/2 : 1) - 10);
+                        loc.setZ(loc.getZ() + random.nextDouble() * (player.getThorAmmount() > 1 ? player.getThorAmmount()/2 : 1) - 10);
                         
                         player.getPlayer().getLocation().getWorld().strikeLightning(loc);
 					}
@@ -65,8 +65,8 @@ public class PerkThor {
 		                Location loc = block.getLocation();
 	                    loc.setY(block.getLocation().getY());
 		                
-                        loc.setX(loc.getX() + random.nextDouble() * 20 - 10);
-                        loc.setZ(loc.getZ() + random.nextDouble() * 20 - 10);
+                        loc.setX(loc.getX() + random.nextDouble() * (player.getThorAmmount() > 1 ? player.getThorAmmount()/2 : 1) - 10);
+                        loc.setZ(loc.getZ() + random.nextDouble() * (player.getThorAmmount() > 1 ? player.getThorAmmount()/2 : 1) - 10);
                         
                         player.getPlayer().getLocation().getWorld().strikeLightning(loc);
 					}

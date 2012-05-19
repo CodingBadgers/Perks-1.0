@@ -131,14 +131,20 @@ public class PerkUtils {
 	// shutdown and kick all players with the shutdown message
 	public synchronized static void shutdownServer() {
 		
-		try {
+		// this seems to work, however i have left your version in just incase it fails when we increase the amount of players
+		Player[] players = server().getOnlinePlayers().clone();
+		for (Player pl : players) {
+			pl.kickPlayer(PerkConfig.shutdownMessage);
+		}
+		
+		/*try {
 			Player[] players = plugin.getServer().getOnlinePlayers();
 			for (int i = 0; i < players.length; ++i) {
 				players[i].kickPlayer(PerkConfig.shutdownMessage);
 			}
 		} catch (Exception ex) {
 			// this try is to just stop spamming, if it fails, it will just send the default minecraft java exception to the client
-		}
+		}*/
 		
 		plugin.getServer().shutdown();
 	}

@@ -23,6 +23,7 @@ public class DatabaseManager {
 	static private BukkitDatabase m_builddb = null;
 	static private BukkitDatabase m_vanishdb = null;
 	static private BukkitDatabase m_kitdb = null;
+	static private BukkitDatabase m_flydb = null;
 	
 	public static class tpLocation {	
 		String playername;
@@ -31,7 +32,6 @@ public class DatabaseManager {
 		
 	static public ArrayList<tpLocation> homes = new ArrayList<tpLocation>();
 	static public ArrayList<tpLocation> builds = new ArrayList<tpLocation>();
-	static public ArrayList<PerkPlayer> vanish = new ArrayList<PerkPlayer>();
 	
 	public static void loadDatabases() {
 		
@@ -163,28 +163,7 @@ public class DatabaseManager {
 			// to create a table we pass an SQL query.
 			m_vanishdb.Query(query, true);
 		}
-		
-		// select every property from the table
-		query = "SELECT * FROM vanish";
-		result = m_vanishdb.QueryResult(query);
-		
-		try {
-			// while we have another result, read in the data
-			while (result.next()) {
-	            String playerName = result.getString("player");
-	            PerkPlayer newPlayer = PerkUtils.getPlayer(playerName);
-	            vanish.add(newPlayer);
-	            
-	        }
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		}		
-		
-		m_vanishdb.FreeResult(result);
-		
-		
-		
+
 		// create an SQList object
 		m_kitdb = BukkitDatabaseManager.CreateDatabase("kit", PerkUtils.plugin, DatabaseType.SQLite);
 		
@@ -224,6 +203,21 @@ public class DatabaseManager {
 		}		
 		
 		m_kitdb.FreeResult(result);
+		
+		m_flydb = BukkitDatabaseManager.CreateDatabase("Fly", PerkUtils.plugin, DatabaseType.SQLite);
+		
+		if (!m_flydb.TableExists("flying")) {
+			
+			PerkUtils.DebugConsole("Could not find flying table, creating one now");
+			
+			query = "CREATE TABLE flying (" +
+							"name VARCHAR(64)" +
+							");";
+			
+			m_flydb.Query(query, true);
+		}
+		
+		// no need to store in array, will just read when needed
 	}
 	
 	public static void AddHome(Player player, Location loc) {
@@ -371,9 +365,7 @@ public class DatabaseManager {
 				"('player') VALUES (" + 
 				"'" + player.getPlayer().getName() +
 				"');";
-		m_vanishdb.Query(query);
-		
-		vanish.add(player);
+		m_vanishdb.Query(query, true);
 		
 	}
 	
@@ -383,21 +375,27 @@ public class DatabaseManager {
 				"WHERE player=" + 
 				"'" + player.getPlayer().getName() +
 				"';";
-		m_vanishdb.Query(query);
+		m_vanishdb.Query(query, true);
 		
-		vanish.remove(player);
 	}
 	
 	public static boolean isVanished(PerkPlayer player) {
 		
-		for (int i = 0; i < vanish.size(); i++) {
-			if (vanish.get(i).getPlayer().getName().equalsIgnoreCase(player.getPlayer().getName())) {
-				return true;
-			}
+		if (!player.hasPermission("perks.vanish", false))
+			return false;
+		
+		String query = "SELECT * FROM vanish WHERE player='" + player.getPlayer().getName() + "'";
+		ResultSet result = m_vanishdb.QueryResult(query);
+		
+		boolean vanished;
+		try {
+			vanished = result.next();
+		} catch (SQLException e) {
+			vanished = false;
 		}
 		
-		return false;
-		
+		m_vanishdb.FreeResult(result);
+		return vanished;
 	}
 	
 	public static void addKit(PerkPlayer player, PerkKit kit, Long time) {
@@ -445,6 +443,42 @@ public class DatabaseManager {
 		}		
 		
 		m_kitdb.FreeResult(result);
+	}
+	
+	public static boolean isFlying(PerkPlayer player) {
+		
+		if (!player.hasPermission("perks.fly", false)) 
+			return false;
+		
+		String query = "SELECT * FROM flying WHERE name ='" + player.getPlayer().getName() + "'";
+		ResultSet result = m_flydb.QueryResult(query);
+
+		boolean flying;
+		try {
+			flying = result.next();
+		} catch (SQLException e) {
+			flying = false;
+		}
+		
+		m_flydb.FreeResult(result);
+		return flying;
+	}
+	
+	public static void setFlying(PerkPlayer player, boolean flying) {
+		
+		String query;
+		
+		// if they are to be set flying insert them into the table
+		if (flying) {
+			query = "INSERT INTO flying (name) VALUES (" +
+					"'" + player.getPlayer().getName() + "');";
+		// if not remove them from it
+		} else {
+			query = "DELETE FROM flying WHERE " +
+					"name='" + player.getPlayer().getName() + "';";
+		}
+		
+		m_flydb.Query(query, true);
 	}
 
 }

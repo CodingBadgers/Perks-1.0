@@ -12,9 +12,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class PerkInventory {      
 	
-	private static ItemStack matchItem(String name, int amount) {
+	private static ItemStack[] matchItem(String name, int amount) {
 		
-		ItemStack items;
+		ItemStack itemsTemp;
 		PerkItem info;
 		
 		if (PerkUtils.isNumeric(name)) {	
@@ -32,6 +32,7 @@ public class PerkInventory {
 					return null;
 				}
 			}
+			
 			try {
 				id = Integer.parseInt(name);
 			} catch(NumberFormatException ex) {
@@ -43,15 +44,8 @@ public class PerkInventory {
 			if (info == null)
 				return null;
 			
-			items = info.toStack();
+			itemsTemp = info.toStack();
 			
-			if (amount < 1) {
-				items.setAmount(1);
-			} else if (amount > items.getMaxStackSize()) {
-				items.setAmount(items.getMaxStackSize());
-			} else {
-				items.setAmount(amount);
-			}
 			
 		} else {
 			
@@ -60,17 +54,23 @@ public class PerkInventory {
 			if (info == null)
 				return null;
 			
-			items = info.toStack();
-			
-			if (amount < 1) {
-				items.setAmount(1);
-			} else if (amount > items.getMaxStackSize()) {
-				items.setAmount(items.getMaxStackSize());
-			} else {
-				items.setAmount(amount);
-			}
+			itemsTemp = info.toStack();
 			
 		}
+		
+		ItemStack[] items = null;
+		
+		if (amount < 1) {
+			itemsTemp.setAmount(1);
+			items = new ItemStack[] {itemsTemp};
+		} else if (amount > itemsTemp.getMaxStackSize()) {
+			// TODO needs to split it up into stacks of the max stack size
+			itemsTemp.setAmount(itemsTemp.getMaxStackSize());
+			items = new ItemStack[] {itemsTemp};
+		} else {
+			items = new ItemStack[] {itemsTemp};
+		}
+		
 		return items;
 	}
 	
@@ -109,18 +109,23 @@ public class PerkInventory {
 					}
 				}
 				
-				ItemStack item = matchItem(itemString, amount);
+				ItemStack[] item = matchItem(itemString, amount);
 				
 				if (item == null) {
 					PerkUtils.OutputToPlayer(player, "That item doesn't exist");
 					return true;
 				}
 				
-				amount = item.getAmount();
+				if (item.length > 1) 
+					amount = item.length * item[0].getMaxStackSize();
+				else 
+					amount = item[0].getAmount();
 				
 				if (args.hasFlag('d')) {
-					Location loc = target.getPlayer().getLocation();
-					loc.getWorld().dropItemNaturally(loc, item);
+					for (ItemStack stack : item) {
+						Location loc = target.getPlayer().getLocation();
+						loc.getWorld().dropItemNaturally(loc, stack);
+					}
 				} else {
 					target.getPlayer().getInventory().addItem(item);
 				}

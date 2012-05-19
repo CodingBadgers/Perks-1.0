@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 import me.wman.perks.admin.PerkSpectate;
 import me.wman.perks.admin.PerkThor;
 import me.wman.perks.admin.PerkVanish;
+import me.wman.perks.config.DatabaseManager;
 import me.wman.perks.donator.PerkJoining;
 import me.wman.perks.donator.PerkCapes;
 import me.wman.perks.donator.PerkColors;
@@ -56,6 +57,9 @@ public class PerksPlayerListener implements Listener {
 		if (event.getPlayer() instanceof Player) {
 			PerkList.showOnlineList(player);
 		}
+		
+		if (DatabaseManager.isFlying(player))
+			player.setFlying(true);
 		
 		player.dynmapHide();
 	}	
@@ -190,6 +194,8 @@ public class PerksPlayerListener implements Listener {
 			to = safe;
 		}
 
+		if (player.isAfk())
+			event.setCancelled(true);
 	}
 	
 	// returns a PerkPlayer from a given Bukkit Player
