@@ -10,6 +10,9 @@ public class PerkDynmap {
 
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
+		if (PerkUtils.dynmapapi == null)
+			return false;
+		
 		if (commandLabel.equalsIgnoreCase("show")) {
 			
 			if (player.isDynmapHidden()){
