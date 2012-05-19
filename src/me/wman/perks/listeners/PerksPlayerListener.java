@@ -176,6 +176,19 @@ public class PerksPlayerListener implements Listener {
 		}
 		
 		PerkColors.addColor(player.getPlayer());
+		
+		// make sure the location wont kill them...
+		if (to.getBlock().getType() != Material.AIR)
+		{
+			Location safe = to;
+			while (safe.getBlock().getType() != Material.AIR)
+				safe = safe.add(0.0, 1.0, 0.0);
+				
+			PerkUtils.OutputToPlayer(player, "The location you wanted to teleport to is obstructed");
+			PerkUtils.OutputToPlayer(player, "We have teleported you to a safe location");
+			
+			to = safe;
+		}
 
 	}
 	
