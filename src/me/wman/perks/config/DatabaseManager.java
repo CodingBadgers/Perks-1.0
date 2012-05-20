@@ -305,8 +305,9 @@ public class DatabaseManager {
 		for (int i = 0; i < builds.size(); ++i) {
 			tpLocation b = builds.get(i);
 			if (b.playername.equalsIgnoreCase(player.getName())) {
-				player.teleport(b.loc);
-				PerkUtils.OutputToPlayer(player, "You have been teleported to your build location");
+				if (player.teleport(b.loc)) {
+					PerkUtils.OutputToPlayer(player, "You have been teleported to your build location");
+				}
 				return;
 			}
 		}
@@ -344,8 +345,9 @@ public class DatabaseManager {
 			tpLocation h = homes.get(i);
 			if (h.playername.equalsIgnoreCase(player.getName()) 
 					&& world == h.loc.getWorld()) {
-				player.teleport(h.loc);
-				PerkUtils.OutputToPlayer(player, "You have been teleported to your home location");
+				if (player.teleport(h.loc)) {
+					PerkUtils.OutputToPlayer(player, "You have been teleported to your home location");
+				}
 				return;
 			}
 		}
