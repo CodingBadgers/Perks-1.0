@@ -210,9 +210,7 @@ public class DatabaseManager {
 			
 			PerkUtils.DebugConsole("Could not find flying table, creating one now");
 			
-			query = "CREATE TABLE flying (" +
-							"name VARCHAR(64)" +
-							");";
+			query = "CREATE TABLE flying (name VARCHAR(64));";
 			
 			m_flydb.Query(query, true);
 		}
@@ -449,6 +447,9 @@ public class DatabaseManager {
 	
 	public static boolean isFlying(PerkPlayer player) {
 		
+		if (m_flydb == null)
+			return false;
+		
 		if (!player.hasPermission("perks.fly", false)) 
 			return false;
 		
@@ -467,6 +468,9 @@ public class DatabaseManager {
 	}
 	
 	public static void setFlying(PerkPlayer player, boolean flying) {
+		
+		if (m_flydb == null)
+			return;
 		
 		String query;
 		
