@@ -67,7 +67,7 @@ public class PerkList {
 								
 		}
         
-        return prefix;
+        return prefix.length() > 0 ? prefix : group.getName();
 	}
 
 	

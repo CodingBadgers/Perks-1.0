@@ -43,8 +43,8 @@ public class PerkPlugins{
 				if (player.hasPermission("perks.plugins.view", false)) {
 					out.append((!first ? ", " : "" ) + (plugin.isEnabled() ? ChatColor.GOLD : ChatColor.DARK_RED) + plugin.getName());
 					amount++;
+					first = false;
 				}
-				first = false;
 				continue;
 			}
 			
