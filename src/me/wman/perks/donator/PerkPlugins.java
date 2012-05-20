@@ -1,9 +1,9 @@
 package me.wman.perks.donator;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+//import org.bukkit.command.Command;
+//import org.bukkit.command.CommandSender;
+//import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import me.wman.perks.utils.PerkPlayer;
@@ -11,23 +11,23 @@ import me.wman.perks.utils.PerkUtils;
 
 public class PerkPlugins{
 
-	public static boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+	// works now but is abit of a hack
+	public static void onCommand(String command, PerkPlayer player) {
 		
-		PerkPlayer player = PerkUtils.getPlayer((Player)sender);
+		/*PerkPlayer player = PerkUtils.getPlayer((Player)sender);
 		
 		if (player == null)
-			return false;
+			return false;*/
 		
-		if (commandLabel.equalsIgnoreCase("plugins") || commandLabel.equalsIgnoreCase("pl")) {
+		if (command.equalsIgnoreCase("plugins") || command.equalsIgnoreCase("pl")) {
 			
 			if (!player.hasPermission("perks.plugins", true))
-				return true;
+				return;
 			
 			displayPluginList(player);
-			return true;
+			return;
 		}
-		
-		return false;
+	
 	}
 	
 	public static void displayPluginList(PerkPlayer player){
@@ -45,7 +45,7 @@ public class PerkPlugins{
 			first = false;
 		}
 		
-		PerkUtils.OutputToPlayer(player, "Plugins (" + plugins.length + "): ");
+		player.getPlayer().sendMessage(ChatColor.AQUA + "[Perks] " + "Plugins (" + plugins.length + "): ");
 		
 		String[] lines = out.toString().split("\n");
 		for (String line : lines) {

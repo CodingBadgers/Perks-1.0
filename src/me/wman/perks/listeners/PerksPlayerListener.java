@@ -10,6 +10,7 @@ import me.wman.perks.donator.PerkJoining;
 import me.wman.perks.donator.PerkCapes;
 import me.wman.perks.donator.PerkColors;
 import me.wman.perks.donator.PerkList;
+import me.wman.perks.donator.PerkPlugins;
 import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUrlShortener;
 import me.wman.perks.utils.PerkUtils;
@@ -22,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -307,5 +309,19 @@ public class PerksPlayerListener implements Listener {
 		if (player.isVanished())
 			event.setCancelled(true);
 		
+	}
+	
+	@EventHandler (priority = EventPriority.NORMAL)
+	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+		final String command = event.getMessage().split(" ")[0].substring(1).toLowerCase();
+		
+        // Protect the /plugins, /pl, /? commands to prevent players for seeing which plugins are installed
+        if (command.equalsIgnoreCase("plugins") || command.equalsIgnoreCase("pl")) {
+        	//PerkUtils.DebugConsole("Sending plugins command");
+            PerkPlugins.onCommand(command, player);
+            event.setCancelled(true);
+            return;
+        }
 	}
 }

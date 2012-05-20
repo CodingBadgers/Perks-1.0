@@ -78,6 +78,10 @@ public class PerkInventory {
 		return PerkItems.itemByName(item).getName();
 	}
 	
+	private static String getName(ItemStack item) {		
+		return PerkItems.itemByName(item.toString().toLowerCase()).getName();
+	}
+	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args){
 		
 		if (cmd.getName().equalsIgnoreCase("item") || cmd.getName().equalsIgnoreCase("i")) {
@@ -136,6 +140,54 @@ public class PerkInventory {
 					PerkUtils.OutputToPlayer(target, player.getPlayer().getName() + " gave you " + (amount == 0 ? '1' : amount) + " " + getName(itemString));
 					PerkUtils.OutputToPlayer(player, "You gave " + target.getPlayer().getName() + " " + (amount == 0 ? '1' : amount) + " " + getName(itemString));
 				}
+			} else {
+				
+				PerkUtils.OutputToPlayer(player, PerkUtils.getUsage(cmd));
+			}
+			
+			return true;
+		}
+		
+		if (commandLabel.equalsIgnoreCase("giveall")) {
+			
+			if (!player.hasPermission("perks.item.all", true))
+				return true;
+			
+			if (args.size() >= 1 && args.size() <= 3) {
+				
+				String itemString = args.getString(0);
+				int amount = 0;
+				if (args.size() >= 2) {
+					if (PerkUtils.isNumeric(args.getString(1))) {
+						amount = args.getInt(1);
+					}
+				}
+				
+				ItemStack[] item = matchItem(itemString, amount);
+				
+				if (item == null) {
+					PerkUtils.OutputToPlayer(player, "That item doesn't exist");
+					return true;
+				}
+				
+				if (item.length > 1) 
+					amount = item.length * item[0].getMaxStackSize();
+				else 
+					amount = item[0].getAmount();
+				
+				for (PerkPlayer target : PerkUtils.perkPlayers) {
+					if (args.hasFlag('d')) {
+						for (ItemStack stack : item) {
+							Location loc = target.getPlayer().getLocation();
+							loc.getWorld().dropItemNaturally(loc, stack);
+						}
+					} else {
+						target.getPlayer().getInventory().addItem(item);
+					}
+				}
+				
+				PerkUtils.OutputToPlayer(player, "You have even everyone on the server " + amount + " of " + getName(item[0]));
+				PerkUtils.OutputToAll(player.getPlayer().getName() + " has given everyone "  + amount + " of " + getName(item[0]));
 			} else {
 				
 				PerkUtils.OutputToPlayer(player, PerkUtils.getUsage(cmd));

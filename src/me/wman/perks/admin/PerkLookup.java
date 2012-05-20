@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
+import uk.codingbadgers.badmin.managers.BanManager;
 
 import me.wman.perks.utils.PerkArgSet;
 import me.wman.perks.utils.PerkPlayer;
@@ -107,10 +108,11 @@ public class PerkLookup {
 			
 			PermissionGroup[] group = null;
 			String name = null;
+			String displayName = null;
 			int health = 0;
 			int hunger = 0;
 			Location loc = null;
-			// boolean banned; <- will be used when we come to writing the new admin plugin
+			boolean banned; // <- will be used when we come to writing the new admin plugin
 			String firstPlayed = null;
 			String lastPlayed = null;
 			boolean op = false;
@@ -119,10 +121,15 @@ public class PerkLookup {
 				
 				group = pex.getUser(target.getPlayer()).getGroups();
 				name = target.getPlayer().getName();
+				displayName = target.getPlayer().getDisplayName();
 				health = target.getPlayer().getHealth();
 				hunger= target.getPlayer().getFoodLevel();
 				loc = target.getPlayer().getLocation();
 				op = target.getPlayer().isOp();
+				if (PerkUtils.server().getPluginManager().getPlugin("bAdmin") != null) 
+					banned = BanManager.isBanned(player.getPlayer());
+				else 
+					banned = false;
 			
 				try {
 					firstPlayed = PerkUtils.parseDate(target.getPlayer().getFirstPlayed());
@@ -136,6 +143,7 @@ public class PerkLookup {
 				}
 			
 				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
+				out.append(ChatColor.GOLD + "Display Name: " + ChatColor.WHITE + displayName).append("\n");
 				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Op: " + ChatColor.WHITE + op).append("\n");
 				out.append(ChatColor.GOLD + "IP: " + ChatColor.WHITE + getIpAddress(target)).append(ChatColor.WHITE).append("\n");
@@ -167,12 +175,17 @@ public class PerkLookup {
 					lastPlayed = ChatColor.RED + "Error";
 				}
 				op = oTarget.isOp();
+				if (PerkUtils.server().getPluginManager().getPlugin("bAdmin") != null) 
+					banned = BanManager.isBanned(oTarget);
+				else 
+					banned = false;
 				
 				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Op: " + ChatColor.WHITE + op).append("\n");
 				out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + firstPlayed).append("\n");
 				out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + lastPlayed).append("\n");
+				out.append(ChatColor.GOLD + "Banned: " + ChatColor.WHITE + banned).append("\n");
 			}
 			
 			String[] lines = out.toString().split("\n");

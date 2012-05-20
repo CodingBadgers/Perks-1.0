@@ -251,6 +251,10 @@ public class Perks extends JavaPlugin {
 		if (PerkPlugins.onCommand(player, cmd, commandLabel, args))		
 			return true;*/
 		
+		// handles 
+		if (PerkTroll.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
 		return false;
 	}
 

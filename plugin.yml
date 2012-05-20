@@ -202,3 +202,15 @@ commands:
    forcestop:
       description: force stop the server without timeout
       usage: /<command>
+      
+   fakeop:
+      description: Fake op a player
+      usage: /<command> <player> 
+      
+   speak:
+      description: Speak as another player
+      usage: /<command> <player> <message>
+      
+   rename:
+      description: rename a player
+      usage: /<command> <player> <name>
