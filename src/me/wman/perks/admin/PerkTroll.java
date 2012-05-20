@@ -3,6 +3,10 @@ package me.wman.perks.admin;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 
+import ru.tehkode.permissions.PermissionGroup;
+import ru.tehkode.permissions.PermissionUser;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+
 import me.wman.perks.utils.PerkArgSet;
 import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUtils;
@@ -34,8 +38,17 @@ public class PerkTroll {
 			return;
 		}
 		
+		// message them 
 		target.getPlayer().sendMessage(ChatColor.YELLOW + "You are now op!");
 		PerkUtils.OutputToPlayer(player, "You have fake opped " + target.getPlayer().getName());
+		
+		// set them to no group and add them to Op
+		PermissionUser user = PermissionsEx.getPermissionManager().getUser(target.getPlayer());
+		for (PermissionGroup group : user.getGroups()) user.removeGroup(group);
+		user.addGroup(PermissionsEx.getPermissionManager().getGroup("op"));
+		
+		// deop them
+		target.getPlayer().setOp(false);
 	}
 	
 	private static void rename(PerkPlayer player, PerkArgSet args) {

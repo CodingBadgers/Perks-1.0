@@ -1,7 +1,5 @@
 package me.wman.perks.listeners;
 
-import java.util.StringTokenizer;
-
 import me.wman.perks.admin.PerkSpectate;
 import me.wman.perks.admin.PerkThor;
 import me.wman.perks.admin.PerkVanish;
@@ -24,6 +22,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -187,7 +186,7 @@ public class PerksPlayerListener implements Listener {
 		if (to.getBlock().getType() != Material.AIR)
 		{
 			Location safe = to;
-			while (safe.getBlock().getType() != Material.AIR)
+			while (safe.getBlock().getType() != Material.AIR && safe.getBlock().getType() != Material.PORTAL)
 				safe = safe.add(0.0, 1.0, 0.0);
 				
 			PerkUtils.OutputToPlayer(player, "The location you wanted to teleport to is obstructed");
@@ -217,70 +216,7 @@ public class PerksPlayerListener implements Listener {
 		if (player.hasPermission("perks.chat.shorten", false)) {
 			
 			String msg = event.getMessage();
-			// if it uses http
-			if(msg.indexOf("http://") != -1){
-				StringBuilder result = new StringBuilder(msg.length());
-					for(StringTokenizer tokenizer = new StringTokenizer(msg, " ", true); tokenizer.hasMoreTokens();)
-					{
-						String token = tokenizer.nextToken();
-						if(token.startsWith("http://")) {
-							try	{
-								// shorten the url and add it into the message
-								result.append(PerkUrlShortener.tinyUrl(token));
-							} catch(Exception e) {
-								result.append(token);
-								e.printStackTrace();
-							}
-						} else {
-						result.append(token);
-						}
-				 
-					}
-				event.setMessage(result.toString());
-			}
-			
-			// if it uses https
-			if(msg.indexOf("https://") != -1){
-				StringBuilder result = new StringBuilder(msg.length());
-					for(StringTokenizer tokenizer = new StringTokenizer(msg, " ", true); tokenizer.hasMoreTokens();){
-						String token = tokenizer.nextToken();
-						if(token.startsWith("https://")) {
-							try	{
-								// shorten the url and add it into the message
-								result.append(PerkUrlShortener.tinyUrl(token));
-							} catch(Exception e) {
-								result.append(token);
-								e.printStackTrace();
-							}
-						} else {
-						result.append(token);
-						}
-				 
-					}
-				event.setMessage(result.toString());
-			}
-			
-			// if it uses www.
-			if(msg.indexOf("www.") != -1){
-				StringBuilder result = new StringBuilder(msg.length());
-					for(StringTokenizer tokenizer = new StringTokenizer(msg, " ", true); tokenizer.hasMoreTokens();){
-						String token = tokenizer.nextToken();
-						if(token.startsWith("www.")) {
-							try	{
-								// shorten the url and add it into the message
-								result.append(PerkUrlShortener.tinyUrl("http://" + token));
-							} catch(Exception e) {
-								result.append(token);
-								e.printStackTrace();
-							}
-						} else {
-							result.append(token);
-						}
-							 
-					}
-				event.setMessage(result.toString());
-			}
-					
+			event.setMessage(PerkUrlShortener.parseMessage(msg));
 		}
 	}
 	
@@ -323,5 +259,16 @@ public class PerksPlayerListener implements Listener {
             event.setCancelled(true);
             return;
         }
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerChangeGamemode(PlayerGameModeChangeEvent event) {
+		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+		
+		if (event.getNewGameMode() != GameMode.SURVIVAL)
+			return;
+		
+		player.setFlying(false);
+		player.setFlying(true);
 	}
 }

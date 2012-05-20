@@ -35,17 +35,25 @@ public class PerkPlugins{
 		Plugin[] plugins = PerkUtils.server().getPluginManager().getPlugins();
 		StringBuilder out = new StringBuilder();
 		boolean first = true;
+		int amount = 0;
 		
 		for (Plugin plugin : plugins) {
 			
-			if (isBlacklisted(plugin.getName()))
+			if (isBlacklisted(plugin.getName())) {
+				if (player.hasPermission("perks.plugins.view", false)) {
+					out.append((!first ? ", " : "" ) + (plugin.isEnabled() ? ChatColor.GOLD : ChatColor.DARK_RED) + plugin.getName());
+					amount++;
+				}
+				first = false;
 				continue;
+			}
 			
 			out.append((!first ? ", " : "" ) + (plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED) + plugin.getName());
 			first = false;
+			amount++;
 		}
 		
-		player.getPlayer().sendMessage(ChatColor.AQUA + "[Perks] " + "Plugins (" + plugins.length + "): ");
+		player.getPlayer().sendMessage(ChatColor.AQUA + "[Perks] " + "Plugins (" + amount + "): ");
 		
 		String[] lines = out.toString().split("\n");
 		for (String line : lines) {

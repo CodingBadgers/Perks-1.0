@@ -55,13 +55,16 @@ public class Perks extends JavaPlugin {
 	}
 
 	private void loadConfigs() {
-		// load the homes from the database
-		DatabaseManager.loadDatabases();
-		
 		// load the config
+		// load before database incase we use sql
 		if (!PerkConfig.loadConfig()) {
 			PerkUtils.ErrorConsole("Could not load config");
 		}
+				
+		// load the databases
+		DatabaseManager.loadDatabases();
+		
+		
 	}
 
 	private void loadDependencies(PluginManager pm) {
