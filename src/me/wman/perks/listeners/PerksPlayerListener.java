@@ -196,10 +196,6 @@ public class PerksPlayerListener implements Listener {
 				PerkUtils.OutputToPlayer(player, "The location you wanted to teleport to will hurt you");
 				PerkUtils.OutputToPlayer(player, "You will fall into lava or fire, teleport cancelled");
 				event.setCancelled(true);
-			} else if (dropSize > 3) {
-				PerkUtils.OutputToPlayer(player, "The location you wanted to teleport to will hurt you");
-				PerkUtils.OutputToPlayer(player, "You will fall greater than 3 blocks, teleport cancelled");
-				event.setCancelled(true);
 			} else if (safe.getY() != to.getY()) {
 				PerkUtils.OutputToPlayer(player, "The location you wanted to teleport to is obstructed");
 				PerkUtils.OutputToPlayer(player, "We have teleported you to a safe location");
@@ -286,6 +282,5 @@ public class PerksPlayerListener implements Listener {
 			return;
 		
 		player.setFlying(false);
-		player.setFlying(true);
 	}
 }
