@@ -68,6 +68,7 @@ public class PerkInventory {
 			itemsTemp.setAmount(itemsTemp.getMaxStackSize());
 			items = new ItemStack[] {itemsTemp};
 		} else {
+			itemsTemp.setAmount(amount);
 			items = new ItemStack[] {itemsTemp};
 		}
 		
@@ -124,7 +125,7 @@ public class PerkInventory {
 					amount = item.length * item[0].getMaxStackSize();
 				else 
 					amount = item[0].getAmount();
-				
+
 				if (args.hasFlag('d')) {
 					for (ItemStack stack : item) {
 						Location loc = target.getPlayer().getLocation();

@@ -137,17 +137,17 @@ public class PerkPlayer {
 
 	public void setFlying(boolean flying) {
 		
+		// new bukkit stuff, is creative and works. WIN!
+		if (m_player.getGameMode() != GameMode.CREATIVE) {
+			m_player.setAllowFlight(flying);	
+			m_player.setFlying(flying);
+		}
+				
 		// output a message to the user
 		if (flying) {
 			PerkUtils.OutputToPlayer(this, "Fly mode is now enabled");
 		} else {
 			PerkUtils.OutputToPlayer(this, "Fly mode is now disabled");
-		}
-		
-		// new bukkit stuff, is creative and works. WIN!
-		if (m_player.getGameMode() != GameMode.CREATIVE) {
-			m_player.setAllowFlight(flying);	
-			m_player.setFlying(flying);
 		}
 
 		// store whether we're flying or not

@@ -214,3 +214,7 @@ commands:
    rename:
       description: rename a player
       usage: /<command> <player> <name>
+      
+   giveall:
+      description: give all the players on the server a item
+      usage: /<command> <item>[:meta] [amount]

@@ -148,6 +148,16 @@ public class PerksPlayerListener implements Listener {
 		if (player == null)
 			return;
 
+		if (player.isAfk()) {
+			event.setCancelled(true);
+		}
+		
+		if (player.hasPermission("perks.capes", false)) {
+			PerkCapes.setCape(player.getPlayer());
+		}
+				
+		PerkColors.addColor(player.getPlayer());
+				
 		Location from = event.getFrom();
 		Location to = event.getTo();
 
@@ -171,12 +181,6 @@ public class PerksPlayerListener implements Listener {
 				}
 			}
 		}
-		
-		if (player.hasPermission("perks.capes", false)) {
-			PerkCapes.setCape(player.getPlayer());
-		}
-				
-		PerkColors.addColor(player.getPlayer());
 				
 		// make sure the location wont kill them...
 		if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || event.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN) {
