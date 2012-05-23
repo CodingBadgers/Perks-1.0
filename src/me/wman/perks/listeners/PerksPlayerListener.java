@@ -190,6 +190,7 @@ public class PerksPlayerListener implements Listener {
 				safe = safe.add(0.0, 1.0, 0.0);
 			
 			Location below = new Location(safe.getWorld(), safe.getX(), safe.getY(), safe.getZ());
+			@SuppressWarnings("unused")
 			int dropSize = -1;
 			while (!IsSolidBlock(below.getBlock())) {
 				dropSize++;

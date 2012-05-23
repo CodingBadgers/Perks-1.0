@@ -7,6 +7,8 @@ import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUtils;
 
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fish;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.ThrownPotion;
@@ -41,8 +43,10 @@ public class PerksEntityListener implements Listener {
 			LivingEntity shooter = ((Arrow)event.getDamager()).getShooter();
 			if (shooter instanceof Player)
 				attacker = PerkUtils.getPlayer((Player)shooter);
-		} else if (event.getDamager() instanceof ThrownPotion)
+		} else if (event.getDamager() instanceof ThrownPotion) 
 			attacker = PerkUtils.getPlayer((Player)(((ThrownPotion)event.getDamager()).getShooter()));
+		else if (event.getEntityType() == EntityType.FISHING_HOOK)
+			attacker = PerkUtils.getPlayer((Player)((Fish)event.getDamager()).getShooter());
 		
 		// don't allow attacking whilst flying or in vanish
 		if (attacker != null &&  (attacker.isFlying() || attacker.isVanished())) {
