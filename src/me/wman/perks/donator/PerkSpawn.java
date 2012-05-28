@@ -1,14 +1,13 @@
 package me.wman.perks.donator;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 
-import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-
+import me.wman.perks.config.DatabaseManager;
 import me.wman.perks.utils.PerkArgSet;
 import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUtils;
+import me.wman.perks.utils.PerkWorldSpawn;
 
 public class PerkSpawn {
 	
@@ -19,14 +18,7 @@ public class PerkSpawn {
 			if (!player.hasPermission("perks.spawn.use", true))
 				return true;
 			
-			Location spawn = null;
-			
-			if (PerkUtils.worldManager != null) {
-				MultiverseWorld world = PerkUtils.worldManager.getMVWorld(player.getPlayer().getWorld());
-				spawn = world.getSpawnLocation();
-			} else {
-				spawn = player.getPlayer().getWorld().getSpawnLocation();
-			}
+			PerkWorldSpawn spawn = DatabaseManager.getSpawn(player.getPlayer().getLocation().getWorld());
 			
 			if (spawn == null) {
 				PerkUtils.OutputToPlayer(player, "An error has occured, please tell staff");
@@ -47,8 +39,10 @@ public class PerkSpawn {
 				PerkUtils.OutputToPlayer(player, "Sorry that player is not online");
 			}
 			
-			target.teleport(spawn);
-			PerkUtils.OutputToPlayer(target, "Teleported to spawn");
+			target.teleport(spawn.getSpawn());
+			PerkUtils.OutputToPlayer(target, "Teleported to spawn of " + spawn.getWorld().getName());
+			if (target != player) 
+				PerkUtils.OutputToPlayer(player, "You have teleported " + target.getPlayer().getName() + " to spawn");
 			return true;
 		}
 		
@@ -57,18 +51,10 @@ public class PerkSpawn {
 			if (!player.hasPermission("perks.spawn.set", true))
 				return true;
 			
-			Location spawn = player.getPlayer().getLocation();
+			Location loc = player.getPlayer().getLocation();
 			
-			if (PerkUtils.worldManager != null) {
-				
-				MultiverseWorld world = PerkUtils.worldManager.getMVWorld(spawn.getWorld());
-				
-				world.setSpawnLocation(spawn);
-			} else {
-				World world = spawn.getWorld();
-				
-				world.setSpawnLocation((int)spawn.getX(), (int)spawn.getY(), (int)spawn.getZ());
-			}
+			PerkWorldSpawn spawn = new PerkWorldSpawn(loc.getWorld(), loc);
+			DatabaseManager.setSpawn(spawn);
 			
 			PerkUtils.OutputToPlayer(player, "Spawn for " + spawn.getWorld().getName() + " has been set here");
 			return true;

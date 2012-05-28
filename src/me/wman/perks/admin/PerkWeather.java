@@ -10,7 +10,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 
 public class PerkWeather {
-
+	
 	public static void setStorm(boolean storm, int duration) {
 		List<World> worlds = PerkUtils.server().getWorlds();
 		

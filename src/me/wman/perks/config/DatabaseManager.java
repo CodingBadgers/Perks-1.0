@@ -3,11 +3,13 @@ package me.wman.perks.config;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import me.wman.perks.donator.PerkKits;
 import me.wman.perks.utils.PerkKit;
 import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUtils;
+import me.wman.perks.utils.PerkWorldSpawn;
 import n3wton.me.BukkitDatabaseManager.BukkitDatabaseManager;
 import n3wton.me.BukkitDatabaseManager.BukkitDatabaseManager.DatabaseType;
 import n3wton.me.BukkitDatabaseManager.Database.BukkitDatabase;
@@ -24,6 +26,7 @@ public class DatabaseManager {
 	static private BukkitDatabase m_vanishdb = null;
 	static private BukkitDatabase m_kitdb = null;
 	static private BukkitDatabase m_flydb = null;
+	static private BukkitDatabase m_spawndb = null;
 	
 	public static class tpLocation {	
 		String playername;
@@ -32,6 +35,7 @@ public class DatabaseManager {
 		
 	static public ArrayList<tpLocation> homes = new ArrayList<tpLocation>();
 	static public ArrayList<tpLocation> builds = new ArrayList<tpLocation>();
+	static public ArrayList<PerkWorldSpawn> spawns = new ArrayList<PerkWorldSpawn>();
 	
 	public static void loadDatabases() {
 		
@@ -216,6 +220,48 @@ public class DatabaseManager {
 		}
 		
 		// no need to store in array, will just read when needed
+		
+		m_spawndb = BukkitDatabaseManager.CreateDatabase("Spawn", PerkUtils.plugin, DatabaseType.SQLite, 1);
+		
+		if (!m_spawndb.TableExists("spawn")) {
+			
+			PerkUtils.DebugConsole("Could not find spawn table, creating one now");
+			
+			query = "CREATE TABLE spawn (" +
+						"world VARCHAR(64)," +
+						"x INT," +
+						"y INT," +
+						"z INT," +
+						"yaw FLOAT," +
+						"pitch FLOAT" +
+						");";
+			m_spawndb.Query(query, true);
+		}
+		
+		query = "SELECT * FROM spawn";
+		result = m_spawndb.QueryResult(query);
+		
+		try {
+			if (result == null)
+				return;
+		
+			while(result.next()) {
+				World world = PerkUtils.server().getWorld(result.getString("world"));
+				Location loc = new Location (world, 
+												result.getInt("x"),
+												result.getInt("y"),
+												result.getInt("z"),
+												result.getFloat("yaw"),
+												result.getFloat("pitch"));
+				PerkWorldSpawn spawn = new PerkWorldSpawn(world, loc);
+				spawns.add(spawn);
+			}
+			PerkUtils.DebugConsole("Loaded " + spawns.size() + " spawns");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		m_spawndb.FreeResult(result);
 	}
 	
 	public static void AddHome(Player player, Location loc) {
@@ -485,6 +531,47 @@ public class DatabaseManager {
 		}
 		
 		m_flydb.Query(query, true);
+	}
+	
+	public static void setSpawn(PerkWorldSpawn spawn) {
+		
+		String query = "INSERT INTO spawn (" +
+						"x, y, z, yaw, pitch) VALUES (" +
+						"'" + spawn.getSpawn().getWorld().getName() + "'," +
+						"'" + spawn.getSpawn().getX() + "'," +
+						"'" + spawn.getSpawn().getY() + "'," +
+						"'" + spawn.getSpawn().getZ() + "'," +
+						"'" + spawn.getSpawn().getYaw() + "'" +
+						"'" + spawn.getSpawn().getPitch() + "'" +
+						");";
+		for (int i = 0; i < homes.size(); ++i) {
+			if (spawns.get(i).getWorld().getName().equalsIgnoreCase(spawn.getWorld().getName())) {
+				query = "UPDATE spawn SET (" +
+						"x='" + spawn.getSpawn().getX() + "'" +
+						"y='" + spawn.getSpawn().getY() + "'" + 
+						"z='" + spawn.getSpawn().getZ() + "'" +
+						"yaw='" + spawn.getSpawn().getYaw() + "'" +
+						"pitch='" + spawn.getSpawn().getYaw() + "'" +
+						"WHERE world='" + spawn.getWorld().getName() + "'" +
+						");";
+				spawns.remove(i);
+				break;
+			}
+		}
+		
+		m_spawndb.Query(query, true);
+		spawns.add(spawn);
+		PerkUtils.DebugConsole("Adding spawn for " + spawn.getWorld().getName());
+	}
+	
+	public static PerkWorldSpawn getSpawn(World world) {
+		Iterator<PerkWorldSpawn> itr = spawns.iterator();
+		while(itr.hasNext()) {
+			PerkWorldSpawn current = itr.next();
+			if (current.getWorld().equals(world))
+				return current;
+		}
+		return null;
 	}
 
 }

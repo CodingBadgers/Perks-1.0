@@ -17,7 +17,7 @@ public class PerkUrlShortener {
 	   
 	private static String shorten(URI uri) throws Exception {
 		// get the tinyurl url
-		URL api = new URL("http://tinyurl.com/api-create.php?url=" + uri.toString());
+		URL api = new URL("http://tinyurl.com/api-create.php?url=" + uri.getHost());
 		
 		// read the url into the variable
 	    BufferedReader in = new BufferedReader(
@@ -45,6 +45,12 @@ public class PerkUrlShortener {
                 if (matcher.group(1) == null) {
                     s1 = (new StringBuilder()).append("http://").append(s1).toString();
                 }
+                
+                /*try {
+					URL url = new URL(s1);
+				} catch (MalformedURLException e) {
+					return null;
+				}*/
 
                 return new URI(s1);
             }

@@ -108,8 +108,6 @@ public class PerkTime {
             return (0 - 8 + 24) * 1000;
         } else if (timeStr.equalsIgnoreCase("s1m") || timeStr.equalsIgnoreCase("sim")) {
         	return (7 - 8 + 24) * 1000;
-        } else if (timeStr.equalsIgnoreCase("sexytime")){
-        	// to be handled later, first I need to finish flags/args
         }
         
 		return -1;

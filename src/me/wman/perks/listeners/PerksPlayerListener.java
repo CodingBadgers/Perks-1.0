@@ -185,6 +185,9 @@ public class PerksPlayerListener implements Listener {
 		// make sure the location wont kill them...
 		if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || event.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN) {
 			
+			if (player.getPlayer().getGameMode() == GameMode.CREATIVE)
+				return;
+			
 			Location safe = new Location(to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
 			while (IsSolidBlock(safe.getBlock()))
 				safe = safe.add(0.0, 1.0, 0.0);
