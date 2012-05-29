@@ -546,12 +546,12 @@ public class DatabaseManager {
 						");";
 		for (int i = 0; i < homes.size(); ++i) {
 			if (spawns.get(i).getWorld().getName().equalsIgnoreCase(spawn.getWorld().getName())) {
-				query = "UPDATE spawn SET (" +
-						"x='" + spawn.getSpawn().getX() + "'" +
-						"y='" + spawn.getSpawn().getY() + "'" + 
-						"z='" + spawn.getSpawn().getZ() + "'" +
-						"yaw='" + spawn.getSpawn().getYaw() + "'" +
-						"pitch='" + spawn.getSpawn().getYaw() + "'" +
+				query = "UPDATE spawn SET " +
+						"x='" + spawn.getSpawn().getX() + "', " +
+						"y='" + spawn.getSpawn().getY() + "', " + 
+						"z='" + spawn.getSpawn().getZ() + "', " +
+						"yaw='" + spawn.getSpawn().getYaw() + "', " +
+						"pitch='" + spawn.getSpawn().getYaw() + "' " +
 						"WHERE world='" + spawn.getWorld().getName() + "'" +
 						");";
 				spawns.remove(i);
