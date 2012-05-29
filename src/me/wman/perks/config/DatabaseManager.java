@@ -536,12 +536,12 @@ public class DatabaseManager {
 	public static void setSpawn(PerkWorldSpawn spawn) {
 		
 		String query = "INSERT INTO spawn (" +
-						"x, y, z, yaw, pitch) VALUES (" +
+						"world, x, y, z, yaw, pitch) VALUES (" +
 						"'" + spawn.getSpawn().getWorld().getName() + "'," +
 						"'" + spawn.getSpawn().getX() + "'," +
 						"'" + spawn.getSpawn().getY() + "'," +
 						"'" + spawn.getSpawn().getZ() + "'," +
-						"'" + spawn.getSpawn().getYaw() + "'" +
+						"'" + spawn.getSpawn().getYaw() + "'," +
 						"'" + spawn.getSpawn().getPitch() + "'" +
 						");";
 		for (int i = 0; i < homes.size(); ++i) {
