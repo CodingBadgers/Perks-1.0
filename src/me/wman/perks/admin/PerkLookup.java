@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
-import uk.codingbadgers.badmin.managers.BanManager;
+//import uk.codingbadgers.badmin.managers.BanManager;
 
 import me.wman.perks.utils.PerkArgSet;
 import me.wman.perks.utils.PerkPlayer;
@@ -127,7 +127,8 @@ public class PerkLookup {
 				loc = target.getPlayer().getLocation();
 				op = target.getPlayer().isOp();
 				if (PerkUtils.server().getPluginManager().getPlugin("bAdmin") != null) 
-					banned = BanManager.isBanned(player.getPlayer());
+					//banned = BanManager.isBanned(player.getPlayer());
+					banned = false;
 				else 
 					banned = false;
 			
@@ -176,7 +177,8 @@ public class PerkLookup {
 				}
 				op = oTarget.isOp();
 				if (PerkUtils.server().getPluginManager().getPlugin("bAdmin") != null) 
-					banned = BanManager.isBanned(oTarget);
+					//banned = BanManager.isBanned(oTarget);
+					banned = false;
 				else 
 					banned = false;
 				

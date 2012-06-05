@@ -7,6 +7,7 @@ import me.wman.perks.donator.PerkJoining;
 import me.wman.perks.donator.PerkCapes;
 import me.wman.perks.donator.PerkColors;
 import me.wman.perks.donator.PerkList;
+import me.wman.perks.donator.PerkPlugins;
 import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUrlShortener;
 import me.wman.perks.utils.PerkUtils;
@@ -20,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -213,9 +215,15 @@ public class PerksPlayerListener implements Listener {
 			event.setTo(safe);
 		}
 		
+		// stop the use of ender pearls, there just annoying
 		if (event.getCause() == TeleportCause.ENDER_PEARL) {
 			event.setCancelled(true);
 		}
+		
+		// check for creative world.
+		if (event.getTo().getWorld().getName().equalsIgnoreCase("world_creative")) {
+			player.getPlayer().setGameMode(GameMode.CREATIVE);
+		}		
 
 	}
 	
@@ -291,5 +299,24 @@ public class PerksPlayerListener implements Listener {
 			return;
 		
 		player.setFlying(false);
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void commandPreprocess(final PlayerCommandPreprocessEvent event) {
+		
+		final String command = event.getMessage().split(" ")[0].substring(1).toLowerCase();
+		if (command.equals("plugins") || command.equals("pl")) {
+			
+			PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+			if (player == null)
+				return;
+			
+			// handles plugins cmd
+			if (!PerkPlugins.onCommand(player, command))		
+				return;
+			
+			event.setCancelled(true);
+		}
+		
 	}
 }

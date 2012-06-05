@@ -1,5 +1,6 @@
 package me.wman.perks.config;
 
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,12 +22,7 @@ import org.bukkit.entity.Player;
 
 public class DatabaseManager {
 	
-	static private BukkitDatabase m_homedb = null;
-	static private BukkitDatabase m_builddb = null;
-	static private BukkitDatabase m_vanishdb = null;
-	static private BukkitDatabase m_kitdb = null;
-	static private BukkitDatabase m_flydb = null;
-	static private BukkitDatabase m_spawndb = null;
+	static private BukkitDatabase m_perksDB = null;
 	
 	public static class tpLocation {	
 		String playername;
@@ -38,12 +34,12 @@ public class DatabaseManager {
 	static public ArrayList<PerkWorldSpawn> spawns = new ArrayList<PerkWorldSpawn>();
 	
 	public static void loadDatabases() {
-		
+				
 		// create an the database
-		m_homedb = BukkitDatabaseManager.CreateDatabase("Homes", PerkUtils.plugin, DatabaseType.SQLite);
+		m_perksDB = BukkitDatabaseManager.CreateDatabase("Perks", PerkUtils.plugin, DatabaseType.SQLite);
 		
 		// see if a table called properties exist
-		if (!m_homedb.TableExists("homes")) {
+		if (!m_perksDB.TableExists("homes")) {
 			
 			// the table doesn't exist, so make one.
 			
@@ -59,14 +55,14 @@ public class DatabaseManager {
 					");";
 			
 			// to create a table we pass an SQL query.
-			m_homedb.Query(query, true);
+			m_perksDB.Query(query, true);
 		}
 		
 		// load all properties
 		
 		// select every property from the table
 		String query = "SELECT * FROM homes";
-		ResultSet result = m_homedb.QueryResult(query);
+		ResultSet result = m_perksDB.QueryResult(query);
 		
 		try {
 			// while we have another result, read in the data
@@ -94,13 +90,10 @@ public class DatabaseManager {
 			return;
 		}
 		
-		m_homedb.FreeResult(result);
+		m_perksDB.FreeResult(result);
 				
-		// create an SQList object
-		m_builddb = BukkitDatabaseManager.CreateDatabase("Build", PerkUtils.plugin, DatabaseType.SQLite);
-		
 		// see if a table called properties exist
-		if (!m_builddb.TableExists("build")) {
+		if (!m_perksDB.TableExists("build")) {
 			
 			// the table doesn't exist, so make one.
 			
@@ -116,12 +109,12 @@ public class DatabaseManager {
 					");";
 			
 			// to create a table we pass an SQL query.
-			m_builddb.Query(query, true);
+			m_perksDB.Query(query, true);
 		}
 		
 		// select every property from the table
 		query = "SELECT * FROM build";
-		result = m_builddb.QueryResult(query);
+		result = m_perksDB.QueryResult(query);
 		
 		try {
 			// while we have another result, read in the data
@@ -149,13 +142,10 @@ public class DatabaseManager {
 			return;
 		}		
 		
-		m_builddb.FreeResult(result);
-		
-		// create an SQList object
-		m_vanishdb = BukkitDatabaseManager.CreateDatabase("vanish", PerkUtils.plugin, DatabaseType.SQLite);
+		m_perksDB.FreeResult(result);
 		
 		// see if a table called properties exist
-		if (!m_vanishdb.TableExists("vanish")) {
+		if (!m_perksDB.TableExists("vanish")) {
 			
 			// the table doesn't exist, so make one.
 			
@@ -165,14 +155,12 @@ public class DatabaseManager {
 					");";
 			
 			// to create a table we pass an SQL query.
-			m_vanishdb.Query(query, true);
+			m_perksDB.Query(query, true);
 		}
 
-		// create an SQList object
-		m_kitdb = BukkitDatabaseManager.CreateDatabase("kit", PerkUtils.plugin, DatabaseType.SQLite);
-		
+
 		// see if a table called properties exist
-		if (!m_kitdb.TableExists("kit")) {
+		if (!m_perksDB.TableExists("kit")) {
 			
 			// the table doesn't exist, so make one.
 			
@@ -184,12 +172,12 @@ public class DatabaseManager {
 					");";
 			
 			// to create a table we pass an SQL query.
-			m_kitdb.Query(query, true);
+			m_perksDB.Query(query, true);
 		}
 		
 		// select every property from the table
 		query = "SELECT * FROM kit";
-		result = m_kitdb.QueryResult(query);
+		result = m_perksDB.QueryResult(query);
 		
 		try {
 			// while we have another result, read in the data
@@ -206,24 +194,20 @@ public class DatabaseManager {
 			return;
 		}		
 		
-		m_kitdb.FreeResult(result);
+		m_perksDB.FreeResult(result);
 		
-		m_flydb = BukkitDatabaseManager.CreateDatabase("Fly", PerkUtils.plugin, DatabaseType.SQLite);
-		
-		if (!m_flydb.TableExists("flying")) {
+		if (!m_perksDB.TableExists("flying")) {
 			
 			PerkUtils.DebugConsole("Could not find flying table, creating one now");
 			
 			query = "CREATE TABLE flying (name VARCHAR(64));";
 			
-			m_flydb.Query(query, true);
+			m_perksDB.Query(query, true);
 		}
 		
 		// no need to store in array, will just read when needed
 		
-		m_spawndb = BukkitDatabaseManager.CreateDatabase("Spawn", PerkUtils.plugin, DatabaseType.SQLite, 1);
-		
-		if (!m_spawndb.TableExists("spawn")) {
+		if (!m_perksDB.TableExists("spawn")) {
 			
 			PerkUtils.DebugConsole("Could not find spawn table, creating one now");
 			
@@ -235,56 +219,146 @@ public class DatabaseManager {
 						"yaw FLOAT," +
 						"pitch FLOAT" +
 						");";
-			m_spawndb.Query(query, true);
+			m_perksDB.Query(query, true);
 		}
 		
 		query = "SELECT * FROM spawn";
-		result = m_spawndb.QueryResult(query);
+		result = m_perksDB.QueryResult(query);
 		
 		try {
-			if (result == null)
-				return;
-		
-			while(result.next()) {
-				World world = PerkUtils.server().getWorld(result.getString("world"));
-				Location loc = new Location (world, 
-												result.getInt("x"),
-												result.getInt("y"),
-												result.getInt("z"),
-												result.getFloat("yaw"),
-												result.getFloat("pitch"));
-				PerkWorldSpawn spawn = new PerkWorldSpawn(world, loc);
-				spawns.add(spawn);
+			if (result != null) {
+				while(result.next()) {
+					World world = PerkUtils.server().getWorld(result.getString("world"));
+					Location loc = new Location (world, 
+													result.getInt("x"),
+													result.getInt("y"),
+													result.getInt("z"),
+													result.getFloat("yaw"),
+													result.getFloat("pitch"));
+					PerkWorldSpawn spawn = new PerkWorldSpawn(world, loc);
+					spawns.add(spawn);
+				}
+				PerkUtils.DebugConsole("Loaded " + spawns.size() + " spawns");
 			}
-			PerkUtils.DebugConsole("Loaded " + spawns.size() + " spawns");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		m_spawndb.FreeResult(result);
+		m_perksDB.FreeResult(result);
+		
+		UpgradeDatabases();
 	}
 	
-	public static void AddHome(Player player, Location loc) {
+	private static void UpgradeDatabases() {
 		
-		String query = "INSERT INTO 'homes' " +
-				"('player','world','x','y','z','yaw','pitch') VALUES (" + 
-				"'" + player.getName() + "'," +
-				"'" + loc.getWorld().getName() + "'," +
-				"'" + loc.getX() + "'," +
-				"'" + loc.getY() + "'," +
-				"'" + loc.getZ() + "'," +
-				"'" + loc.getYaw() + "'," +
-				"'" + loc.getPitch() + 
-				"');";
-		m_homedb.Query(query);
+		File buildFile = FindDatabase("Build.sqlite");
+		if (buildFile != null) {
+			
+			BukkitDatabase tempDb = BukkitDatabaseManager.CreateDatabase("Build", PerkUtils.plugin, DatabaseType.SQLite);
+			
+			// select every property from the table
+			String query = "SELECT * FROM build";
+			ResultSet result = tempDb.QueryResult(query);
+			
+			try {
+				// while we have another result, read in the data
+				while (result.next()) {
+		            String worldName = result.getString("world");
+		            String playerName = result.getString("player");
+
+		            int x = result.getInt("x");
+		            int y = result.getInt("y");
+		            int z = result.getInt("z");
+		            int pitch = result.getInt("pitch");
+		            int yaw = result.getInt("yaw");
+		            
+		            World world = PerkUtils.plugin.getServer().getWorld(worldName);
+		            if (world == null)
+		            	continue;
+		            
+		            Location loc = new Location(world, x, y, z, yaw, pitch);
+
+		            tpLocation newHome = new tpLocation();
+		            newHome.playername = playerName;
+		            newHome.loc = loc;
+		            builds.add(newHome);
+		            AddBuild(playerName, loc);
+		        }
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return;
+			}		
+			tempDb.FreeResult(result);
+			tempDb.End();
+			
+			buildFile.renameTo(new File(PerkUtils.plugin.getDataFolder().getAbsolutePath() + "\\Build.sqlite.upgradded"));
+		}
+		
+		File homeFile = FindDatabase("Homes.sqlite");
+		if (homeFile != null) {
+			
+			BukkitDatabase tempDb = BukkitDatabaseManager.CreateDatabase("Homes", PerkUtils.plugin, DatabaseType.SQLite);
+			
+			// select every property from the table
+			String query = "SELECT * FROM homes";
+			ResultSet result = tempDb.QueryResult(query);
+			
+			try {
+				// while we have another result, read in the data
+				while (result.next()) {
+		            String worldName = result.getString("world");
+		            String playerName = result.getString("player");
+
+		            int x = result.getInt("x");
+		            int y = result.getInt("y");
+		            int z = result.getInt("z");
+		            int pitch = result.getInt("pitch");
+		            int yaw = result.getInt("yaw");
+		            
+		            World world = PerkUtils.plugin.getServer().getWorld(worldName);
+		            if (world == null)
+		            	continue;
+		            
+		            Location loc = new Location(world, x, y, z, yaw, pitch);
+		                        
+		            tpLocation newHome = new tpLocation();
+		            newHome.playername = playerName;
+		            newHome.loc = loc;
+		            homes.add(newHome);
+		            AddHome(playerName, loc);
+		        }
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return;
+			}		
+			tempDb.FreeResult(result);
+			tempDb.End();
+			
+			homeFile.renameTo(new File(PerkUtils.plugin.getDataFolder().getAbsolutePath() + "\\Homes.sqlite.upgradded"));
+		}
 		
 	}
 
-	public static void AddBuild(Player player, Location loc) {
+	private static File FindDatabase(String dbName) {
 		
-		String query = "INSERT INTO 'build' " +
+		File path = PerkUtils.plugin.getDataFolder();
+		
+		if (!path.exists())
+			return null;
+		
+		for (File file : path.listFiles()) {
+			if (file.getName().equals(dbName))
+				return file;
+		}
+		
+		return null;
+	}
+
+	public static void AddHome(String player, Location loc) {
+		
+		String query = "INSERT INTO 'homes' " +
 				"('player','world','x','y','z','yaw','pitch') VALUES (" + 
-				"'" + player.getName() + "'," +
+				"'" + player + "'," +
 				"'" + loc.getWorld().getName() + "'," +
 				"'" + loc.getX() + "'," +
 				"'" + loc.getY() + "'," +
@@ -292,7 +366,23 @@ public class DatabaseManager {
 				"'" + loc.getYaw() + "'," +
 				"'" + loc.getPitch() + 
 				"');";
-		m_builddb.Query(query);
+		m_perksDB.Query(query);
+		
+	}
+
+	public static void AddBuild(String player, Location loc) {
+		
+		String query = "INSERT INTO 'build' " +
+				"('player','world','x','y','z','yaw','pitch') VALUES (" + 
+				"'" + player + "'," +
+				"'" + loc.getWorld().getName() + "'," +
+				"'" + loc.getX() + "'," +
+				"'" + loc.getY() + "'," +
+				"'" + loc.getZ() + "'," +
+				"'" + loc.getYaw() + "'," +
+				"'" + loc.getPitch() + 
+				"');";
+		m_perksDB.Query(query);
 		
 	}
 	
@@ -306,7 +396,7 @@ public class DatabaseManager {
 				"pitch = '" + loc.getPitch() +"' " +
 				"WHERE player = '" + player.getName() + 
 				"' AND world = '" + loc.getWorld().getName() + "';";
-		m_homedb.Query(query);
+		m_perksDB.Query(query);
 		
 	}
 
@@ -320,7 +410,7 @@ public class DatabaseManager {
 				"yaw = '" + loc.getYaw() +"', " +
 				"pitch = '" + loc.getPitch() +"' " +
 				"WHERE player = '" + player.getName() + "';";
-		m_builddb.Query(query);			
+		m_perksDB.Query(query);			
 		
 	}
 	
@@ -335,7 +425,7 @@ public class DatabaseManager {
 			}
 		}
 		
-		DatabaseManager.AddBuild(player, loc);
+		DatabaseManager.AddBuild(player.getName(), loc);
 		
 		tpLocation neBuild = new tpLocation();
 		neBuild.playername = player.getName();
@@ -374,7 +464,7 @@ public class DatabaseManager {
 			}
 		}
 		
-		DatabaseManager.AddHome(player, loc);
+		DatabaseManager.AddHome(player.getName(), loc);
 		
 		tpLocation newHome = new tpLocation();
 		newHome.playername = player.getName();
@@ -411,7 +501,7 @@ public class DatabaseManager {
 				"('player') VALUES (" + 
 				"'" + player.getPlayer().getName() +
 				"');";
-		m_vanishdb.Query(query, true);
+		m_perksDB.Query(query, true);
 		
 	}
 	
@@ -421,7 +511,7 @@ public class DatabaseManager {
 				"WHERE player=" + 
 				"'" + player.getPlayer().getName() +
 				"';";
-		m_vanishdb.Query(query, true);
+		m_perksDB.Query(query, true);
 		
 	}
 	
@@ -431,7 +521,7 @@ public class DatabaseManager {
 			return false;
 		
 		String query = "SELECT * FROM vanish WHERE player='" + player.getPlayer().getName() + "'";
-		ResultSet result = m_vanishdb.QueryResult(query);
+		ResultSet result = m_perksDB.QueryResult(query);
 		
 		boolean vanished;
 		try {
@@ -440,7 +530,7 @@ public class DatabaseManager {
 			vanished = false;
 		}
 		
-		m_vanishdb.FreeResult(result);
+		m_perksDB.FreeResult(result);
 		return vanished;
 	}
 	
@@ -453,7 +543,7 @@ public class DatabaseManager {
 				"'" + time + 
 				"');";
 		
-		m_kitdb.Query(query, true);
+		m_perksDB.Query(query, true);
 		
 	}
 	
@@ -466,14 +556,14 @@ public class DatabaseManager {
 				"'" + kit.getName() +
 				"';";
 		
-		m_kitdb.Query(query, true);
+		m_perksDB.Query(query, true);
 		
 	}
 	
 	public static void loadKit(PerkPlayer player) {
 		
 		String query = "SELECT * FROM kit WHERE player = '" + player.getPlayer().getName() + "'";
-		ResultSet result = m_kitdb.QueryResult(query);
+		ResultSet result = m_perksDB.QueryResult(query);
 		
 		try {
 			// while we have another result, read in the data
@@ -488,19 +578,19 @@ public class DatabaseManager {
 			return;
 		}		
 		
-		m_kitdb.FreeResult(result);
+		m_perksDB.FreeResult(result);
 	}
 	
 	public static boolean isFlying(PerkPlayer player) {
 		
-		if (m_flydb == null)
+		if (m_perksDB == null)
 			return false;
 		
 		if (!player.hasPermission("perks.fly", false)) 
 			return false;
 		
 		String query = "SELECT * FROM flying WHERE name ='" + player.getPlayer().getName() + "'";
-		ResultSet result = m_flydb.QueryResult(query);
+		ResultSet result = m_perksDB.QueryResult(query);
 
 		boolean flying;
 		try {
@@ -509,13 +599,13 @@ public class DatabaseManager {
 			flying = false;
 		}
 		
-		m_flydb.FreeResult(result);
+		m_perksDB.FreeResult(result);
 		return flying;
 	}
 	
 	public static void setFlying(PerkPlayer player, boolean flying) {
 		
-		if (m_flydb == null)
+		if (m_perksDB == null)
 			return;
 		
 		String query;
@@ -530,7 +620,7 @@ public class DatabaseManager {
 					"name='" + player.getPlayer().getName() + "';";
 		}
 		
-		m_flydb.Query(query, true);
+		m_perksDB.Query(query, true);
 	}
 	
 	public static void setSpawn(PerkWorldSpawn spawn) {
@@ -544,7 +634,8 @@ public class DatabaseManager {
 						"'" + spawn.getSpawn().getYaw() + "'," +
 						"'" + spawn.getSpawn().getPitch() + "'" +
 						");";
-		for (int i = 0; i < homes.size(); ++i) {
+		
+		for (int i = 0; i < spawns.size(); ++i) {
 			if (spawns.get(i).getWorld().getName().equalsIgnoreCase(spawn.getWorld().getName())) {
 				query = "UPDATE spawn SET " +
 						"x='" + spawn.getSpawn().getX() + "', " +
@@ -559,7 +650,7 @@ public class DatabaseManager {
 			}
 		}
 		
-		m_spawndb.Query(query, true);
+		m_perksDB.Query(query, true);
 		spawns.add(spawn);
 		PerkUtils.DebugConsole("Adding spawn for " + spawn.getWorld().getName());
 	}

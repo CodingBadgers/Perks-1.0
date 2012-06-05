@@ -250,10 +250,6 @@ public class Perks extends JavaPlugin {
 		if (PerkDynmap.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
-		/*// handles plugins cmd
-		if (PerkPlugins.onCommand(player, cmd, commandLabel, args))		
-			return true;*/
-		
 		// handles 
 		if (PerkTroll.onCommand(player, cmd, commandLabel, args))
 			return true;

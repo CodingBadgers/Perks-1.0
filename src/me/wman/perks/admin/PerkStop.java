@@ -51,7 +51,7 @@ public class PerkStop extends Thread{
 					return true;
 			}
 			
-			PerkUtils.shutdownServer();
+			PerkUtils.plugin.getServer().shutdown(); // really force a stop, fuck thread safty
 			return true;
 		}
 		

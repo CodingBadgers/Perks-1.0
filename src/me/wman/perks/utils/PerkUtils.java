@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import me.wman.perks.Perks;
 import me.wman.perks.config.PerkConfig;
+import net.slipcor.pvparena.PVPArena;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -24,6 +25,7 @@ public class PerkUtils {
 	static public Perks plugin = null;
 	static public boolean spoutEnabled = false;
 	public static DynmapAPI dynmapapi = null;
+	public static PVPArena pvparena = null;
 	public static MVWorldManager worldManager;
 	public static boolean vaultEnabled = false;
 	public static ArrayList<PerkWebChatPlayer> webChatPlayers = new ArrayList<PerkWebChatPlayer>();
@@ -131,20 +133,16 @@ public class PerkUtils {
 	// shutdown and kick all players with the shutdown message
 	public synchronized static void shutdownServer() {
 		
-		// this seems to work, however i have left your version in just incase it fails when we increase the amount of players
+		plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "ma force end");
+		plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "pa castlewars forcestop");
+		
 		Player[] players = server().getOnlinePlayers().clone();
 		for (Player pl : players) {
-			pl.kickPlayer(PerkConfig.shutdownMessage);
-		}
-		
-		/*try {
-			Player[] players = plugin.getServer().getOnlinePlayers();
-			for (int i = 0; i < players.length; ++i) {
-				players[i].kickPlayer(PerkConfig.shutdownMessage);
+			try {
+				pl.kickPlayer(PerkConfig.shutdownMessage);
+			} catch (Exception ex) {
 			}
-		} catch (Exception ex) {
-			// this try is to just stop spamming, if it fails, it will just send the default minecraft java exception to the client
-		}*/
+		}
 		
 		plugin.getServer().shutdown();
 	}
