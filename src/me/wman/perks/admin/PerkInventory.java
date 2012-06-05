@@ -64,9 +64,28 @@ public class PerkInventory {
 			itemsTemp.setAmount(1);
 			items = new ItemStack[] {itemsTemp};
 		} else if (amount > itemsTemp.getMaxStackSize()) {
-			// TODO needs to split it up into stacks of the max stack size
+
 			itemsTemp.setAmount(itemsTemp.getMaxStackSize());
-			items = new ItemStack[] {itemsTemp};
+			items = new ItemStack[]{itemsTemp};
+			
+			// TODO fix, currently is still abit buggy
+			/*int currentAmount = amount;
+			int stack = 0;			
+			int stacks = (int) Math.ceil(currentAmount/itemsTemp.getMaxStackSize());
+			items = new ItemStack[stacks + (currentAmount-(stacks*itemsTemp.getMaxStackSize())==0 ? 0 : 1)];
+			
+			PerkUtils.DebugConsole("Stacks: " + String.valueOf(stacks));
+			PerkUtils.DebugConsole("Left Over:" + String.valueOf(currentAmount-(stacks*itemsTemp.getMaxStackSize())));
+			
+			while(currentAmount > itemsTemp.getMaxStackSize()) {
+				PerkUtils.DebugConsole("Stack: " + String.valueOf(stack));
+				PerkUtils.DebugConsole("Current Amount: " + String.valueOf(currentAmount));
+				items[stack] = new ItemStack(itemsTemp.getType(), itemsTemp.getMaxStackSize());
+				currentAmount -= itemsTemp.getMaxStackSize();
+				stack++;
+			}
+			items[stack] = new ItemStack(itemsTemp.getType(), currentAmount-(stacks*itemsTemp.getMaxStackSize()));
+			*/
 		} else {
 			itemsTemp.setAmount(amount);
 			items = new ItemStack[] {itemsTemp};

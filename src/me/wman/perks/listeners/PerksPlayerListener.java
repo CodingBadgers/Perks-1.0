@@ -134,7 +134,7 @@ public class PerksPlayerListener implements Listener {
 
 		// stop the stalker moving
 		if (player.isSpectating()) {
-			event.setTo(event.getFrom());
+			event.setCancelled(true);
 			return;
 		}
 		
@@ -149,7 +149,8 @@ public class PerksPlayerListener implements Listener {
 			return;
 
 		if (player.isAfk()) {
-			event.setCancelled(true);
+			event.setTo(event.getFrom());
+			return;
 		}
 		
 		if (player.hasPermission("perks.capes", false)) {
