@@ -642,9 +642,9 @@ public class DatabaseManager {
 						"y='" + spawn.getSpawn().getY() + "', " + 
 						"z='" + spawn.getSpawn().getZ() + "', " +
 						"yaw='" + spawn.getSpawn().getYaw() + "', " +
-						"pitch='" + spawn.getSpawn().getYaw() + "' " +
+						"pitch='" + spawn.getSpawn().getPitch() + "' " +
 						"WHERE world='" + spawn.getWorld().getName() + "'" +
-						");";
+						";";
 				spawns.remove(i);
 				break;
 			}

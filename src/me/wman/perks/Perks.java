@@ -250,8 +250,12 @@ public class Perks extends JavaPlugin {
 		if (PerkDynmap.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
-		// handles 
+		// handles trolling cmds
 		if (PerkTroll.onCommand(player, cmd, commandLabel, args))
+			return true;
+		
+		// handles group set cmd
+		if (PerkGroupSet.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		return false;

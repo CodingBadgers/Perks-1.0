@@ -611,4 +611,9 @@ public class PerkPlayer {
 	public boolean isDynmapHidden() {
 		return m_map.hidden;
 	}
+	
+	@Override
+	public String toString() {
+		return m_player.getDisplayName();
+	}
 }

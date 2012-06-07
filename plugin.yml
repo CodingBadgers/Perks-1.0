@@ -163,11 +163,11 @@ commands:
       usage: /<command> <target>
       
    slap:
-      description: slap
+      description: slaps a player
       usage: /<command> [-hvs] <target>
       
    rocket:
-      description: rocket
+      description: rockets a player
       usage: /<command> [-hs] <target>
       
    thor:
@@ -179,7 +179,7 @@ commands:
       usage: /<command> [-s] <target>
       
    stop:
-      description: Tops the server taking an optional delay time
+      description: stops the server taking an optional delay time
       usage: /<command> [time]
       
    hide:
@@ -220,5 +220,9 @@ commands:
       usage: /<command> <item>[:meta] [amount]
       
    stopstop:
-      description: cancle the stop countdown
+      description: cancels the stop countdown
       usage: /<command>
+      
+   groupset:
+      description: sets the group of a user
+      usage: /<command> <player> <group>
