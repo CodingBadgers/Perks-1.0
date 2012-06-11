@@ -175,6 +175,7 @@ public class DatabaseManager {
 			m_perksDB.Query(query, true);
 		}
 		
+		/* Not needed?? we load them in on creation of the player and it just breaks with a npe at the moment
 		// select every property from the table
 		query = "SELECT * FROM kit";
 		result = m_perksDB.QueryResult(query);
@@ -186,6 +187,7 @@ public class DatabaseManager {
 	            String kitName = result.getString("kitname");
 	            Long time = result.getLong("time");
 	            
+	            // Never going to work, the players wont be in the array on startup
 	            PerkPlayer player = PerkUtils.getPlayer(playerName);
 	            PerkKits.load(player, kitName, time);
 	        }
@@ -195,6 +197,7 @@ public class DatabaseManager {
 		}		
 		
 		m_perksDB.FreeResult(result);
+		*/
 		
 		if (!m_perksDB.TableExists("flying")) {
 			

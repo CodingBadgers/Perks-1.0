@@ -31,7 +31,7 @@ public class PerkPlugins{
 			amount++;
 		}
 		
-		player.getPlayer().sendMessage("Plugins (" + amount + "): ");
+		player.getPlayer().sendMessage(ChatColor.BOLD + "" + ChatColor.GREEN + "Plugins (" + amount + "): " + ChatColor.RESET);
 		
 		String[] lines = out.toString().split("\n");
 		for (String line : lines) {

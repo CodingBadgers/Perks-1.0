@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+import me.wman.perks.config.PerkConfig;
 import me.wman.perks.utils.PerkUtils;
 
 import org.bukkit.OfflinePlayer;
@@ -18,14 +19,11 @@ public class PerkJoining {
 	public static boolean kickPlayer() {
 		PermissionManager pex = PermissionsEx.getPermissionManager();
 		
-		Map<Integer, PermissionGroup> groups = pex.getRankLadder("default");
-		
-		TreeMap<Integer, PermissionGroup> sortedGroups1 = new TreeMap<Integer, PermissionGroup>(groups);
-		NavigableMap<Integer, PermissionGroup> sortedGroups2 = sortedGroups1.descendingMap();
+		NavigableMap<Integer, PermissionGroup> sortedGroups2 = new TreeMap<Integer, PermissionGroup>(pex.getRankLadder("default")).descendingMap();
 		boolean kicked = false;
 		
 		for (Map.Entry<Integer, PermissionGroup> entry : sortedGroups2.entrySet()) {
-			if (!(entry.getKey() >=  100)) 
+			if (!(entry.getKey() >=  PerkConfig.forceJoinCutOff)) 
 				continue;
 			
 			PermissionUser[] users = entry.getValue().getUsers();

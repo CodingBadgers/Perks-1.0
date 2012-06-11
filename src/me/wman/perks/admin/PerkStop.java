@@ -1,5 +1,6 @@
 package me.wman.perks.admin;
 
+import me.wman.perks.config.PerkConfig;
 import me.wman.perks.utils.PerkUtils;
 
 import org.bukkit.command.Command;
@@ -20,7 +21,7 @@ public class PerkStop extends Thread{
 			}
 			
 			
-			int time = 20;
+			int time = PerkConfig.shutdownTimeout;
 			if (args.length == 1) {
 				try {
 					time = Integer.parseInt(args[0]);
@@ -94,7 +95,7 @@ public class PerkStop extends Thread{
 				m_time--;
 				
 				if (m_cancled) {
-					PerkUtils.OutputToAll("Shutdown aborted");
+					PerkUtils.OutputToAll("Shutdown Terminated");
 					return;
 				}
 				
@@ -109,7 +110,7 @@ public class PerkStop extends Thread{
 		}
 		
 		if (m_cancled) {
-			PerkUtils.OutputToAll("Shutdown aborted");
+			PerkUtils.OutputToAll("Shutdown Terminated");
 			return;
 		}
 		

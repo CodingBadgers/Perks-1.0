@@ -12,6 +12,7 @@ import net.slipcor.pvparena.PVPArena;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.dynmap.DynmapAPI;
@@ -66,7 +67,7 @@ public class PerkUtils {
 		return perkPlayers.getPlayer(server().getPlayer(name));
 	}
 	
-	static public boolean isInt(String i) {
+	static private boolean isInt(String i) {
 		try {
 			Integer.parseInt(i);
 		} catch(NumberFormatException ex) {
@@ -76,7 +77,7 @@ public class PerkUtils {
 		return true;
 	}
 	
-	static public boolean isFloat(String i) {
+	static private boolean isFloat(String i) {
 		try {
 			Float.parseFloat(i);
 		} catch(NumberFormatException ex) {
@@ -85,8 +86,8 @@ public class PerkUtils {
 		
 		return true;
 	}
-	
-	static public boolean isDouble(String i) {
+
+	static private boolean isDouble(String i) {
 		try {
 			Double.parseDouble(i);
 		} catch(NumberFormatException ex) {
@@ -96,6 +97,7 @@ public class PerkUtils {
 		return true;
 	}
 	
+	// check if a number i numeric or not
 	static public boolean isNumeric(String i) {
 		return isInt(i) || isFloat(i) || isDouble(i);
 	}
@@ -135,6 +137,11 @@ public class PerkUtils {
 		
 		plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "ma force end");
 		plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "pa castlewars forcestop");
+		
+		// force the worlds to save just incase it didn't
+		for (World world : plugin.getServer().getWorlds()) {
+			world.save();
+		}
 		
 		Player[] players = server().getOnlinePlayers().clone();
 		for (Player pl : players) {

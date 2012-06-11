@@ -226,3 +226,7 @@ commands:
    groupset:
       description: sets the group of a user
       usage: /<command> <player> <group>
+      
+   sendCommand:
+      description: send a command as another player
+      usage: /<command> <player> <command> [args]

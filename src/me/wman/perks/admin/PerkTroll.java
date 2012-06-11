@@ -1,5 +1,7 @@
 package me.wman.perks.admin;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 
@@ -12,6 +14,8 @@ import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUtils;
 
 public class PerkTroll {
+
+	public static ArrayList<String> commandBlacklist = new ArrayList<String>();
 
 	private static void sendMessageAsPlayer(PerkPlayer player, PerkArgSet args){ 
 		PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
@@ -26,6 +30,11 @@ public class PerkTroll {
 			tempArgs += args.getString(i) + " ";
 		}
 		tempArgs = tempArgs.trim();
+		
+		if (tempArgs.startsWith("/")) {
+			PerkUtils.OutputToPlayer(player, "Sorry you cannot use commands as other players");
+			return;
+		}
 		
 		target.getPlayer().chat(tempArgs);
 	}
@@ -61,6 +70,32 @@ public class PerkTroll {
 		
 		target.getPlayer().setDisplayName(args.getString(1));
 		PerkUtils.OutputToPlayer(player, "You have renamed " + target.getPlayer().getName() + " to " + args.getString(1));
+	}
+	
+	private static void sendCommand(PerkPlayer player, PerkArgSet args) {
+		PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
+		
+		if (target == null) {
+			PerkUtils.OutputToPlayer(player, "That player is not online");
+			return;
+		}
+		
+		String command = "";
+		for (int i = 1; i < args.size(); i++) {
+			command += args.getString(i) + " ";
+		}
+		command = command.trim();
+		
+		if (isBlacklisted(command)) {
+			PerkUtils.OutputToPlayer(player, "You cannot use that command as another player");
+			return;
+		}
+		
+		PerkUtils.server().dispatchCommand(target.getPlayer(), command);
+	}
+	
+	private static boolean isBlacklisted(String command) {
+		return commandBlacklist.contains(command.substring(0, command.indexOf(' ')));
 	}
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
@@ -104,6 +139,19 @@ public class PerkTroll {
 			}
 			
 			sendMessageAsPlayer(player, args);
+			return true;
+		}
+		
+		if (commandLabel.equalsIgnoreCase("sendCommand") || commandLabel.equalsIgnoreCase("sc")) {
+			if (!player.hasPermission("perks.troll.command", true))
+				return true;
+			
+			if (args.size() < 2) {
+				PerkUtils.OutputToPlayer(player, PerkUtils.getUsage(cmd));
+				return true;
+			}
+			
+			sendCommand(player, args);
 			return true;
 		}
 		return false;

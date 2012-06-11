@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import me.wman.perks.admin.PerkTroll;
 import me.wman.perks.donator.PerkKits;
 import me.wman.perks.utils.PerkKit;
 import me.wman.perks.utils.PerkUtils;
@@ -26,6 +27,7 @@ public class PerkConfig {
 	public static int capeRefresh;
 	public static String shutdownMessage;
 	public static int shutdownTimeout;
+	public static int forceJoinCutOff;
 	
 	public static boolean loadConfig () {
 		
@@ -34,12 +36,12 @@ public class PerkConfig {
 		FileConfiguration config = PerkUtils.plugin.getConfig();
 		
 		try {
-			config.addDefault("Capes.Url", "http://www.redstonetechnologic.co.cc/capes/");
+			config.addDefault("Capes.Url", "");
 			config.addDefault("Hunger.rate", "0.25");
 			config.addDefault("Hunger.counter", "0.0");
-			config.addDefault("Capes.RefreshTime", 5);
 			config.addDefault("Shutdown.message", "The server has been shutdown");
 			config.addDefault("Shutdown.defaultTimeout", 30);
+			config.addDefault("ForceJoin.CutOff", 100);
 			
 			config.options().copyDefaults(true);
 			PerkUtils.plugin.saveConfig();
@@ -56,23 +58,84 @@ public class PerkConfig {
 		capeRefresh = Integer.parseInt(config.getString("Capes.RefreshTime"));
 		shutdownMessage = config.getString("Shutdown.message");
 		shutdownTimeout = config.getInt("Shutdown.timeout");
+		forceJoinCutOff = config.getInt("ForceJoin.CutOff");
 		
+		// load kit config
 		File kitConfig = new File(PerkUtils.plugin.getDataFolder() + File.separator + "kits.cfg");
 		if (!kitConfig.exists()) {
 			createDefaultKitConfig(kitConfig);
 		}
 		loadKitsConfig(kitConfig);
 		
+		// load plugin blacklist
 		File pluginBlacklist = new File(PerkUtils.plugin.getDataFolder()+ File.separator + "plugins.cfg");
 		if (!pluginBlacklist.exists()) {
 			createDefaultPluginBlackList(pluginBlacklist);
 		}
 		loadPluginBlacklist(pluginBlacklist);
 		
+		// load command blacklist
+		File commandBlacklist = new File(PerkUtils.plugin.getDataFolder() + File.separator + "commands.cfg");
+		if (!commandBlacklist.exists()) {
+			createDefaultCommandBlackList(commandBlacklist);
+		}
+		loadCommandBlackList(commandBlacklist);
+		
 		return true;
 		
 	}
 	
+	private static void loadCommandBlackList(File commandBlacklist) {
+		
+		if (!commandBlacklist.exists()) {
+			PerkUtils.log.log(Level.SEVERE, "Config file 'plugins.cfg' does not exist");
+			return;
+		}
+
+		PerkUtils.log.log(Level.INFO, "Loading config file 'plugins.cfg'");
+		
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(commandBlacklist.getPath()));
+			String line = null;
+			
+			while((line = reader.readLine()) != null) {
+				if (line.startsWith("#"))
+					continue;
+				
+				if (line.length() == 0)
+					continue;
+					
+				PerkTroll.commandBlacklist.add(line);
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private static void createDefaultCommandBlackList(File commandBlacklist) {
+		PerkUtils.log.info("Creating default command blacklist");
+		
+		try {
+			commandBlacklist.createNewFile();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return;
+		}
+		
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(commandBlacklist.getPath()));
+		
+			writer.write("# command blacklist file, please use exact command names and aliases");
+			writer.write("# these commands are only blacklisted from /sendCommand");
+		
+			writer.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return;
+		}
+		
+	}
+
 	private static void createDefaultPluginBlackList(File pluginBlacklist) {
 		PerkUtils.log.info("Creating default kit config.");
 		

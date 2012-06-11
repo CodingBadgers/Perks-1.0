@@ -94,7 +94,6 @@ public class PerksPlayerListener implements Listener {
 			event.setQuitMessage(null);
 		}
 		
-		player.showPlayer(false);
 		PerkUtils.perkPlayers.removePlayer(player.getPlayer());
 	}
 
@@ -108,8 +107,6 @@ public class PerksPlayerListener implements Listener {
 		if (player.isVanished()) {
 			event.setLeaveMessage(null);
 		}
-		
-		player.showPlayer(false);
 			
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
