@@ -668,4 +668,8 @@ public class DatabaseManager {
 		return null;
 	}
 
+	public static void Stop() {
+		m_perksDB.End();
+	}
+
 }

@@ -39,6 +39,14 @@ public class PerkStop extends Thread{
 			else
 				PerkUtils.DebugConsole("Shutting server down in " + time + " seconds");
 			
+			PerkUtils.server().getScheduler().scheduleSyncDelayedTask(PerkUtils.plugin, new Runnable() {
+
+				   public void run() {
+				       PerkUtils.shutdownServer();
+				   }
+				   
+			}, (time + 1L) * 20L); // times 20 as we 'should' run at 20 ticks per second
+			
 			m_thread = new PerkStop(time);
 			m_thread.start();
 
@@ -113,8 +121,6 @@ public class PerkStop extends Thread{
 			PerkUtils.OutputToAll("Shutdown Terminated");
 			return;
 		}
-		
-		PerkUtils.shutdownServer();
 	}
 	
 	public void cancel() {

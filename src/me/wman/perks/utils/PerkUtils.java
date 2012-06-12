@@ -143,7 +143,7 @@ public class PerkUtils {
 			world.save();
 		}
 		
-		Player[] players = server().getOnlinePlayers().clone();
+		Player[] players = server().getOnlinePlayers();
 		for (Player pl : players) {
 			try {
 				pl.kickPlayer(PerkConfig.shutdownMessage);

@@ -32,8 +32,10 @@ public class Perks extends JavaPlugin {
 	// private final PerkThread m_thread = new PerkThread(this);
 
 	public void onDisable() {
+		DatabaseManager.Stop();
 		PerkUtils.DebugConsole("Perks version '" + getDescription().getVersion() + "' has been disabled");
 	}
+	
 	public void onEnable() {
 		
 		PerkUtils.plugin = this;
@@ -53,7 +55,7 @@ public class Perks extends JavaPlugin {
 		
 		PerkUtils.DebugConsole("Perks version '" + getDescription().getVersion() + "' has been enabled");
 	}
-
+	
 	private void loadConfigs() {
 		// load the config
 		// load before database incase we use sql
