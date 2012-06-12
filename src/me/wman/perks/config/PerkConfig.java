@@ -88,11 +88,11 @@ public class PerkConfig {
 	private static void loadCommandBlackList(File commandBlacklist) {
 		
 		if (!commandBlacklist.exists()) {
-			PerkUtils.log.log(Level.SEVERE, "Config file 'plugins.cfg' does not exist");
+			PerkUtils.log.log(Level.SEVERE, "Config file 'commands.cfg' does not exist");
 			return;
 		}
 
-		PerkUtils.log.log(Level.INFO, "Loading config file 'plugins.cfg'");
+		PerkUtils.log.log(Level.INFO, "Loading config file 'commands.cfg'");
 		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(commandBlacklist.getPath()));
@@ -113,7 +113,7 @@ public class PerkConfig {
 	}
 
 	private static void createDefaultCommandBlackList(File commandBlacklist) {
-		PerkUtils.log.info("Creating default command blacklist");
+		PerkUtils.log.info("Creating default command whitelist");
 		
 		try {
 			commandBlacklist.createNewFile();
@@ -125,8 +125,8 @@ public class PerkConfig {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(commandBlacklist.getPath()));
 		
-			writer.write("# command blacklist file, please use exact command names and aliases");
-			writer.write("# these commands are only blacklisted from /sendCommand");
+			writer.write("# command whitelist file, please use exact command names and aliases");
+			writer.write("# these commands are only whitelisted for /sendCommand");
 		
 			writer.close();
 		} catch (IOException ex) {

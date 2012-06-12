@@ -86,7 +86,7 @@ public class PerkTroll {
 		}
 		command = command.trim();
 		
-		if (isBlacklisted(command)) {
+		if (!isBlacklisted(command)) {
 			PerkUtils.OutputToPlayer(player, "You cannot use that command as another player");
 			return;
 		}
