@@ -52,13 +52,12 @@ public class PerkConfig {
 		
 		}
  		
-		capesURL = config.getString("Capes.Url");
-		hungerCounter = Float.parseFloat(config.getString("Hunger.counter"));
-		hungerRate = Float.parseFloat(config.getString("Hunger.rate"));
-		capeRefresh = Integer.parseInt(config.getString("Capes.RefreshTime"));
-		shutdownMessage = config.getString("Shutdown.message");
-		shutdownTimeout = config.getInt("Shutdown.timeout");
-		forceJoinCutOff = config.getInt("ForceJoin.CutOff");
+		capesURL = config.getString("Capes.Url", "");
+		hungerCounter = Float.parseFloat(config.getString("Hunger.counter", "0.25"));
+		hungerRate = Float.parseFloat(config.getString("Hunger.rate", "0.0"));
+		shutdownMessage = config.getString("Shutdown.message", "The server has been shutdown");
+		shutdownTimeout = config.getInt("Shutdown.defaultTimeout", 30);
+		forceJoinCutOff = config.getInt("ForceJoin.CutOff", 100);
 		
 		// load kit config
 		File kitConfig = new File(PerkUtils.plugin.getDataFolder() + File.separator + "kits.cfg");
