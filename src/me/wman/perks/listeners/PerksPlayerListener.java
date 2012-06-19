@@ -180,6 +180,10 @@ public class PerksPlayerListener implements Listener {
 					bukkitPlayer.setGameMode(GameMode.SURVIVAL);
 				}
 			}
+			
+			if (bukkitPlayer.isFlying()) {
+				bukkitPlayer.setFlying(false);
+			}
 		}
 				
 		// make sure the location wont kill them...
@@ -239,6 +243,66 @@ public class PerksPlayerListener implements Listener {
 			return false;
 		
 		if (block.getType() == Material.PORTAL)
+			return false;
+		
+		if (block.getType() == Material.SIGN)
+			return false;
+		
+		if (block.getType() == Material.SIGN_POST)
+			return false;
+		
+		if (block.getType() == Material.WALL_SIGN)
+			return false;
+		
+		if (block.getType() == Material.SNOW)
+			return false;
+		
+		if (block.getType() == Material.LONG_GRASS)
+			return false;
+		
+		if (block.getType() == Material.RED_ROSE)
+			return false;
+		
+		if (block.getType() == Material.YELLOW_FLOWER)
+			return false;
+		
+		if (block.getType() == Material.RED_MUSHROOM)
+			return false;
+		
+		if (block.getType() == Material.BROWN_MUSHROOM)
+			return false;
+		
+		if (block.getType() == Material.WEB)
+			return false;
+		
+		if (block.getType() == Material.VINE)
+			return false;
+		
+		if (block.getType() == Material.LADDER)
+			return false;
+		
+		if (block.getType() == Material.RAILS)
+			return false;
+		
+		if (block.getType() == Material.POWERED_RAIL)
+			return false;
+		
+		if (block.getType() == Material.DETECTOR_RAIL)
+			return false;
+		
+		if (block.getType() == Material.DEAD_BUSH)
+			return false;
+		
+		if (block.getType() == Material.LEVER)
+			return false;
+		
+		if (block.getType() == Material.STONE_BUTTON)
+			return false;
+		
+		if (block.getType() == Material.STONE_PLATE)
+			return false;
+		
+		if (block.getType() == Material.WOOD_PLATE)
 			return false;
 				
 		return true;

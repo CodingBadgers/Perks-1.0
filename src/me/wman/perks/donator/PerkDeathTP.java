@@ -41,9 +41,16 @@ public class PerkDeathTP {
 					return true;
 				}
 				
-				player.getPlayer().teleport(deathloc);
-				player.resetDeath();
-				PerkUtils.OutputToPlayer(player, "You have been teleported to your last death point");
+				if (player.getPlayer().getLocation().getWorld() == deathloc.getWorld())
+				{
+					player.getPlayer().teleport(deathloc);
+					player.resetDeath();
+					PerkUtils.OutputToPlayer(player, "You have been teleported to your last death point");
+				}
+				else
+				{
+					PerkUtils.OutputToPlayer(player, "You have to be in the same world as where you died");
+				}
 			}			
 			return true;
 		}
