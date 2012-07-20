@@ -9,9 +9,9 @@ import me.wman.perks.donator.PerkColors;
 import me.wman.perks.donator.PerkList;
 import me.wman.perks.donator.PerkPlugins;
 import me.wman.perks.utils.PerkPlayer;
-import me.wman.perks.utils.PerkUrlShortener;
 import me.wman.perks.utils.PerkUtils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -52,6 +52,7 @@ public class PerksPlayerListener implements Listener {
 		
 		if (player.isVanished()) {
 			event.setJoinMessage(null);
+			PerkUtils.OutputToStaff(ChatColor.GOLD + player.getPlayer().getName() + " has logged in using vanish");
 		}
 		
 		PerkColors.addColor(player.getPlayer());
@@ -92,6 +93,7 @@ public class PerksPlayerListener implements Listener {
 		
 		if (player.isVanished()) {
 			event.setQuitMessage(null);
+			PerkUtils.OutputToStaff(player.getPlayer().getName() + " has logged out using vanish");
 		}
 		
 		PerkUtils.perkPlayers.removePlayer(player.getPlayer());
@@ -106,6 +108,7 @@ public class PerksPlayerListener implements Listener {
 		
 		if (player.isVanished()) {
 			event.setLeaveMessage(null);
+			PerkUtils.OutputToStaff(player.getPlayer().getName() + " has logged out using vanish");	
 		}
 			
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
@@ -319,12 +322,6 @@ public class PerksPlayerListener implements Listener {
 		
 		if (player.isAfk()) {	
 			event.setCancelled(true);
-		}
-		
-		/* URL Shortener */
-		if (player.hasPermission("perks.chat.shorten", false)) {		
-			String msg = event.getMessage();
-			event.setMessage(PerkUrlShortener.parseMessage(msg));
 		}
 	}
 	

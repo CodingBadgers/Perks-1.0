@@ -29,6 +29,8 @@ public class PerkConfig {
 	public static int shutdownTimeout;
 	public static int forceJoinCutOff;
 	
+	public static ArrayList<String> perksInfo = new ArrayList<String>();
+	
 	public static boolean loadConfig () {
 		
 		PerkKits.kits.clear();
@@ -80,10 +82,70 @@ public class PerkConfig {
 		}
 		loadCommandBlackList(commandBlacklist);
 		
+		// load command blacklist
+		File perksHelpConfig = new File(PerkUtils.plugin.getDataFolder() + File.separator + "perksHelp.cfg");
+		if (!perksHelpConfig.exists()) {
+			createPerksHelpConfig(perksHelpConfig);
+		}
+		loadPerksHelpConfig(perksHelpConfig);
+	
 		return true;
 		
 	}
 	
+	private static void loadPerksHelpConfig(File perksHelpConfig) {
+		if (!perksHelpConfig.exists()) {
+			PerkUtils.log.log(Level.SEVERE, "Config file 'perksHelp.cfg' does not exist");
+			return;
+		}
+
+		PerkUtils.log.log(Level.INFO, "Loading config file 'perksHelp.cfg'");
+		
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(perksHelpConfig.getPath()));
+			String line = null;
+			
+			while((line = reader.readLine()) != null) {
+				if (line.startsWith("#"))
+					continue;
+				
+				if (line.length() == 0)
+					continue;
+					
+				perksInfo.add(line);
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private static void createPerksHelpConfig(File perksHelpConfig) {
+		PerkUtils.log.info("Creating default command whitelist");
+		
+		try {
+			perksHelpConfig.createNewFile();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return;
+		}
+		
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(perksHelpConfig.getPath()));
+			
+			writer.write("# Message to be printed out whenever a player uses /perks\n");
+			writer.write("1 - /fly - lets you fly like a bird\n");
+			writer.write("2 - /tpr <name> - Sends a teleport request to a player\n");
+			writer.write("3 - Unlimited air under water when wearing a gold helmet\n");
+			writer.write("4 - You're hunger decreases at a much slower rate\n");
+			writer.write("5 - /death - to teleport to your last death location\n");
+			
+			writer.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return;
+		}
+	}
+
 	private static void loadCommandBlackList(File commandBlacklist) {
 		
 		if (!commandBlacklist.exists()) {

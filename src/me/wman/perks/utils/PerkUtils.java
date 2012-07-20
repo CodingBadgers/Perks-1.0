@@ -154,4 +154,14 @@ public class PerkUtils {
 		plugin.getServer().shutdown();
 	}
 
+	public static void OutputToStaff(String string) {
+		
+		PerkPlayerArray players = perkPlayers;
+		
+		for (PerkPlayer player : players) {
+			if (player.hasPermission("perks.vanish.showJoin", false))
+				player.getPlayer().sendMessage(string);
+		}
+	}
+
 }
