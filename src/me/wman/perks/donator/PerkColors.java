@@ -37,14 +37,17 @@ public class PerkColors {
 		sPlayer.setTitle(player.getName());
 	}
 
-	private static ChatColor getColor (PermissionManager pex, Player player) {
+	public static ChatColor getColor (PermissionManager pex, Player player) {
 		PermissionUser user = pex.getUser(player);
 		PermissionGroup[] group = user.getGroups();
 		
 		String prefix = group[0].getPrefix();
 		
 		if (!prefix.contains("&"))
-			return null;
+			prefix = user.getPrefix();
+		
+		if (!prefix.contains("&"))
+			return ChatColor.WHITE;
 		
 		String colorCode = prefix.substring(prefix.indexOf('&') + 1, prefix.indexOf('&') + 2);
 		ChatColor color = ChatColor.getByChar(colorCode);

@@ -1,7 +1,7 @@
 name: Perks
 authors: [N3wton, wman2]
 main: me.wman.perks.Perks
-version: 1.9
+version: 1.95
 website: www.mcbadgercraft.com
 description: A plugin containing all the Donator perks for McBadgerCraft
 softdepend: [Spout, MobArena, dynmap, Multiverse-Core, Vault]

@@ -114,6 +114,8 @@ public class PerkConfig {
 					
 				perksInfo.add(line);
 			}
+			
+			reader.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -168,6 +170,8 @@ public class PerkConfig {
 					
 				PerkTroll.commandBlacklist.add(line);
 			}
+			
+			reader.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -241,6 +245,8 @@ public class PerkConfig {
 					
 				PerkUtils.pluginBlacklist.add(line);
 			}
+			
+			reader.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -333,6 +339,8 @@ public class PerkConfig {
 				ItemStack item = new ItemStack(material, amount);
 				newKit.add(item);
 			}
+			
+			reader.close();
 			
 			if (newKit != null) {
 				int timeout = Integer.parseInt(timeoutString);

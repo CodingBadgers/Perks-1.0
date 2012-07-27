@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import me.wman.perks.config.DatabaseManager;
 import me.wman.perks.config.PerkConfig;
+import me.wman.perks.donator.PerkColors;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -115,7 +116,8 @@ public class PerkPlayer {
 		
 		if (PerkUtils.dynmapapi != null)
 			m_map.hidden = PerkUtils.dynmapapi.getPlayerVisbility(player);
-
+		
+		player.setPlayerListName(PerkColors.getColor(PermissionsEx.getPermissionManager(), player) + player.getName());
 	}
 	
 	// called when a player is kicked or leaves...
