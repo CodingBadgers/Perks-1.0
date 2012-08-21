@@ -409,6 +409,24 @@ public class PerkItems {
         items.add(new PerkItem("ward Disc", new String[][] {{"ward", "disc"}, {"ward", "reco"}, {"10", "disc"}, {"10", "reco"}}, Material.RECORD_10));
         items.add(new PerkItem("11 Disc", new String[][] {{"11", "disc"}, {"11", "reco"}}, Material.RECORD_11));
         items.add(new PerkItem("Redstone Lamp", new String[][] {{"lamp"}, {"lamp", "red", "sto"}}, Material.REDSTONE_LAMP_OFF));
+        items.add(new PerkItem("Emerald Ore", new String[][]{{"emer", "ore"}}, Material.EMERALD_ORE));
+        items.add(new PerkItem("Emerald", new String[][]{{"emer"}}, Material.EMERALD));
+        items.add(new PerkItem("Emerald Block", new String[][]{{"emer", "blo"}}, Material.EMERALD_BLOCK));
+        items.add(new PerkItem("Ender Chest", new String[][]{{"end", "ches"}}, Material.ENDER_CHEST));
+        items.add(new PerkItem("Tripwire Hook", new String[][]{{"hoo", "trip"}}, Material.TRIPWIRE_HOOK));
+        items.add(new PerkItem("Tripwire", new String[][]{{"trip"}}, Material.TRIPWIRE));
+        items.add(new PerkItem("Sandstone Stair", new String[][]{{"stair", "sand", "sto"}, {"stair", "sand"}}, Material.SANDSTONE_STAIRS));
+        items.add(new PerkItem("Double Oak Slab", new String[][]{{"doub", "slab", "oak"}, {"doub", "step", "oak"}}, Material.WOOD_DOUBLE_STEP));
+        items.add(new PerkItem("Double Spruce Slab", new String[][]{{"doub", "slab", "spru"}, {"doub", "step", "spru"}}, Material.WOOD_DOUBLE_STEP, (short) 1));
+        items.add(new PerkItem("Double Birch Slab", new String[][]{{"doub", "slab", "birc"}, {"doub", "step", "birc"}}, Material.WOOD_DOUBLE_STEP, (short) 2));
+        items.add(new PerkItem("Double Jungle-Wood Slab", new String[][]{{"doub", "slab", "jung"}, {"doub", "step", "jung"}}, Material.WOOD_DOUBLE_STEP, (short) 3));
+        items.add(new PerkItem("Oak Slab", new String[][]{{"slab", "oak"}, {"step", "oak"}}, Material.WOOD_STEP));
+        items.add(new PerkItem("Spruce Slab", new String[][]{{"slab", "spru"}, {"step", "spru"}}, Material.WOOD_STEP, (short) 1));
+        items.add(new PerkItem("Birch Slab", new String[][]{{"slab", "birc"}, {"step", "birc"}}, Material.WOOD_STEP, (short) 2));
+        items.add(new PerkItem("Jungle-Wood Slab", new String[][]{{"slab", "jung"}, {"step", "jung"}}, Material.WOOD_STEP, (short) 3));
+        items.add(new PerkItem("Book and Quill", new String[][]{{"qui", "book"}}, Material.BOOK_AND_QUILL));
+        items.add(new PerkItem("Written Book", new String[][]{{"wri", "book"}}, Material.WRITTEN_BOOK));
+    
     }
     
     public static PerkItem itemById(int typeId) {
