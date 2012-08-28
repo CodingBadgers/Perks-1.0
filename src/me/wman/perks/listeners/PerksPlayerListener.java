@@ -6,7 +6,6 @@ import me.wman.perks.admin.PerkVanish;
 import me.wman.perks.donator.PerkJoining;
 import me.wman.perks.donator.PerkCapes;
 import me.wman.perks.donator.PerkColors;
-import me.wman.perks.donator.PerkList;
 import me.wman.perks.donator.PerkPlugins;
 import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUtils;
@@ -37,6 +36,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
+@SuppressWarnings("deprecation")
 public class PerksPlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -56,10 +56,6 @@ public class PerksPlayerListener implements Listener {
 		}
 		
 		PerkColors.addColor(player.getPlayer());
-		
-		if (event.getPlayer() instanceof Player) {
-			PerkList.showOnlineList(player);
-		}
 		
 		player.dynmapHide();
 	}	

@@ -65,27 +65,28 @@ public class PerkInventory {
 			items = new ItemStack[] {itemsTemp};
 		} else if (amount > itemsTemp.getMaxStackSize()) {
 
-			itemsTemp.setAmount(itemsTemp.getMaxStackSize());
-			items = new ItemStack[]{itemsTemp};
-			
 			// TODO fix, currently is still abit buggy
-			/*int currentAmount = amount;
-			int stack = 0;			
-			int stacks = (int) Math.ceil(currentAmount/itemsTemp.getMaxStackSize());
-			items = new ItemStack[stacks + (currentAmount-(stacks*itemsTemp.getMaxStackSize())==0 ? 0 : 1)];
+			int amountToGive = amount;
+			int stackSize = itemsTemp.getMaxStackSize();
+			int current = 0;
+			int stacks = (int) Math.ceil((double)amountToGive / (double)stackSize);
 			
-			PerkUtils.DebugConsole("Stacks: " + String.valueOf(stacks));
-			PerkUtils.DebugConsole("Left Over:" + String.valueOf(currentAmount-(stacks*itemsTemp.getMaxStackSize())));
-			
-			while(currentAmount > itemsTemp.getMaxStackSize()) {
-				PerkUtils.DebugConsole("Stack: " + String.valueOf(stack));
-				PerkUtils.DebugConsole("Current Amount: " + String.valueOf(currentAmount));
-				items[stack] = new ItemStack(itemsTemp.getType(), itemsTemp.getMaxStackSize());
-				currentAmount -= itemsTemp.getMaxStackSize();
-				stack++;
+			if (stacks > 36) {
+				amountToGive = stackSize*36;
 			}
-			items[stack] = new ItemStack(itemsTemp.getType(), currentAmount-(stacks*itemsTemp.getMaxStackSize()));
-			*/
+			
+			items = new ItemStack[stacks];
+			
+			while(amountToGive >= stackSize) {
+				items[current] = new ItemStack(itemsTemp.getType(), stackSize);
+				amountToGive -= stackSize;
+				current++;
+			}
+			
+			if (amountToGive > 0) {
+				items[current] = new ItemStack(itemsTemp.getType(), amountToGive);
+			}
+			
 		} else {
 			itemsTemp.setAmount(amount);
 			items = new ItemStack[] {itemsTemp};
@@ -140,10 +141,7 @@ public class PerkInventory {
 					return true;
 				}
 				
-				if (item.length > 1) 
-					amount = item.length * item[0].getMaxStackSize();
-				else 
-					amount = item[0].getAmount();
+				amount = getAmount(item);
 
 				if (args.hasFlag('d')) {
 					for (ItemStack stack : item) {
@@ -219,4 +217,11 @@ public class PerkInventory {
 		return  false;
 	}
 	
+	public static int getAmount(ItemStack[] items) {
+		int amount = 0;
+		for (ItemStack item : items) {
+			amount += item.getAmount();
+		}
+		return amount;
+	}
 }

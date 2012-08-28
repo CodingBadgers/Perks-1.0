@@ -28,7 +28,7 @@ public class Perks extends JavaPlugin {
     private final PerksPvpArenaListener paListener = new PerksPvpArenaListener();
     private final PerksHeroChatListener hcListener = new PerksHeroChatListener();
     //private final PerksWebChatListener wcListener = new PerksWebChatListener();
-    
+
 	// private final PerkThread m_thread = new PerkThread(this);
 
 	public void onDisable() {
@@ -190,10 +190,6 @@ public class Perks extends JavaPlugin {
 		
 		// handles vanish cmds
 		if (PerkVanish.onCommand(player, cmd, commandLabel, args))
-			return true;
-		
-		// handles list cmds
-		if (PerkList.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		// handles inv clear cmds

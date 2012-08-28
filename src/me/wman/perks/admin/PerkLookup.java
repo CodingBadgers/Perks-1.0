@@ -98,7 +98,7 @@ public class PerkLookup {
 				return true;
 			
 			if (args.size() !=  1) {
-				PerkUtils.OutputToPlayer(player, PerkUtils.plugin.getCommand("item").getUsage());
+				PerkUtils.OutputToPlayer(player, PerkUtils.getUsage(cmd));
 				return true;
 			}
 			
@@ -126,11 +126,6 @@ public class PerkLookup {
 				hunger= target.getPlayer().getFoodLevel();
 				loc = target.getPlayer().getLocation();
 				op = target.getPlayer().isOp();
-				if (PerkUtils.server().getPluginManager().getPlugin("bAdmin") != null) 
-					//banned = BanManager.isBanned(player.getPlayer());
-					banned = false;
-				else 
-					banned = false;
 			
 				try {
 					firstPlayed = PerkUtils.parseDate(target.getPlayer().getFirstPlayed());
@@ -187,7 +182,7 @@ public class PerkLookup {
 				out.append(ChatColor.GOLD + "Op: " + ChatColor.WHITE + op).append("\n");
 				out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + firstPlayed).append("\n");
 				out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + lastPlayed).append("\n");
-				out.append(ChatColor.GOLD + "Banned: " + ChatColor.WHITE + banned).append("\n");
+				//out.append(ChatColor.GOLD + "Banned: " + ChatColor.WHITE + banned).append("\n");
 			}
 			
 			String[] lines = out.toString().split("\n");

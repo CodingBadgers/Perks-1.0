@@ -14,7 +14,7 @@ public class PerkItems {
 	private static final List<PerkItem> items = new CopyOnWriteArrayList<PerkItem>();
 
     static {
-        items.add(new PerkItem("Stone", new String[][]{{"ston"}, {"smoo", "sto"}}, Material.STONE));
+        items.add(new PerkItem("Stone", new String[][]{{"stone"}, {"smoo", "sto"}}, Material.STONE));
         items.add(new PerkItem("Grass", new String[][]{{"gras"}}, Material.GRASS));
         items.add(new PerkItem("Dirt", new String[][]{{"dirt"}}, Material.DIRT));
         items.add(new PerkItem("Cobblestone", new String[][]{{"cobb", "sto"}, {"cobb"}}, Material.COBBLESTONE));

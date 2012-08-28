@@ -8,15 +8,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.dthielke.herochat.ChannelChatEvent;
+import com.dthielke.herochat.Chatter.Result;
 
 public class PerksHeroChatListener implements Listener {
 
 	@EventHandler (priority = EventPriority.NORMAL)
 	public void onPlayerChat(ChannelChatEvent event) {
-		PerkPlayer player = PerkUtils.getPlayer(event.getBukkitEvent().getPlayer());
+		PerkPlayer player = PerkUtils.getPlayer(event.getSender().getPlayer());
 		
 		if (player.isVanished() && !event.getChannel().getName().equalsIgnoreCase("Staff")) {
-			event.getBukkitEvent().setCancelled(true);
+			event.setResult(Result.INVALID);
 			PerkUtils.OutputToPlayer(player, "You cannot talk whist vanished");
 		}
 	}
