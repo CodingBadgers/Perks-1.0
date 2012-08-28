@@ -92,6 +92,9 @@ public class PerksPlayerListener implements Listener {
 			PerkUtils.OutputToStaff(player.getPlayer().getName() + " has logged out using vanish");
 		}
 		
+		if (player.getPlayer().getGameMode().equals(GameMode.ADVENTURE))
+			player.getPlayer().setGameMode(GameMode.SURVIVAL);
+		
 		PerkUtils.perkPlayers.removePlayer(player.getPlayer());
 	}
 
@@ -106,6 +109,9 @@ public class PerksPlayerListener implements Listener {
 			event.setLeaveMessage(null);
 			PerkUtils.OutputToStaff(player.getPlayer().getName() + " has logged out using vanish");	
 		}
+		
+		if (player.getPlayer().getGameMode().equals(GameMode.ADVENTURE))
+			player.getPlayer().setGameMode(GameMode.SURVIVAL);
 			
 		PerkUtils.perkPlayers.removePlayer(event.getPlayer());
 	}
