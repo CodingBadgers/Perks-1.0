@@ -31,15 +31,17 @@ public class PerkConfig {
 	
 	public static ArrayList<String> perksInfo = new ArrayList<String>();
 	
-	public class DatabaseSettings {
+	public static class DatabaseSettings {
 		public String name;
 		public String user;
 		public String ip;
 		public String password;
 		public int port;
+		
+		public DatabaseSettings() {}
 	}
 	
-	public static DatabaseSettings DATABASE;
+	public static DatabaseSettings DATABASE = new DatabaseSettings();
 	
 	public static boolean loadConfig () {
 		

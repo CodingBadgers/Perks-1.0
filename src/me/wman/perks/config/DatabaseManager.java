@@ -68,34 +68,36 @@ public class DatabaseManager {
 		String query = "SELECT * FROM perks_homes";
 		ResultSet result = m_perksDB.QueryResult(query);
 		
-		try {
-			// while we have another result, read in the data
-			while (result.next()) {
-	            String worldName = result.getString("world");
-	            String playerName = result.getString("player");
-
-	            int x = result.getInt("x");
-	            int y = result.getInt("y");
-	            int z = result.getInt("z");
-	            int pitch = result.getInt("pitch");
-	            int yaw = result.getInt("yaw");
-	            
-	            World world = PerkUtils.plugin.getServer().getWorld(worldName);
-	            Location loc = new Location(world, x, y, z, yaw, pitch);
-	                        
-	            tpLocation newHome = new tpLocation();
-	            newHome.playername = playerName;
-	            newHome.loc = loc;
-	            homes.add(newHome);
-	            
-	        }
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
+		if (result != null) {
+			try {
+				// while we have another result, read in the data
+				while (result.next()) {
+		            String worldName = result.getString("world");
+		            String playerName = result.getString("player");
+	
+		            int x = result.getInt("x");
+		            int y = result.getInt("y");
+		            int z = result.getInt("z");
+		            int pitch = result.getInt("pitch");
+		            int yaw = result.getInt("yaw");
+		            
+		            World world = PerkUtils.plugin.getServer().getWorld(worldName);
+		            Location loc = new Location(world, x, y, z, yaw, pitch);
+		                        
+		            tpLocation newHome = new tpLocation();
+		            newHome.playername = playerName;
+		            newHome.loc = loc;
+		            homes.add(newHome);
+		            
+		        }
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return;
+			}
+			
+			m_perksDB.FreeResult(result);
 		}
 		
-		m_perksDB.FreeResult(result);
-				
 		// see if a table called properties exist
 		if (!m_perksDB.TableExists("perks_build")) {
 			
@@ -120,34 +122,36 @@ public class DatabaseManager {
 		query = "SELECT * FROM perks_build";
 		result = m_perksDB.QueryResult(query);
 		
-		try {
-			// while we have another result, read in the data
-			while (result.next()) {
-	            String worldName = result.getString("world");
-	            String playerName = result.getString("player");
-
-	            int x = result.getInt("x");
-	            int y = result.getInt("y");
-	            int z = result.getInt("z");
-	            int pitch = result.getInt("pitch");
-	            int yaw = result.getInt("yaw");
-	            
-	            World world = PerkUtils.plugin.getServer().getWorld(worldName);
-	            Location loc = new Location(world, x, y, z, yaw, pitch);
-
-	            tpLocation newHome = new tpLocation();
-	            newHome.playername = playerName;
-	            newHome.loc = loc;
-	            builds.add(newHome);
-	            
-	        }
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		}		
-		
-		m_perksDB.FreeResult(result);
-		
+		if (result != null) {
+			try {
+				// while we have another result, read in the data
+				while (result.next()) {
+		            String worldName = result.getString("world");
+		            String playerName = result.getString("player");
+	
+		            int x = result.getInt("x");
+		            int y = result.getInt("y");
+		            int z = result.getInt("z");
+		            int pitch = result.getInt("pitch");
+		            int yaw = result.getInt("yaw");
+		            
+		            World world = PerkUtils.plugin.getServer().getWorld(worldName);
+		            Location loc = new Location(world, x, y, z, yaw, pitch);
+	
+		            tpLocation newHome = new tpLocation();
+		            newHome.playername = playerName;
+		            newHome.loc = loc;
+		            builds.add(newHome);
+		            
+		        }
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return;
+			}		
+			
+			m_perksDB.FreeResult(result);
+		}
+			
 		// see if a table called properties exist
 		if (!m_perksDB.TableExists("perks_vanish")) {
 			
@@ -178,31 +182,7 @@ public class DatabaseManager {
 			// to create a table we pass an SQL query.
 			m_perksDB.Query(query, true);
 		}
-		
-		/* Not needed?? we load them in on creation of the player and it just breaks with a npe at the moment
-		// select every property from the table
-		query = "SELECT * FROM kit";
-		result = m_perksDB.QueryResult(query);
-		
-		try {
-			// while we have another result, read in the data
-			while (result.next()) {
-	            String playerName = result.getString("player");
-	            String kitName = result.getString("kitname");
-	            Long time = result.getLong("time");
-	            
-	            // Never going to work, the players wont be in the array on startup
-	            PerkPlayer player = PerkUtils.getPlayer(playerName);
-	            PerkKits.load(player, kitName, time);
-	        }
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		}		
-		
-		m_perksDB.FreeResult(result);
-		*/
-		
+			
 		if (!m_perksDB.TableExists("perks_flying")) {
 			
 			PerkUtils.DebugConsole("Could not find flying table, creating one now");
@@ -211,9 +191,7 @@ public class DatabaseManager {
 			
 			m_perksDB.Query(query, true);
 		}
-		
-		// no need to store in array, will just read when needed
-		
+
 		if (!m_perksDB.TableExists("perks_spawn")) {
 			
 			PerkUtils.DebugConsole("Could not find spawn table, creating one now");
@@ -232,8 +210,8 @@ public class DatabaseManager {
 		query = "SELECT * FROM perks_spawn";
 		result = m_perksDB.QueryResult(query);
 		
-		try {
-			if (result != null) {
+		if (result != null) {
+			try {
 				while(result.next()) {
 					World world = PerkUtils.server().getWorld(result.getString("world"));
 					Location loc = new Location (world, 
@@ -246,12 +224,12 @@ public class DatabaseManager {
 					spawns.add(spawn);
 				}
 				PerkUtils.DebugConsole("Loaded " + spawns.size() + " spawns");
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			
+			m_perksDB.FreeResult(result);
 		}
-		
-		m_perksDB.FreeResult(result);
 		
 		UpgradeDatabases();
 	}
@@ -530,6 +508,9 @@ public class DatabaseManager {
 		String query = "SELECT * FROM `perks_vanish` WHERE player='" + player.getPlayer().getName() + "'";
 		ResultSet result = m_perksDB.QueryResult(query);
 		
+		if (result == null)
+			return false;
+		
 		boolean vanished;
 		try {
 			vanished = result.next();
@@ -572,6 +553,9 @@ public class DatabaseManager {
 		String query = "SELECT * FROM `perks_kit` WHERE player = '" + player.getPlayer().getName() + "'";
 		ResultSet result = m_perksDB.QueryResult(query);
 		
+		if (result == null)
+			return;
+		
 		try {
 			// while we have another result, read in the data
 			while (result.next()) {
@@ -598,6 +582,9 @@ public class DatabaseManager {
 		
 		String query = "SELECT * FROM `perks_flying` WHERE name ='" + player.getPlayer().getName() + "'";
 		ResultSet result = m_perksDB.QueryResult(query);
+		
+		if (result == null)
+			return false;
 
 		boolean flying;
 		try {
