@@ -31,6 +31,16 @@ public class PerkConfig {
 	
 	public static ArrayList<String> perksInfo = new ArrayList<String>();
 	
+	public class DatabaseSettings {
+		public String name;
+		public String user;
+		public String ip;
+		public String password;
+		public int port;
+	}
+	
+	public static DatabaseSettings DATABASE;
+	
 	public static boolean loadConfig () {
 		
 		PerkKits.kits.clear();
@@ -44,6 +54,13 @@ public class PerkConfig {
 			config.addDefault("Shutdown.message", "The server has been shutdown");
 			config.addDefault("Shutdown.defaultTimeout", 30);
 			config.addDefault("ForceJoin.CutOff", 100);
+			
+			// database config
+			config.addDefault("database.name", "database");
+			config.addDefault("database.username", "username");
+			config.addDefault("database.password", "password");
+			config.addDefault("database.ip", "127.0.0.1");
+			config.addDefault("database.port", 3306);
 			
 			config.options().copyDefaults(true);
 			PerkUtils.plugin.saveConfig();
@@ -60,6 +77,12 @@ public class PerkConfig {
 		shutdownMessage = config.getString("Shutdown.message", "The server has been shutdown");
 		shutdownTimeout = config.getInt("Shutdown.defaultTimeout", 30);
 		forceJoinCutOff = config.getInt("ForceJoin.CutOff", 100);
+		
+		DATABASE.name = config.getString("database.name", "database");
+		DATABASE.user = config.getString("database.username", "username");
+		DATABASE.password = config.getString("database.password", "password");
+		DATABASE.ip = config.getString("database.ip", "127.0.0.1");
+		DATABASE.port = config.getInt("database.port", 3306);
 		
 		// load kit config
 		File kitConfig = new File(PerkUtils.plugin.getDataFolder() + File.separator + "kits.cfg");

@@ -116,12 +116,6 @@ public class Perks extends JavaPlugin {
 			pm.registerEvents(hcListener, this);
 		}
 		
-		// setup weblistener !!needs version 1.2!!
-		if (pm.getPlugin("WebListener") != null 
-				&& pm.getPlugin("WebListener").getDescription().getVersion() == "1.20") {
-			PerkUtils.DebugConsole("WebListener found, setting up WebListener dependency");
-			//pm.registerEvents(wcListener, this);
-		}
 		
 	}
 

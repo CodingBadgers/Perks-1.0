@@ -6,7 +6,6 @@ import java.util.Calendar;
 
 import me.wman.perks.config.DatabaseManager;
 import me.wman.perks.config.PerkConfig;
-import me.wman.perks.donator.PerkColors;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -116,27 +115,6 @@ public class PerkPlayer {
 		
 		if (PerkUtils.dynmapapi != null)
 			m_map.hidden = PerkUtils.dynmapapi.getPlayerVisbility(player);
-		
-		String tabName = PerkColors.getColor(PermissionsEx.getPermissionManager(), player) + player.getName();
-		
-		// this could be good? but its hard coding badger which im against.
-		/*if (PermissionsEx.getPermissionManager().getUser(player).getGroups()[0].getName().equalsIgnoreCase("badger")) {
-			
-			ChatColor col = ChatColor.WHITE;
-			String name = player.getName();
-			String formattedName = "";
-			while (formattedName.length() < 15) {
-				formattedName = formattedName + col + name.substring(0, 1);
-				name = name.substring(1);
-				col = col == ChatColor.WHITE ? ChatColor.GRAY : ChatColor.WHITE;
-			}
-			
-		}*/
-		
-		if (tabName.length() > 15)
-			tabName = tabName.substring(0, 15);
-		
-		player.setPlayerListName(tabName);
 	}
 	
 	// called when a player is kicked or leaves...

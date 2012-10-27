@@ -112,7 +112,6 @@ public class PerkLookup {
 			int health = 0;
 			int hunger = 0;
 			Location loc = null;
-			boolean banned; // <- will be used when we come to writing the new admin plugin
 			String firstPlayed = null;
 			String lastPlayed = null;
 			boolean op = false;
@@ -126,6 +125,8 @@ public class PerkLookup {
 				hunger= target.getPlayer().getFoodLevel();
 				loc = target.getPlayer().getLocation();
 				op = target.getPlayer().isOp();
+				
+				
 			
 				try {
 					firstPlayed = PerkUtils.parseDate(target.getPlayer().getFirstPlayed());
@@ -148,6 +149,8 @@ public class PerkLookup {
 				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " x: " + Math.round(loc.getX()) + " y: " + Math.round(loc.getY()) + " z: " + Math.round(loc.getZ())).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + firstPlayed).append("\n");
 				out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + lastPlayed).append("\n");
+				if (target.getPlayer().isBanned())
+					out.append(ChatColor.RED + "PLAYER IS BANNED.").append("\n");
 			
 			} else if (PerkUtils.server().getOfflinePlayer(args.getString(0)) != null) {
 				
@@ -171,18 +174,14 @@ public class PerkLookup {
 					lastPlayed = ChatColor.RED + "Error";
 				}
 				op = oTarget.isOp();
-				if (PerkUtils.server().getPluginManager().getPlugin("bAdmin") != null) 
-					//banned = BanManager.isBanned(oTarget);
-					banned = false;
-				else 
-					banned = false;
 				
 				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Op: " + ChatColor.WHITE + op).append("\n");
 				out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + firstPlayed).append("\n");
 				out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + lastPlayed).append("\n");
-				//out.append(ChatColor.GOLD + "Banned: " + ChatColor.WHITE + banned).append("\n");
+				if (oTarget.isBanned())
+					out.append(ChatColor.RED + "PLAYER IS BANNED.").append("\n");
 			}
 			
 			String[] lines = out.toString().split("\n");

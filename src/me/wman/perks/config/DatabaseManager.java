@@ -11,13 +11,14 @@ import me.wman.perks.utils.PerkKit;
 import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUtils;
 import me.wman.perks.utils.PerkWorldSpawn;
-import n3wton.me.BukkitDatabaseManager.BukkitDatabaseManager;
-import n3wton.me.BukkitDatabaseManager.BukkitDatabaseManager.DatabaseType;
-import n3wton.me.BukkitDatabaseManager.Database.BukkitDatabase;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+
+import uk.thecodingbadgers.bDatabaseManager.bDatabaseManager;
+import uk.thecodingbadgers.bDatabaseManager.bDatabaseManager.DatabaseType;
+import uk.thecodingbadgers.bDatabaseManager.Database.BukkitDatabase;
 
 
 public class DatabaseManager {
@@ -36,15 +37,18 @@ public class DatabaseManager {
 	public static void loadDatabases() {
 				
 		// create an the database
-		m_perksDB = BukkitDatabaseManager.CreateDatabase("Perks", PerkUtils.plugin, DatabaseType.SQLite);
+		m_perksDB = bDatabaseManager.CreateDatabase(PerkConfig.DATABASE.name, PerkUtils.plugin, DatabaseType.SQL);
+		
+		if (!m_perksDB.login(PerkConfig.DATABASE.ip, PerkConfig.DATABASE.user, PerkConfig.DATABASE.password, PerkConfig.DATABASE.port))
+			return;
 		
 		// see if a table called properties exist
-		if (!m_perksDB.TableExists("homes")) {
+		if (!m_perksDB.TableExists("perks_homes")) {
 			
 			// the table doesn't exist, so make one.
 			
 			PerkUtils.DebugConsole("Could not find perk homes table, now creating one.");
-			String query = "CREATE TABLE homes (" +
+			String query = "CREATE TABLE perks_homes (" +
 					"player VARCHAR(64)," +
 					"world VARCHAR(128)," +
 					"x INT," +
@@ -61,7 +65,7 @@ public class DatabaseManager {
 		// load all properties
 		
 		// select every property from the table
-		String query = "SELECT * FROM homes";
+		String query = "SELECT * FROM perks_homes";
 		ResultSet result = m_perksDB.QueryResult(query);
 		
 		try {
@@ -93,12 +97,12 @@ public class DatabaseManager {
 		m_perksDB.FreeResult(result);
 				
 		// see if a table called properties exist
-		if (!m_perksDB.TableExists("build")) {
+		if (!m_perksDB.TableExists("perks_build")) {
 			
 			// the table doesn't exist, so make one.
 			
 			PerkUtils.DebugConsole("Could not find perk homes builds, now creating one.");
-			query = "CREATE TABLE build (" +
+			query = "CREATE TABLE perks_build (" +
 					"player VARCHAR(64)," +
 					"world VARCHAR(128)," +
 					"x INT," +
@@ -113,7 +117,7 @@ public class DatabaseManager {
 		}
 		
 		// select every property from the table
-		query = "SELECT * FROM build";
+		query = "SELECT * FROM perks_build";
 		result = m_perksDB.QueryResult(query);
 		
 		try {
@@ -145,12 +149,12 @@ public class DatabaseManager {
 		m_perksDB.FreeResult(result);
 		
 		// see if a table called properties exist
-		if (!m_perksDB.TableExists("vanish")) {
+		if (!m_perksDB.TableExists("perks_vanish")) {
 			
 			// the table doesn't exist, so make one.
 			
 			PerkUtils.DebugConsole("Could not find perk vanish databse, now creating one.");
-			query = "CREATE TABLE vanish (" +
+			query = "CREATE TABLE perks_vanish (" +
 					"player VARCHAR(64)" +
 					");";
 			
@@ -160,12 +164,12 @@ public class DatabaseManager {
 
 
 		// see if a table called properties exist
-		if (!m_perksDB.TableExists("kit")) {
+		if (!m_perksDB.TableExists("perks_kit")) {
 			
 			// the table doesn't exist, so make one.
 			
 			PerkUtils.DebugConsole("Could not find perk kit databse, now creating one.");
-			query = "CREATE TABLE kit (" +
+			query = "CREATE TABLE perks_kit (" +
 					"player VARCHAR(64)," +
 					"kitname VARCHAR(64)," +
 					"time LONG" +
@@ -199,22 +203,22 @@ public class DatabaseManager {
 		m_perksDB.FreeResult(result);
 		*/
 		
-		if (!m_perksDB.TableExists("flying")) {
+		if (!m_perksDB.TableExists("perks_flying")) {
 			
 			PerkUtils.DebugConsole("Could not find flying table, creating one now");
 			
-			query = "CREATE TABLE flying (name VARCHAR(64));";
+			query = "CREATE TABLE perks_flying (name VARCHAR(64));";
 			
 			m_perksDB.Query(query, true);
 		}
 		
 		// no need to store in array, will just read when needed
 		
-		if (!m_perksDB.TableExists("spawn")) {
+		if (!m_perksDB.TableExists("perks_spawn")) {
 			
 			PerkUtils.DebugConsole("Could not find spawn table, creating one now");
 			
-			query = "CREATE TABLE spawn (" +
+			query = "CREATE TABLE perks_spawn (" +
 						"world VARCHAR(64)," +
 						"x INT," +
 						"y INT," +
@@ -225,7 +229,7 @@ public class DatabaseManager {
 			m_perksDB.Query(query, true);
 		}
 		
-		query = "SELECT * FROM spawn";
+		query = "SELECT * FROM perks_spawn";
 		result = m_perksDB.QueryResult(query);
 		
 		try {
@@ -257,7 +261,7 @@ public class DatabaseManager {
 		File buildFile = FindDatabase("Build.sqlite");
 		if (buildFile != null) {
 			
-			BukkitDatabase tempDb = BukkitDatabaseManager.CreateDatabase("Build", PerkUtils.plugin, DatabaseType.SQLite);
+			BukkitDatabase tempDb = bDatabaseManager.CreateDatabase("Build", PerkUtils.plugin, DatabaseType.SQLite);
 			
 			// select every property from the table
 			String query = "SELECT * FROM build";
@@ -300,7 +304,7 @@ public class DatabaseManager {
 		File homeFile = FindDatabase("Homes.sqlite");
 		if (homeFile != null) {
 			
-			BukkitDatabase tempDb = BukkitDatabaseManager.CreateDatabase("Homes", PerkUtils.plugin, DatabaseType.SQLite);
+			BukkitDatabase tempDb = bDatabaseManager.CreateDatabase("Homes", PerkUtils.plugin, DatabaseType.SQLite);
 			
 			// select every property from the table
 			String query = "SELECT * FROM homes";
@@ -359,8 +363,8 @@ public class DatabaseManager {
 
 	public static void AddHome(String player, Location loc) {
 		
-		String query = "INSERT INTO 'homes' " +
-				"('player','world','x','y','z','yaw','pitch') VALUES (" + 
+		String query = "INSERT INTO `perks_homes` " +
+				"(`player`,`world`,`x`,`y`,`z`,`yaw`,`pitch`) VALUES (" + 
 				"'" + player + "'," +
 				"'" + loc.getWorld().getName() + "'," +
 				"'" + loc.getX() + "'," +
@@ -375,8 +379,8 @@ public class DatabaseManager {
 
 	public static void AddBuild(String player, Location loc) {
 		
-		String query = "INSERT INTO 'build' " +
-				"('player','world','x','y','z','yaw','pitch') VALUES (" + 
+		String query = "INSERT INTO `perks_build` " +
+				"(`player`,`world`,`x`,`y`,`z`,`yaw`,`pitch`) VALUES (" + 
 				"'" + player + "'," +
 				"'" + loc.getWorld().getName() + "'," +
 				"'" + loc.getX() + "'," +
@@ -391,7 +395,7 @@ public class DatabaseManager {
 	
 	public static void UpdateHome(Player player, Location loc) {
 		
-		String query = "UPDATE homes SET " +
+		String query = "UPDATE `perks_homes` SET " +
 				"x = '" + loc.getX() +"', " +
 				"y = '" + loc.getY() +"', " +
 				"z = '" + loc.getZ() +"', " +
@@ -405,7 +409,7 @@ public class DatabaseManager {
 
 	public static void UpdateBuild(Player player, Location loc) {
 		
-		String query = "UPDATE build SET " +
+		String query = "UPDATE `perks_build` SET " +
 				"world = '" + loc.getWorld().getName() +"', " +
 				"x = '" + loc.getX() +"', " +
 				"y = '" + loc.getY() +"', " +
@@ -500,8 +504,8 @@ public class DatabaseManager {
 	
 	public static void addVanishPlayer(PerkPlayer player) {
 		
-		String query = "INSERT INTO 'vanish' " +
-				"('player') VALUES (" + 
+		String query = "INSERT INTO `perks_vanish` " +
+				"(`player`) VALUES (" + 
 				"'" + player.getPlayer().getName() +
 				"');";
 		m_perksDB.Query(query, true);
@@ -510,7 +514,7 @@ public class DatabaseManager {
 	
 	public static void removeVanishPlayer(PerkPlayer player) {
 		
-		String query = "DELETE FROM 'vanish' " +
+		String query = "DELETE FROM `perks_vanish` " +
 				"WHERE player=" + 
 				"'" + player.getPlayer().getName() +
 				"';";
@@ -523,7 +527,7 @@ public class DatabaseManager {
 		if (!player.hasPermission("perks.vanish", false))
 			return false;
 		
-		String query = "SELECT * FROM vanish WHERE player='" + player.getPlayer().getName() + "'";
+		String query = "SELECT * FROM `perks_vanish` WHERE player='" + player.getPlayer().getName() + "'";
 		ResultSet result = m_perksDB.QueryResult(query);
 		
 		boolean vanished;
@@ -539,8 +543,8 @@ public class DatabaseManager {
 	
 	public static void addKit(PerkPlayer player, PerkKit kit, Long time) {
 		
-		String query = "INSERT INTO 'kit' " +
-				"('player','kitname','time') VALUES (" + 
+		String query = "INSERT INTO `perks_kit` " +
+				"(`player`,`kitname`,`time`) VALUES (" + 
 				"'" + player.getPlayer().getName() + "'," +
 				"'" + kit.getName() + "'," +
 				"'" + time + 
@@ -552,7 +556,7 @@ public class DatabaseManager {
 	
 	public static void deleteKit(PerkPlayer player, PerkKit kit) {
 		
-		String query = "DELETE FROM 'kit' " +
+		String query = "DELETE FROM `perks_kit` " +
 				"WHERE player=" + 
 				"'" + player.getPlayer().getName() +
 				"' AND kitname=" +
@@ -565,7 +569,7 @@ public class DatabaseManager {
 	
 	public static void loadKit(PerkPlayer player) {
 		
-		String query = "SELECT * FROM kit WHERE player = '" + player.getPlayer().getName() + "'";
+		String query = "SELECT * FROM `perks_kit` WHERE player = '" + player.getPlayer().getName() + "'";
 		ResultSet result = m_perksDB.QueryResult(query);
 		
 		try {
@@ -592,7 +596,7 @@ public class DatabaseManager {
 		if (!player.hasPermission("perks.fly", false)) 
 			return false;
 		
-		String query = "SELECT * FROM flying WHERE name ='" + player.getPlayer().getName() + "'";
+		String query = "SELECT * FROM `perks_flying` WHERE name ='" + player.getPlayer().getName() + "'";
 		ResultSet result = m_perksDB.QueryResult(query);
 
 		boolean flying;
@@ -615,11 +619,11 @@ public class DatabaseManager {
 		
 		// if they are to be set flying insert them into the table
 		if (flying) {
-			query = "INSERT INTO flying (name) VALUES (" +
+			query = "INSERT INTO `perks_flying` (name) VALUES (" +
 					"'" + player.getPlayer().getName() + "');";
 		// if not remove them from it
 		} else {
-			query = "DELETE FROM flying WHERE " +
+			query = "DELETE FROM `perks_flying` WHERE " +
 					"name='" + player.getPlayer().getName() + "';";
 		}
 		
@@ -628,8 +632,8 @@ public class DatabaseManager {
 	
 	public static void setSpawn(PerkWorldSpawn spawn) {
 		
-		String query = "INSERT INTO spawn (" +
-						"world, x, y, z, yaw, pitch) VALUES (" +
+		String query = "INSERT INTO `perks_spawn` (" +
+						"`world`, `x`, `y`, `z`, `yaw`, `pitch`) VALUES (" +
 						"'" + spawn.getSpawn().getWorld().getName() + "'," +
 						"'" + spawn.getSpawn().getX() + "'," +
 						"'" + spawn.getSpawn().getY() + "'," +
@@ -640,7 +644,7 @@ public class DatabaseManager {
 		
 		for (int i = 0; i < spawns.size(); ++i) {
 			if (spawns.get(i).getWorld().getName().equalsIgnoreCase(spawn.getWorld().getName())) {
-				query = "UPDATE spawn SET " +
+				query = "UPDATE `perks_spawn` SET " +
 						"x='" + spawn.getSpawn().getX() + "', " +
 						"y='" + spawn.getSpawn().getY() + "', " + 
 						"z='" + spawn.getSpawn().getZ() + "', " +
