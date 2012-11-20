@@ -7,6 +7,7 @@ import me.wman.perks.utils.PerkPlayer;
 import me.wman.perks.utils.PerkUtils;
 
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fish;
 import org.bukkit.entity.LivingEntity;
@@ -43,10 +44,15 @@ public class PerksEntityListener implements Listener {
 			LivingEntity shooter = ((Arrow)event.getDamager()).getShooter();
 			if (shooter instanceof Player)
 				attacker = PerkUtils.getPlayer((Player)shooter);
-		} else if (event.getDamager() instanceof ThrownPotion) 
-			attacker = PerkUtils.getPlayer((Player)(((ThrownPotion)event.getDamager()).getShooter()));
-		else if (event.getEntityType() == EntityType.FISHING_HOOK)
-			attacker = PerkUtils.getPlayer((Player)((Fish)event.getDamager()).getShooter());
+		} else if (event.getDamager() instanceof ThrownPotion) { 
+			LivingEntity potionThrower = ((ThrownPotion)event.getDamager()).getShooter();
+			if (potionThrower instanceof Player)
+				attacker = PerkUtils.getPlayer((Player)(potionThrower));
+		} else if (event.getEntityType() == EntityType.FISHING_HOOK) {
+			LivingEntity fisherMan = ((Fish)event.getDamager()).getShooter();
+			if (fisherMan instanceof Player)
+				attacker = PerkUtils.getPlayer((Player)fisherMan);
+		}
 		
 		// don't allow attacking whilst flying or in vanish
 		if (attacker != null &&  (attacker.isFlying() || attacker.isVanished())) {
