@@ -26,11 +26,11 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
+
 import uk.codingbadgers.perks.admin.PerkSpectate;
 import uk.codingbadgers.perks.admin.PerkThor;
 import uk.codingbadgers.perks.admin.PerkVanish;
-import uk.codingbadgers.perks.donator.PerkCapes;
-import uk.codingbadgers.perks.donator.PerkColors;
+import uk.codingbadgers.perks.config.PerkConfig;
 import uk.codingbadgers.perks.donator.PerkJoining;
 import uk.codingbadgers.perks.donator.PerkPlugins;
 import uk.codingbadgers.perks.utils.PerkPlayer;
@@ -44,18 +44,12 @@ public class PerksPlayerListener implements Listener {
 		PerkPlayer player = new PerkPlayer(event.getPlayer());
 		PerkUtils.perkPlayers.add(player);
 		
-		if (player.hasPermission("perks.capes", false)) {
-			PerkCapes.setCape(player.getPlayer());
-		}
-		
 		PerkVanish.vanishJoin(player, event);
 		
 		if (player.isVanished()) {
 			event.setJoinMessage(null);
 			PerkUtils.OutputToStaff(ChatColor.GOLD + player.getPlayer().getName() + " has logged in using vanish");
 		}
-		
-		PerkColors.addColor(player.getPlayer());
 		
 		player.dynmapHide();
 	}	
@@ -135,6 +129,11 @@ public class PerksPlayerListener implements Listener {
 			stalker.teleport(player.getPlayer().getLocation());
 			return;
 		}
+		
+		/* handle teleport moving */
+		if (PerkConfig.isPvpServer()) {
+			player.cancelTeleports("you moved");
+		}
 
 		// stop the stalker moving
 		if (player.isSpectating()) {
@@ -157,12 +156,6 @@ public class PerksPlayerListener implements Listener {
 			return;
 		}
 		
-		if (player.hasPermission("perks.capes", false)) {
-			PerkCapes.setCape(player.getPlayer());
-		}
-				
-		PerkColors.addColor(player.getPlayer());
-				
 		Location from = event.getFrom();
 		Location to = event.getTo();
 
@@ -225,7 +218,7 @@ public class PerksPlayerListener implements Listener {
 		}
 		
 		// stop the use of ender pearls, there just annoying
-		if (event.getCause() == TeleportCause.ENDER_PEARL) {
+		if (event.getCause() == TeleportCause.ENDER_PEARL && !PerkConfig.enderPearlTeleport) {
 			event.setCancelled(true);
 		}
 		

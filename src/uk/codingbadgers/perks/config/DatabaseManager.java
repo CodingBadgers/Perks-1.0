@@ -419,21 +419,15 @@ public class DatabaseManager {
 		
 	}
 	
-	public static void gotoBuild(Player player) {
+	public static Location getBuild(Player player) {
 		
 		for (int i = 0; i < builds.size(); ++i) {
-			tpLocation b = builds.get(i);
-			if (b.playername.equalsIgnoreCase(player.getName())) {
-				if (player.teleport(b.loc)) {
-					PerkUtils.OutputToPlayer(player, "You have been teleported to your build location");
-				}
-				return;
+			tpLocation h = builds.get(i);
+			if (h.playername.equalsIgnoreCase(player.getName())) {
+				return h.loc;
 			}
 		}
-		
-		PerkUtils.OutputToPlayer(player, "You don't have a build location");
-		PerkUtils.OutputToPlayer(player, "Use /setbuild to set your build location");
-		
+		return null;
 	}
 	
 	
@@ -458,26 +452,20 @@ public class DatabaseManager {
 		
 	}
 	
-	public static void gotoHome(Player player, World world) {
+	public static Location getHome(Player player, World world) {
 		
 		for (int i = 0; i < homes.size(); ++i) {
 			tpLocation h = homes.get(i);
 			if (h.playername.equalsIgnoreCase(player.getName()) 
 					&& world == h.loc.getWorld()) {
-				if (player.teleport(h.loc)) {
-					PerkUtils.OutputToPlayer(player, "You have been teleported to your home location");
-				}
-				return;
+				return h.loc;
 			}
 		}
-		
-		PerkUtils.OutputToPlayer(player, "You don't have a home in '" + world.getName() + "'");
-		PerkUtils.OutputToPlayer(player, "Use /sethome to set your home location");
-		
+		return null;
 	}
 	
-	public static void gotoHome(Player player) {
-		gotoHome(player, player.getLocation().getWorld());
+	public static Location getHome(Player player) {
+		return getHome(player, player.getLocation().getWorld());
 	}
 	
 	public static void addVanishPlayer(PerkPlayer player) {

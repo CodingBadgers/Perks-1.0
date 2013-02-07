@@ -80,12 +80,6 @@ public class Perks extends JavaPlugin {
 			PerkUtils.DebugConsole("Vault not found disabling vault stuff");
 		}
 		
-		// setup Spout		
-		if (pm.getPlugin("Spout") != null) {
-			PerkUtils.DebugConsole("Spout found, setting up Spout dependency");
-			PerkUtils.spoutEnabled = pm.getPlugin("Spout") != null;
-		}
-				
 		// setup dynmap
 		if (pm.getPlugin("dynmap") != null) {
 			PerkUtils.DebugConsole("Dynmap found, setting up Dynmap dependency");

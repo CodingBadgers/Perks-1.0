@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import org.getspout.spoutapi.player.SpoutPlayer;
+import org.bukkit.scheduler.BukkitTask;
 
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -22,8 +23,7 @@ import uk.codingbadgers.perks.config.PerkConfig;
 public class PerkPlayer {
 
 	private Player m_player = null;					//!< store the bukkit player
-	private SpoutPlayer m_spoutPlayer = null;		//!< store the spout player (spout has more commands so if we can use them why not :P)
-
+	
 	private class Flying {
 		public boolean m_flying = false;				//!< is the player flying?
 	}
@@ -42,6 +42,7 @@ public class PerkPlayer {
 	private class DeathTP {
 		public Location m_location = null;			// !< stores the death location
 		public boolean m_hasDied = false;			// !< stores whether the player has died
+		public int taskId;
 	}
 	
 	private class Vanish {
@@ -80,6 +81,11 @@ public class PerkPlayer {
 		public boolean hidden = false;				// !< stores whether the player is hidden from live map or not
 	}
 	
+	private class Pvp {
+		public BukkitTask teleportTask;				// !< stores the bukkit task id for the spawn teleport
+		protected int counter;
+	}
+	
 	private Flying m_fly = null;
 	private Hunger m_hunger = null;
 	private TP m_tp = null;
@@ -91,13 +97,11 @@ public class PerkPlayer {
 	private Spectate m_spec = null;
 	private Thor m_thor = null;
 	private Dynmap m_map = null;
+	private Pvp m_pvp = null;
 	
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
-		
-		if (PerkUtils.spoutEnabled) 
-			m_spoutPlayer = (SpoutPlayer) player;
 		
 		m_fly = new Flying();
 		m_hunger = new Hunger();
@@ -110,6 +114,8 @@ public class PerkPlayer {
 		m_spec = new Spectate();
 		m_thor = new Thor();
 		m_map = new Dynmap();
+		m_pvp = new Pvp();
+		
 		
 		DatabaseManager.loadKit(this);
 		
@@ -121,16 +127,16 @@ public class PerkPlayer {
 	// all cleanups should be done in here
 	public void remove() {
 		m_player.setAllowFlight(false);
+		cancelTeleports("you have logged out");
+		
+		if (m_deathTP.taskId != -1) {
+			Bukkit.getScheduler().cancelTask(m_deathTP.taskId);
+		}
 	}
 
 	// returns the bukkit player
 	public Player getPlayer() {
 		return m_player;
-	}
-
-	// returns the spout player
-	public SpoutPlayer getSpoutPlayer() {
-		return m_spoutPlayer;
 	}
 
 	public void setFlying(boolean flying) {
@@ -314,16 +320,43 @@ public class PerkPlayer {
 		
 	}
 
-	public void addDeathLocation(Location deathLocation) {
+	public void addDeathLocation(final Location deathLocation) {
+
+		if (PerkConfig.isPvpServer()) {
+			PerkUtils.OutputToPlayer(this, "You cannot death teleport for " + PerkConfig.deathTpDelay + " seconds");
+			
+			if (m_deathTP.taskId != -1) {
+				Bukkit.getScheduler().cancelTask(m_deathTP.taskId);
+			}
+			
+			m_deathTP.taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(PerkUtils.plugin, new Runnable() {
+	
+				public void run() {
+	
+					m_deathTP.m_location = deathLocation;		
+					m_deathTP.m_hasDied = true;
+					
+					PerkUtils.OutputToPlayer(m_player, "Use /death to be teleported back to the point where you died");
+					clearTaskIds();
+				}
+				
+			}, PerkConfig.deathTpDelay*20);
+		} else {
+			m_deathTP.m_location = deathLocation;		
+			m_deathTP.m_hasDied = true;
+			
+			PerkUtils.OutputToPlayer(m_player, "Use /death to be teleported back to the point where you died");
+		}
 		
-		m_deathTP.m_location = deathLocation;		
-		m_deathTP.m_hasDied = true;
-		
-		PerkUtils.OutputToPlayer(this, "Use /death to be teleported back to the point where you died");
 		
 	}
 	
 	public boolean canDeathTP() {
+		
+		if (m_deathTP.taskId != -1) {
+			PerkUtils.OutputToPlayer(this, "You cannot death teleport yet, please wait");
+			return false;
+		}
 		
 		if (!m_deathTP.m_hasDied) {
 			PerkUtils.OutputToPlayer(this, "You havn't died recently");
@@ -364,6 +397,186 @@ public class PerkPlayer {
 		}
 		
 		DatabaseManager.setHomeLocation(m_player, loc);
+	}
+
+	public void clearTaskIds() {
+		m_deathTP.taskId = -1;
+	}
+	
+	public void cancelTeleports(String reason) {
+		if (m_pvp.teleportTask == null)
+			return;
+		
+		PerkUtils.OutputToPlayer(this, "Teleport cancelled, " + reason);
+		
+		m_pvp.teleportTask.cancel();
+	}
+	
+	public void gotoHome() {
+		if (PerkConfig.isPvpServer()) {
+			
+			// they are already trying to teleport home
+			if (m_pvp.teleportTask != null) {
+				PerkUtils.OutputToPlayer(this, "You are already trying to teleport, please wait");
+				return;
+			}
+			
+			final Location home = DatabaseManager.getHome(m_player);
+			
+			if (home == null) {
+				PerkUtils.OutputToPlayer(m_player, "You don't have a home in '" + m_player.getWorld().getName() + "'");
+				PerkUtils.OutputToPlayer(m_player, "Use /sethome to set your home location");
+			}
+			
+			PerkUtils.OutputToPlayer(this, "Waiting for teleport, stand still for " + PerkConfig.homeWarmUpTime + " seconds");
+			
+			m_pvp.teleportTask = startTimer(new Runnable() {
+				public void run() {
+					m_player.teleport(home);
+					PerkUtils.OutputToPlayer(m_player, "You have been teleported to your home in '" + m_player.getWorld().getName() + "'");
+				}
+			}, PerkConfig.homeWarmUpTime);
+		} else {
+			final Location home = DatabaseManager.getHome(m_player);
+			
+			if (home == null) {
+				PerkUtils.OutputToPlayer(m_player, "You don't have a home in '" + m_player.getWorld().getName() + "'");
+				PerkUtils.OutputToPlayer(m_player, "Use /sethome to set your home location");
+			}
+			
+			m_player.teleport(home);
+			PerkUtils.OutputToPlayer(m_player, "You have been teleported to your home in '" + m_player.getWorld().getName() + "'");
+		}
+		
+	}
+	
+	public void gotoHome(final World world) {
+		if (PerkConfig.isPvpServer()) {
+			
+			// they are already trying to teleport home
+			if (m_pvp.teleportTask != null) {
+				PerkUtils.OutputToPlayer(this, "You are already trying to teleport, please wait");
+				return;
+			}
+			
+			final Location home = DatabaseManager.getHome(m_player, world);
+			
+			if (home == null) {
+				PerkUtils.OutputToPlayer(m_player, "You don't have a home in '" + world.getName() + "'");
+				PerkUtils.OutputToPlayer(m_player, "Use /sethome to set your home location");
+			}
+			
+			PerkUtils.OutputToPlayer(this, "Waiting for teleport, stand still for " + PerkConfig.homeWarmUpTime + " seconds");
+			
+			m_pvp.teleportTask = startTimer(new Runnable() {
+				public void run() {
+					m_player.teleport(home);
+					PerkUtils.OutputToPlayer(m_player, "You have been teleported to your home in '" + world.getName() + "'");
+				}
+			}, PerkConfig.homeWarmUpTime);
+		} else {
+			final Location home = DatabaseManager.getHome(m_player, world);
+			
+			if (home == null) {
+				PerkUtils.OutputToPlayer(m_player, "You don't have a home in '" + world.getName() + "'");
+				PerkUtils.OutputToPlayer(m_player, "Use /sethome to set your home location");
+			}
+			
+			m_player.teleport(home);
+			PerkUtils.OutputToPlayer(m_player, "You have been teleported to your home in '" + world.getName() + "'");
+		}
+	}
+
+	public void gotoBuild() {
+		if (PerkConfig.isPvpServer()) {
+			
+			// they are already trying to teleport home
+			if (m_pvp.teleportTask != null) {
+				PerkUtils.OutputToPlayer(this, "You are already trying to teleport, please wait");
+				return;
+			}
+			
+			final Location build = DatabaseManager.getBuild(m_player);
+			
+			if (build == null) {
+				PerkUtils.OutputToPlayer(m_player, "You don't have a build location set");
+				PerkUtils.OutputToPlayer(m_player, "Use /setbuild to set your home location");
+				return;
+			}
+			
+			PerkUtils.OutputToPlayer(this, "Waiting for teleport, stand still for " + PerkConfig.homeWarmUpTime + " seconds");
+			
+			m_pvp.teleportTask = startTimer (new Runnable() {
+				public void run() {
+					m_player.teleport(build);
+					PerkUtils.OutputToPlayer(m_player, "You have been teleported to your build location");
+				}
+			}, PerkConfig.buildWarmUpTime);
+		} else {
+			final Location build = DatabaseManager.getBuild(m_player);
+			
+			if (build == null) {
+				PerkUtils.OutputToPlayer(m_player, "You don't have a build location set");
+				PerkUtils.OutputToPlayer(m_player, "Use /setbuild to set your home location");
+				return;
+			}
+			
+			m_player.teleport(build);
+			PerkUtils.OutputToPlayer(m_player, "You have been teleported to your build location");
+		}
+		
+	}
+
+	public void gotoSpawn(final PerkWorldSpawn spawn) {
+		if (PerkConfig.isPvpServer()) {
+			
+			// they are already trying to teleport home
+			if (m_pvp.teleportTask != null) {
+				PerkUtils.OutputToPlayer(this, "You are already trying to teleport, please wait");
+				return;
+			}
+			
+			PerkUtils.OutputToPlayer(this, "Waiting for teleport, stand still for " + PerkConfig.homeWarmUpTime + " seconds");
+			
+			m_pvp.teleportTask = startTimer(new Runnable() {
+				public void run() {
+					m_player.teleport(spawn.getSpawn());
+					PerkUtils.OutputToPlayer(m_player, "You have been teleported to the spawn of " + spawn.getWorld().getName());
+				}
+				
+			}, PerkConfig.spawnWarmUpTime);
+		} else {
+			m_player.teleport(spawn.getSpawn());
+			PerkUtils.OutputToPlayer(m_player, "Teleported to spawn of " + spawn.getWorld().getName());
+		}
+		
+	}
+	
+	public BukkitTask startTimer(final Runnable runnable, long time) {
+		m_pvp.counter = (int)time;
+		
+		BukkitTask task = Bukkit.getScheduler().runTaskTimer(PerkUtils.plugin, new Runnable() {
+
+			public void run() {
+				m_pvp.counter --;
+				
+				if (m_pvp.counter > 0) {
+					m_player.sendMessage(ChatColor.AQUA + String.valueOf(m_pvp.counter));
+				} else {
+					runnable.run();
+					cancelTimer();
+				}
+				
+			}
+		
+		}, 20, 20);
+		
+		return task;
+	}
+	
+	private void cancelTimer() {
+		m_pvp.teleportTask.cancel();
+		m_pvp.teleportTask = null;
 	}
 	
 	public void hidePlayer(boolean broadcast) {

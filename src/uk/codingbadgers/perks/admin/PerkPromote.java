@@ -8,8 +8,6 @@ import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 import ru.tehkode.permissions.exceptions.RankingException;
-import uk.codingbadgers.perks.donator.PerkCapes;
-import uk.codingbadgers.perks.donator.PerkColors;
 import uk.codingbadgers.perks.utils.PerkArgSet;
 import uk.codingbadgers.perks.utils.PerkPlayer;
 import uk.codingbadgers.perks.utils.PerkUtils;
@@ -51,8 +49,6 @@ public class PerkPromote {
 					PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has been promoted to " + targetGroup.getName());
 					PerkUtils.OutputToPlayer(target, "You have been promoted to " + targetGroup.getName());
 					
-					PerkCapes.setCape(target.getPlayer());
-					PerkColors.addColor(target.getPlayer());
 					return true;
 				}	
 			}
@@ -82,8 +78,6 @@ public class PerkPromote {
 					PerkUtils.OutputToPlayer(player, target.getPlayer().getName() + " has been promoted to " + targetGroup.getName() + " on ladder " + ladder);
 					PerkUtils.OutputToPlayer(target, "You have been promoted to " + targetGroup.getName() + " on ladder " + ladder);
 					
-					PerkCapes.setCape(target.getPlayer());
-					PerkColors.addColor(target.getPlayer());
 					return true;
 				}	
 			}

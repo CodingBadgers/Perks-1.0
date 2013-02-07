@@ -27,7 +27,15 @@ public class PerksEntityListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event) {
+		
+		if (!(event.getEntity() instanceof Player)) {
+			return;
+		}
+		
 		PerkUnlimitedAir.drown(event);
+		
+		PerkPlayer player = PerkUtils.getPlayer((Player)event.getEntity());
+		player.cancelTeleports("You got attacked");
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)

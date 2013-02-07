@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 
 import uk.codingbadgers.perks.config.DatabaseManager;
+import uk.codingbadgers.perks.config.PerkConfig;
 import uk.codingbadgers.perks.utils.PerkArgSet;
 import uk.codingbadgers.perks.utils.PerkPlayer;
 import uk.codingbadgers.perks.utils.PerkUtils;
@@ -30,7 +31,7 @@ public class PerkSpawn {
 			if (args.size() == 0) {
 				target = player;
 			} else {
-				if (!player.hasPermission("perks.spawn.other", true))
+				if (!player.hasPermission("perks.spawn.other", true) && PerkConfig.isPvpServer())
 					return true;
 				
 				target = PerkUtils.getPlayer(args.getString(0));
@@ -39,9 +40,8 @@ public class PerkSpawn {
 			if (target == null) {
 				PerkUtils.OutputToPlayer(player, "Sorry that player is not online");
 			}
-			
-			target.teleport(spawn.getSpawn());
-			PerkUtils.OutputToPlayer(target, "Teleported to spawn of " + spawn.getWorld().getName());
+
+			target.gotoSpawn(spawn);
 			if (target != player) 
 				PerkUtils.OutputToPlayer(player, "You have teleported " + target.getPlayer().getName() + " to spawn");
 			return true;

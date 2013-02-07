@@ -29,6 +29,12 @@ public class PerkConfig {
 	public static String shutdownMessage;
 	public static int shutdownTimeout;
 	public static int forceJoinCutOff;
+	public static short waterDamageAmount;
+	public static boolean enderPearlTeleport;
+	public static long homeWarmUpTime;
+	public static long buildWarmUpTime;
+	public static long spawnWarmUpTime;
+	public static long deathTpDelay;
 	
 	public static ArrayList<String> perksInfo = new ArrayList<String>();
 	
@@ -43,15 +49,16 @@ public class PerkConfig {
 	}
 	
 	public static DatabaseSettings DATABASE = new DatabaseSettings();
-	public static short waterDamageAmount;
+	private static FileConfiguration config = null;
 	
 	public static boolean loadConfig () {
 		
 		PerkKits.kits.clear();
 		
-		FileConfiguration config = PerkUtils.plugin.getConfig();
+		config = PerkUtils.plugin.getConfig();
 		
 		try {
+			config.addDefault("Server.pvp", false);
 			config.addDefault("Capes.Url", "");
 			config.addDefault("Hunger.rate", "0.25");
 			config.addDefault("Hunger.counter", "0.0");
@@ -59,6 +66,11 @@ public class PerkConfig {
 			config.addDefault("Shutdown.defaultTimeout", 30);
 			config.addDefault("ForceJoin.CutOff", 100);
 			config.addDefault("Water.damageAmount", 1);
+			config.addDefault("Teleport.enderPeals", true);
+			config.addDefault("Teleport.home.warmUp", 10);
+			config.addDefault("Teleport.build.warmUp", 10);
+			config.addDefault("Teleport.spawn.warmUp", 10);
+			config.addDefault("Teleport.death.dealay", 10);
 			
 			// database config
 			config.addDefault("database.name", "database");
@@ -83,6 +95,11 @@ public class PerkConfig {
 		shutdownTimeout = config.getInt("Shutdown.defaultTimeout", 30);
 		forceJoinCutOff = config.getInt("ForceJoin.CutOff", 100);
 		waterDamageAmount = (short)config.getInt("Water.damageAmount", 1);
+		enderPearlTeleport = config.getBoolean("Teleport.enderPeals", true);
+		homeWarmUpTime = config.getInt("Teleport.home.warmUp", 10);
+		buildWarmUpTime = config.getInt("Teleport.build.warmUp", 10);
+		spawnWarmUpTime = config.getInt("Teleport.spawn.warmUp", 10);
+		deathTpDelay = config.getInt("Teleport.death.dealay", 10);
 		
 		DATABASE.name = config.getString("database.name", "database");
 		DATABASE.user = config.getString("database.username", "username");
@@ -120,6 +137,10 @@ public class PerkConfig {
 	
 		return true;
 		
+	}
+	
+	public static boolean isPvpServer() {
+		return config.getBoolean("Server.pvp", false);
 	}
 	
 	private static void loadPerksHelpConfig(File perksHelpConfig) {

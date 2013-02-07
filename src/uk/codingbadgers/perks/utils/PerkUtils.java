@@ -25,7 +25,6 @@ public class PerkUtils {
 	public static final Logger log = Logger.getLogger("minecraft");
 	static public PerkPlayerArray perkPlayers = new PerkPlayerArray();
 	static public Perks plugin = null;
-	static public boolean spoutEnabled = false;
 	public static DynmapAPI dynmapapi = null;
 	public static PVPArena pvparena = null;
 	public static MVWorldManager worldManager;
@@ -122,7 +121,7 @@ public class PerkUtils {
 	
 	// parse the date
 	public static String parseDate(long time)throws Exception {
-		   SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy ");
+		   SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
 	 
 		   Date resultdate = new Date(time);
 		   return sdf.format(resultdate);

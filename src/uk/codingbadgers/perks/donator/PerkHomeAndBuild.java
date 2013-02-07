@@ -1,14 +1,11 @@
 package uk.codingbadgers.perks.donator;
 
-
 import org.bukkit.World;
 import org.bukkit.command.Command;
 
-import uk.codingbadgers.perks.config.DatabaseManager;
 import uk.codingbadgers.perks.utils.PerkArgSet;
 import uk.codingbadgers.perks.utils.PerkPlayer;
 import uk.codingbadgers.perks.utils.PerkUtils;
-
 
 public class PerkHomeAndBuild {
 	
@@ -20,14 +17,14 @@ public class PerkHomeAndBuild {
 				return true;
 			
 			if (args.size() == 0) {
-				DatabaseManager.gotoHome(player.getPlayer());
+				player.gotoHome();
 			} else if (args.size() == 1) {
 				World world = getWorld(args.getString(0));
 				if (world == null) {
 					PerkUtils.OutputToPlayer(player, "Sorry that world does not exist");
 					return true;
 				}
-				DatabaseManager.gotoHome(player.getPlayer(), world);
+				player.gotoHome(world);
 			} else {
 				PerkUtils.OutputToPlayer(player, cmd.getUsage());
 			}
@@ -49,7 +46,7 @@ public class PerkHomeAndBuild {
 			if (!player.hasPermission("perks.build", true))
 				return true;
 			
-			DatabaseManager.gotoBuild(player.getPlayer());
+			player.gotoBuild();
 			return true;
 		}
 		

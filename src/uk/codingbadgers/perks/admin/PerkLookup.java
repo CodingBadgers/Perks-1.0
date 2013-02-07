@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
+import uk.codingbadgers.perks.config.PerkConfig;
 import uk.codingbadgers.perks.utils.PerkArgSet;
 import uk.codingbadgers.perks.utils.PerkPlayer;
 import uk.codingbadgers.perks.utils.PerkUtils;
@@ -123,7 +124,7 @@ public class PerkLookup {
 				hunger= target.getPlayer().getFoodLevel();
 				loc = target.getPlayer().getLocation();
 				op = target.getPlayer().isOp();
-				boolean banned = false;
+				boolean banned = target.getPlayer().isBanned();
 				
 				try {
 					firstPlayed = PerkUtils.parseDate(target.getPlayer().getFirstPlayed());
@@ -143,10 +144,11 @@ public class PerkLookup {
 				out.append(ChatColor.GOLD + "IP: " + ChatColor.WHITE + getIpAddress(target)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Health: " + ChatColor.WHITE + represent(health)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Hunger: " + ChatColor.WHITE + represent(hunger)).append(ChatColor.WHITE).append("\n");
-				out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " x: " + Math.round(loc.getX()) + " y: " + Math.round(loc.getY()) + " z: " + Math.round(loc.getZ())).append(ChatColor.WHITE).append("\n");
+				if (!PerkConfig.isPvpServer())
+					out.append(ChatColor.GOLD + "Location: " + ChatColor.WHITE + " world: " + loc.getWorld() +" x: " + Math.round(loc.getX()) + " y: " + Math.round(loc.getY()) + " z: " + Math.round(loc.getZ())).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + firstPlayed).append("\n");
 				out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + lastPlayed).append("\n");
-				if (target.getPlayer().isBanned())
+				if (banned)
 					out.append(ChatColor.RED + "PLAYER IS BANNED.").append("\n");
 			
 			} else if (PerkUtils.server().getOfflinePlayer(args.getString(0)) != null) {
