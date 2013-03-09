@@ -18,9 +18,6 @@ import uk.codingbadgers.perks.donator.*;
 import uk.codingbadgers.perks.listeners.*;
 import uk.codingbadgers.perks.utils.*;
 
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
-
-
 public class Perks extends JavaPlugin {
 
 	private final PerksPlayerListener playerListener = new PerksPlayerListener();
@@ -98,13 +95,7 @@ public class Perks extends JavaPlugin {
 			PerkUtils.DebugConsole("PvpArena found, setting up PvpArena dependency");
 			pm.registerEvents(paListener, this);
 		}
-				
-		// setup multiverse
-		if (pm.getPlugin("Multiverse") != null) {
-			PerkUtils.DebugConsole("Multiverse found, setting up multiverse dependency");
-			PerkUtils.worldManager = (MVWorldManager) pm.getPlugin("Multiverse-Core");
-		}
-				
+								
 		// setup herochat
 		if (pm.getPlugin("Herochat") != null) {
 			PerkUtils.DebugConsole("HeroChat found, setting up HeroChat dependency");

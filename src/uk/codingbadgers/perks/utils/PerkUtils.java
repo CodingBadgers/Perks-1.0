@@ -18,8 +18,6 @@ import org.dynmap.DynmapAPI;
 import uk.codingbadgers.perks.Perks;
 import uk.codingbadgers.perks.config.PerkConfig;
 
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
-
 public class PerkUtils {
 
 	public static final Logger log = Logger.getLogger("minecraft");
@@ -27,7 +25,6 @@ public class PerkUtils {
 	static public Perks plugin = null;
 	public static DynmapAPI dynmapapi = null;
 	public static PVPArena pvparena = null;
-	public static MVWorldManager worldManager;
 	public static boolean vaultEnabled = false;
 	public static ArrayList<PerkWebChatPlayer> webChatPlayers = new ArrayList<PerkWebChatPlayer>();
 	public static ArrayList<String> pluginBlacklist = new ArrayList<String>();
