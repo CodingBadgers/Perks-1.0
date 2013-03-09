@@ -12,7 +12,7 @@ public class PerkGameMode {
 
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
-		if (cmd.getName().equalsIgnoreCase("gmtoggle")) {
+		if (cmd.getName().equalsIgnoreCase("gmtoggle") || cmd.getName().equalsIgnoreCase("gmt")) {
 			if (player.hasPermission("perks.gamemode.toggle", true)) {
 
 				if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {

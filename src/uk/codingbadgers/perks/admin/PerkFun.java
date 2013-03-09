@@ -37,29 +37,31 @@ public class PerkFun {
 				silent = true;
 			}
 			
+			double power = 1.0;
+			String powerString = ""; 
 			if (args.hasFlag('v')) {
-                target.getPlayer().setVelocity(new Vector(
-                        random.nextDouble() * 10.0 - 5,
-                        random.nextDouble() * 10,
-                        random.nextDouble() * 10.0 - 5));
+				power = 5.0;
+				powerString = " very hard";
             } else if (args.hasFlag('h')) {
-                target.getPlayer().setVelocity(new Vector(
-                        random.nextDouble() * 5.0 - 2.5,
-                        random.nextDouble() * 5,
-                        random.nextDouble() * 5.0 - 2.5));
-            } else {
-                target.getPlayer().setVelocity(new Vector(
-                        random.nextDouble() * 2.0 - 1,
-                        random.nextDouble() * 2.5,
-                        random.nextDouble() * 2.0 - 1));
+            	power = 2.5;
+            	powerString = " hard";
             }
 			
-			if (!silent)
-				PerkUtils.OutputToAll(player.getPlayer().getName() + " has slapped " + target.getPlayer().getName());
+			target.getPlayer().setVelocity(new Vector(
+	            (random.nextDouble() + 0.01) * power - (power * 0.5),
+	            (random.nextDouble() + 0.01) * power,
+	            (random.nextDouble() + 0.01) * power - (power * 0.5))
+			);
 			
-			if (target != player)
-				PerkUtils.OutputToPlayer(target, "You have been slapped by " + player.getPlayer().getName());
-			PerkUtils.OutputToPlayer(player, "You have slapped " + (target != player ? target.getPlayer().getName() : "Yourself"));
+			if (!silent) {
+				PerkUtils.OutputToAllExcluding(player.getPlayer().getName() + " has slapped " + target.getPlayer().getName() + powerString, player.getPlayer());
+			}
+			
+			if (target != player) {
+				PerkUtils.OutputToPlayer(target, "You have been slapped" + powerString + " by " + player.getPlayer().getName());
+			}
+			
+			PerkUtils.OutputToPlayer(player, "You have slapped " + (target != player ? target.getPlayer().getName() : "Yourself") + powerString);
 			return true;
 		}
 		
@@ -83,19 +85,20 @@ public class PerkFun {
 			if (args.hasFlag('s')) {
 				silent = true;
 			}
+		
+			double power = 10.0;		
+			target.getPlayer().setVelocity(new Vector(0, power, 0));
 			
-			if (args.hasFlag('h')) {
-                target.getPlayer().setVelocity(new Vector(0, 4, 0));
-            } else {
-                target.getPlayer().setVelocity(new Vector(0, 2, 0));
-            }
+			if (!silent) {
+				PerkUtils.OutputToAllExcluding(player.getPlayer().getName() + " has rocketed " + target.getPlayer().getName(), player.getPlayer());
+			}
 			
-			if (!silent)
-				PerkUtils.OutputToAll(player.getPlayer().getName() + " has rocketed " + target.getPlayer().getName());
-			
-			if (target != player)
+			if (target != player) {
 				PerkUtils.OutputToPlayer(target, "You have been rocketed by " + player.getPlayer().getName());
-			PerkUtils.OutputToPlayer(player, "You have rocketed " + (target != player ? target.getPlayer().getName() : "Yourself"));return true;
+			}
+			
+			PerkUtils.OutputToPlayer(player, "You have rocketed " + (target != player ? target.getPlayer().getName() : "Yourself"));
+			return true;
 		}
 		
 		return false;

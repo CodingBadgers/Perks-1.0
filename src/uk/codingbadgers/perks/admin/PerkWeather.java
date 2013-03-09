@@ -17,14 +17,9 @@ public class PerkWeather {
 		
 		for (int i = 0; i<worlds.size(); i++) {
 			
-			if (worlds.get(i).getName().equalsIgnoreCase("WisbyPvp")) {
-				return;
-			}
-			
 			worlds.get(i).setStorm(storm);
 			
 			if (duration>0) {
-
 				worlds.get(i).setWeatherDuration(duration);
 			}
 		}

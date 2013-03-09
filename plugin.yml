@@ -176,8 +176,8 @@ commands:
       description: shocks a player
       usage: /<command> [-s] <target>
       
-   stop:
-      description: stops the server taking an optional delay time
+   restart:
+      description: restarts the server taking an optional delay time
       usage: /<command> [time]
       
    hide:

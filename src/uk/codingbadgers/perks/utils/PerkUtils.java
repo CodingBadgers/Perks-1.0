@@ -29,24 +29,32 @@ public class PerkUtils {
 	public static ArrayList<PerkWebChatPlayer> webChatPlayers = new ArrayList<PerkWebChatPlayer>();
 	public static ArrayList<String> pluginBlacklist = new ArrayList<String>();
 	
-	static public void DebugConsole(String messsage) {
-		log.log(Level.INFO, "[Perks] " + messsage + ".");
+	static public void DebugConsole(String message) {
+		log.log(Level.INFO, "[Perks] " + message + ".");
 	}
 	
-	static public void ErrorConsole(String messsage) {
-		log.log(Level.SEVERE, "[Perks] " + messsage + ".");
+	static public void ErrorConsole(String message) {
+		log.log(Level.SEVERE, "[Perks] " + message + ".");
 	}
 
-	static public void OutputToPlayer(PerkPlayer player, String messsage) {
-		player.getPlayer().sendMessage(ChatColor.AQUA + "[Perks] " + ChatColor.RESET + messsage + ".");
+	static public void OutputToPlayer(PerkPlayer player, String message) {
+		player.getPlayer().sendMessage(ChatColor.AQUA + "[Perks] " + ChatColor.RESET + message + ".");
 	}
 	
-	static public void OutputToPlayer(Player player, String messsage) {
-		player.sendMessage(ChatColor.AQUA + "[Perks] " + ChatColor.RESET + messsage + ".");
+	static public void OutputToPlayer(Player player, String message) {
+		player.sendMessage(ChatColor.AQUA + "[Perks] " + ChatColor.RESET + message + ".");
 	}
 	
-	static public void OutputToAll(String messsage) {
-		plugin.getServer().broadcastMessage(ChatColor.AQUA + "[Perks] " + ChatColor.RESET + messsage + ".");
+	static public void OutputToAll(String message) {
+		plugin.getServer().broadcastMessage(ChatColor.AQUA + "[Perks] " + ChatColor.RESET + message + ".");
+	}
+	
+	static public void OutputToAllExcluding(String message, Player player) {
+		for (Player p : plugin.getServer().getOnlinePlayers()) {
+			if (p != player) {
+				OutputToPlayer(p, message);
+			}
+		}
 	}
 
 	public static PerkPlayer getPlayer(Player player) {
@@ -134,7 +142,7 @@ public class PerkUtils {
 		
 		plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "ma force end");
 		plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "pa castlewars forcestop");
-		
+				
 		// force the worlds to save just incase it didn't
 		for (World world : plugin.getServer().getWorlds()) {
 			world.save();
@@ -148,7 +156,12 @@ public class PerkUtils {
 			}
 		}
 		
-		plugin.getServer().shutdown();
+		PerkUtils.server().getScheduler().scheduleSyncDelayedTask(PerkUtils.plugin, new Runnable() {
+			   public void run() {
+				   plugin.getServer().shutdown();
+			   }
+		}, 2L);
+		
 	}
 
 	public static void OutputToStaff(String string) {

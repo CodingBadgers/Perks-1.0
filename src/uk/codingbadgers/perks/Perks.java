@@ -106,8 +106,7 @@ public class Perks extends JavaPlugin {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd,
-			String commandLabel, String[] input) {
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] input) {
 
 		if (PerkStop.onCommand(sender, cmd, commandLabel, input))
 			return true;
@@ -159,14 +158,6 @@ public class Perks extends JavaPlugin {
 		// handles home and build commands
 		if (PerkHomeAndBuild.onCommand(player, cmd, commandLabel, args))
 			return true;
-
-		// handles promote commands
-		if (PerkPromote.onCommand(player, cmd, commandLabel, args))
-			return true;
-		
-		// handles demote cmds
-		if (PerkDemote.onCommand(player, cmd, commandLabel, args))
-			return true;
 		
 		// handles vanish cmds
 		if (PerkVanish.onCommand(player, cmd, commandLabel, args))
@@ -210,10 +201,6 @@ public class Perks extends JavaPlugin {
 		
 		// handles lookup cmds
 		if (PerkLookup.onCommand(player, cmd, commandLabel, args))
-			return true;
-		
-		// handles spectate cmds
-		if (PerkSpectate.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		// handles fun cmds

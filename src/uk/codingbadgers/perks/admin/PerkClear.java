@@ -47,9 +47,9 @@ public class PerkClear {
 			return true;
 		}
 		
-		if (commandLabel.equalsIgnoreCase("colect")) {
+		if (commandLabel.equalsIgnoreCase("collect")) {
 			
-			if (!player.hasPermission("perks.clear.colecr", true))
+			if (!player.hasPermission("perks.clear.collect", true))
 				return true;
 			
 			player.colectInv();

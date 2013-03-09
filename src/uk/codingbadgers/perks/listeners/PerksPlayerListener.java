@@ -1,6 +1,5 @@
 package uk.codingbadgers.perks.listeners;
 
-
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -27,7 +26,6 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import uk.codingbadgers.perks.admin.PerkSpectate;
 import uk.codingbadgers.perks.admin.PerkThor;
 import uk.codingbadgers.perks.admin.PerkVanish;
 import uk.codingbadgers.perks.config.PerkConfig;
@@ -120,13 +118,6 @@ public class PerksPlayerListener implements Listener {
 		/* Handle afk moving */
 		if (player.isAfk()) {
 			event.setTo(event.getFrom());
-			return;
-		}
-		
-		/* handle spectate */		
-		if (PerkSpectate.isBeingFolowed(player)) {
-			PerkPlayer stalker = player.getSpecatingPlayer();
-			stalker.teleport(player.getPlayer().getLocation());
 			return;
 		}
 		

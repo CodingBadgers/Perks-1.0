@@ -14,10 +14,10 @@ public class PerkStop extends Thread{
 	
 	public static boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		
-		if (commandLabel.equalsIgnoreCase("stop")) {
+		if (commandLabel.equalsIgnoreCase("restart")) {
 			
 			if (sender instanceof Player) {
-				if (!PerkUtils.getPlayer((Player)sender).hasPermission("perks.serveradmin.stop", true))
+				if (!PerkUtils.getPlayer((Player)sender).hasPermission("perks.serveradmin.restart", true))
 					return true;
 			}
 			
