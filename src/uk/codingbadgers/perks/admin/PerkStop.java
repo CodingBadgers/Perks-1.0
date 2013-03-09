@@ -108,11 +108,21 @@ public class PerkStop extends Thread{
 					return;
 				}
 				
-				if (m_time % 10 == 0 && m_time != 0) {
-					PerkUtils.OutputToAll("The Server will shutdown in " + m_time + " seconds..");
-				} else if (m_time <= 5 && m_time != 0) {
-					PerkUtils.OutputToAll("The Server will shutdown in " + m_time + " seconds..");
+				boolean showMessage = false;
+				if (m_time > 300 && m_time % 300 == 0) { // every 5 minutes
+					showMessage = true;
+				} if (m_time > 60 && m_time % 60 == 0) { // every minute
+					showMessage = true;
+				} else if (m_time % 10 == 0 && m_time != 0) { // every 10 seconds
+					showMessage = true;
+				} else if (m_time <= 5 && m_time != 0) { // every second
+					showMessage = true;
 				}
+				
+				if (showMessage) {
+					PerkUtils.OutputToAll("The Server will shutdown in " + PerkUtils.parseTime(m_time) + "...");
+				}
+				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
