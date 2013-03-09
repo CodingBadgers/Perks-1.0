@@ -44,20 +44,22 @@ public class PerkDeathTP {
 	
 	private static boolean canDeathTpTo(EntityDamageEvent lastDamageCause) {
 		switch(lastDamageCause.getCause()) {
-		case CONTACT:
-		case SUFFOCATION:
-		case FALL:
-		case FIRE:
-		case FIRE_TICK:
-		case LAVA:
-		case DROWNING:
-		case BLOCK_EXPLOSION:
-		case ENTITY_EXPLOSION:
-		case LIGHTNING:
-		case SUICIDE:
-		case STARVATION:
-		case WITHER:
-			return true;
+			case CONTACT:
+			case SUFFOCATION:
+			case FALL:
+			case FIRE:
+			case FIRE_TICK:
+			case LAVA:
+			case DROWNING:
+			case BLOCK_EXPLOSION:
+			case ENTITY_EXPLOSION:
+			case LIGHTNING:
+			case SUICIDE:
+			case STARVATION:
+			case WITHER:
+				return true;
+			default:
+				break;
 		}
 		
 		if (lastDamageCause.getCause() == DamageCause.ENTITY_ATTACK || lastDamageCause.getCause() == DamageCause.PROJECTILE) {
