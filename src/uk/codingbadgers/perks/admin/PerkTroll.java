@@ -72,32 +72,6 @@ public class PerkTroll {
 		PerkUtils.OutputToPlayer(player, "You have renamed " + target.getPlayer().getName() + " to " + args.getString(1));
 	}
 	
-	private static void sendCommand(PerkPlayer player, PerkArgSet args) {
-		PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
-		
-		if (target == null) {
-			PerkUtils.OutputToPlayer(player, "That player is not online");
-			return;
-		}
-		
-		String command = "";
-		for (int i = 1; i < args.size(); i++) {
-			command += args.getString(i) + " ";
-		}
-		command = command.trim();
-		
-		if (!isBlacklisted(command)) {
-			PerkUtils.OutputToPlayer(player, "You cannot use that command as another player");
-			return;
-		}
-		
-		PerkUtils.server().dispatchCommand(target.getPlayer(), command);
-	}
-	
-	private static boolean isBlacklisted(String command) {
-		return commandBlacklist.contains(command.substring(0, command.indexOf(' ')));
-	}
-	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args) {
 		
 		if (commandLabel.equalsIgnoreCase("fakeop")) {
@@ -142,18 +116,6 @@ public class PerkTroll {
 			return true;
 		}
 		
-		if (commandLabel.equalsIgnoreCase("sendCommand") || commandLabel.equalsIgnoreCase("sc")) {
-			if (!player.hasPermission("perks.troll.command", true))
-				return true;
-			
-			if (args.size() < 2) {
-				PerkUtils.OutputToPlayer(player, PerkUtils.getUsage(cmd));
-				return true;
-			}
-			
-			sendCommand(player, args);
-			return true;
-		}
 		return false;
 	}
 }
