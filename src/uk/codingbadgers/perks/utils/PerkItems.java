@@ -451,12 +451,26 @@ public class PerkItems {
         items.add(new PerkItem("Potion of Invisibility (Extended)", new String[][] {{"pot", "invi", "ext"}}, Material.POTION, (short) 8270));
         items.add(new PerkItem("Potion of Night Vision", new String[][] {{"pot", "nigh", "visi"}, {"pot", "visio"}}, Material.POTION, (short) 8198));
         items.add(new PerkItem("Potion of Night Vision (Extended)", new String[][] {{"pot", "nigh", "visi", "ext"}, {"pot", "visio", "ext"}}, Material.POTION, (short) 8262));
+        items.add(new PerkItem("Enchanted Book", new String[][]{{"ench", "boo"}}, Material.ENCHANTED_BOOK));
         items.add(new PerkItem("Nether Star", new String[][]{{"star", "neth"}}, Material.NETHER_STAR));
-        // 1.4.6 items
-        items.add(new PerkItem("Nether Brick Slab", new String[][]{{"star", "neth"}}, Material.NETHER_BRICK_STAIRS));
-        items.add(new PerkItem("Firework Star", new String[][]{{"star", "neth"}}, Material.FIREWORK_CHARGE));
-        items.add(new PerkItem("Firework Rocket", new String[][]{{"star", "neth"}}, Material.FIREWORK));
-        items.add(new PerkItem("Enchanted Bookr", new String[][]{{"star", "neth"}}, Material.ENCHANTED_BOOK));
+        items.add(new PerkItem("Firework Star", new String[][]{{"fire", "star"}}, Material.FIREWORK_CHARGE));
+        items.add(new PerkItem("Firework Rocket", new String[][]{{"rocket"}, {"firework"}}, Material.FIREWORK));
+        items.add(new PerkItem("White Firework Star", new String[][]{{"whi", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 1));
+        items.add(new PerkItem("Orange Firework Star", new String[][]{{"ora", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 2));
+        items.add(new PerkItem("Magenta Firework Star", new String[][]{{"mag", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 3));
+        items.add(new PerkItem("Light Blue Firework Star", new String[][]{{"blu", "lig", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 4));
+        items.add(new PerkItem("Yellow Firework Star", new String[][]{{"yell", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 5));
+        items.add(new PerkItem("Lime Firework Star", new String[][]{{"lim", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 6));
+        items.add(new PerkItem("Pink Firework Star", new String[][]{{"pin", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 7));
+        items.add(new PerkItem("Gray Firework Star", new String[][]{{"gra", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 8));
+        items.add(new PerkItem("Light Gray Firework Star", new String[][]{{"lig", "gra", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 9));
+        items.add(new PerkItem("Cyan Firework Star", new String[][]{{"cya", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 10));
+        items.add(new PerkItem("Purple Firework Star", new String[][]{{"pur", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 11));
+        items.add(new PerkItem("Blue Firework Star", new String[][]{{"blue", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 12));
+        items.add(new PerkItem("Brown Firework Star", new String[][]{{"bro", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 13));
+        items.add(new PerkItem("Green Firework Star", new String[][]{{"gre", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 14));
+        items.add(new PerkItem("Red Firework Star", new String[][]{{"red", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 15));
+        items.add(new PerkItem("Block Firework Star", new String[][]{{"bla", "fire", "star"}}, Material.FIREWORK_CHARGE, (short) 16));
     }
     
     public static PerkItem itemById(int typeId) {

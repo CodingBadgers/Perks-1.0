@@ -15,6 +15,8 @@ import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.dynmap.DynmapAPI;
 
+import pgDev.bukkit.DisguiseCraft.api.DisguiseCraftAPI;
+
 import uk.codingbadgers.perks.Perks;
 import uk.codingbadgers.perks.config.PerkConfig;
 
@@ -28,6 +30,7 @@ public class PerkUtils {
 	public static boolean vaultEnabled = false;
 	public static ArrayList<PerkWebChatPlayer> webChatPlayers = new ArrayList<PerkWebChatPlayer>();
 	public static ArrayList<String> pluginBlacklist = new ArrayList<String>();
+	public static DisguiseCraftAPI disguiseCraftApi = null;
 	
 	static public void DebugConsole(String message) {
 		log.log(Level.INFO, "[Perks] " + message + ".");

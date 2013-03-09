@@ -26,7 +26,7 @@ public class PerkArgSet {
 		}
 	}
 	
-	public void parseArgSet(String[] input) {		
+	private void parseArgSet(String[] input) {		
 		
 		List<String> flags = new ArrayList<String>();
 		String[] args = new String[input.length];

@@ -1,6 +1,5 @@
 package uk.codingbadgers.perks.donator;
 
-
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Arrow;
@@ -20,7 +19,6 @@ import uk.codingbadgers.perks.utils.PerkMobArena;
 import uk.codingbadgers.perks.utils.PerkPlayer;
 import uk.codingbadgers.perks.utils.PerkUtils;
 
-
 public class PerkDeathTP {
 	
 	public static void OnDeath(PerkPlayer player, EntityDeathEvent event) {
@@ -32,7 +30,7 @@ public class PerkDeathTP {
 			return;
 		
 		if (PerkConfig.isPvpServer() && !canDeathTpTo(player.getPlayer().getLastDamageCause())) {
-			PerkUtils.OutputToPlayer(player, "You cannot return to that death location with death teleport");
+			PerkUtils.OutputToPlayer(player, "You cannot return to that death location by death teleport");
 			return;
 		}
 		
@@ -73,12 +71,18 @@ public class PerkDeathTP {
 			if (attacker instanceof Arrow) {
 				if (((Arrow) attacker).getShooter() instanceof Skeleton)
 					return true;
+				
+				return false;
 			}
 			
 			if (attacker instanceof ThrownPotion) {
 				if (((ThrownPotion)attacker).getShooter() instanceof Witch) 
 					return true;
+				
+				return false;
 			}	
+			
+			return true;
 		}
 		
 		return false;

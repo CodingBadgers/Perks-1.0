@@ -79,6 +79,14 @@ public class PerkConfig {
 			config.addDefault("database.ip", "127.0.0.1");
 			config.addDefault("database.port", 3306);
 			
+			config.addDefault("dependency.vault", true);
+			config.addDefault("dependency.dynmap", true);
+			config.addDefault("dependency.mobarena", true);
+			config.addDefault("dependency.pvparena", true);
+			config.addDefault("dependency.herochat", true);
+			config.addDefault("dependency.disguisecraft", true);
+			config.addDefault("dependency.survivalgames", true);
+			
 			config.options().copyDefaults(true);
 			PerkUtils.plugin.saveConfig();
 		} catch (Exception ex) {
@@ -404,5 +412,9 @@ public class PerkConfig {
 			e.printStackTrace();
 		}
 					
+	}
+	
+	public static boolean isDependencyEnabled(String plugin) {
+		return config.getBoolean("dependency." + plugin);
 	}
 }

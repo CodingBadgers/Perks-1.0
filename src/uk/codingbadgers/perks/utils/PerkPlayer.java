@@ -410,6 +410,7 @@ public class PerkPlayer {
 		PerkUtils.OutputToPlayer(this, "Teleport cancelled, " + reason);
 		
 		m_pvp.teleportTask.cancel();
+		m_pvp.teleportTask = null;
 	}
 	
 	public void gotoHome() {

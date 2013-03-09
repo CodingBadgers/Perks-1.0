@@ -1,6 +1,9 @@
 package uk.codingbadgers.perks.admin;
 
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -14,12 +17,15 @@ import uk.codingbadgers.perks.utils.PerkUtils;
 
 public class PerkInventory {      
 	
+	private static final Pattern itemIdPattern = Pattern.compile("[0-9]{1,3}(:[0-9]{1,3}){0,1}");
+	private static final Pattern itemNamePattern = Pattern.compile("[a-zA-Z]+(:[0-9]{1,3}){0,1}");
+	
 	private static ItemStack[] matchItem(String name, int amount) {
 		
 		ItemStack itemsTemp;
 		PerkItem info;
 		
-		if (PerkUtils.isNumeric(name)) {	
+		if (itemIdPattern.matcher(name).matches()) {	
 			
 			int id;
 			short dv = 0;
@@ -28,6 +34,7 @@ public class PerkInventory {
 				
 				String data = name.substring(name.indexOf(':') + 1);
 				name = name.substring(0, name.indexOf(':'));
+				
 				try {
 					dv = Short.parseShort(data);
 				} catch (NumberFormatException ex) {
@@ -47,13 +54,26 @@ public class PerkInventory {
 			
 		} else {
 			
-			info = PerkItems.itemByName(name);
+			Matcher matcher = itemNamePattern.matcher(name);
 			
-			if (info == null)
+			if (!matcher.matches()) {
+				String itemName = matcher.group(1);
+				
+				short dv = 0;
+				
+				if (matcher.group(2) != null) {
+					dv = Short.parseShort(matcher.group(2).substring(1));
+				}
+				
+				info = PerkItems.itemByName(itemName);
+				
+				if (info == null)
+					return null;
+				
+				itemsTemp = info.toStack(dv);
+			} else {
 				return null;
-			
-			itemsTemp = info.toStack();
-			
+			}
 		}
 		
 		ItemStack[] items = null;

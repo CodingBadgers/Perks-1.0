@@ -71,6 +71,10 @@ public class PerkItem {
     public ItemStack toStack() {
         return new ItemStack(this.material, 1, subTypeId);
     }
+    
+    public ItemStack toStack(short dv) {
+        return new ItemStack(this.material, 1, dv);
+    }
 
     @Override
     public String toString() {

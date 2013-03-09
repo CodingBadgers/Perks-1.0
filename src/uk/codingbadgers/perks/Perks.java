@@ -12,6 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import org.dynmap.DynmapAPI;
 
+import pgDev.bukkit.DisguiseCraft.DisguiseCraft;
+
 import uk.codingbadgers.perks.admin.*;
 import uk.codingbadgers.perks.config.*;
 import uk.codingbadgers.perks.donator.*;
@@ -25,7 +27,7 @@ public class Perks extends JavaPlugin {
     private final PerksMobAreanaListener maListener = new PerksMobAreanaListener();
     private final PerksPvpArenaListener paListener = new PerksPvpArenaListener();
     private final PerksHeroChatListener hcListener = new PerksHeroChatListener();
-    //private final PerksWebChatListener wcListener = new PerksWebChatListener();
+    private final PerksSurvivalGamesListener sgListener = new PerksSurvivalGamesListener();
 
 	// private final PerkThread m_thread = new PerkThread(this);
 
@@ -69,7 +71,7 @@ public class Perks extends JavaPlugin {
 
 	private void loadDependencies(PluginManager pm) {
 		// setup vault
-		if (pm.getPlugin("Vault") != null) {
+		if (pm.getPlugin("Vault") != null && PerkConfig.isDependencyEnabled("vault")) {
 			PerkUtils.DebugConsole("Vault found, setting up vault dependency");
 			PerkUtils.vaultEnabled = true;
 			PerkVault.setupPerms();
@@ -78,31 +80,41 @@ public class Perks extends JavaPlugin {
 		}
 		
 		// setup dynmap
-		if (pm.getPlugin("dynmap") != null) {
+		if (pm.getPlugin("dynmap") != null && PerkConfig.isDependencyEnabled("dynmap")) {
 			PerkUtils.DebugConsole("Dynmap found, setting up Dynmap dependency");
 			PerkUtils.dynmapapi = (DynmapAPI)pm.getPlugin("dynmap");
 		}	
 				
 		// setup mob arena
-		if (pm.getPlugin("MobArena") != null) {
+		if (pm.getPlugin("MobArena") != null && PerkConfig.isDependencyEnabled("mobarena")) {
 			PerkUtils.DebugConsole("MobArena found, setting up MobArena dependency");
 			pm.registerEvents(maListener, this);
 			PerkMobArena.setupMobArenaHandler();
 		}
 				
 		// setup pvparena
-		if (pm.getPlugin("pvparena") != null) {
+		if (pm.getPlugin("pvparena") != null && PerkConfig.isDependencyEnabled("pvparena")) {
 			PerkUtils.DebugConsole("PvpArena found, setting up PvpArena dependency");
 			pm.registerEvents(paListener, this);
 		}
 								
 		// setup herochat
-		if (pm.getPlugin("Herochat") != null) {
+		if (pm.getPlugin("Herochat") != null && PerkConfig.isDependencyEnabled("herochat")) {
 			PerkUtils.DebugConsole("HeroChat found, setting up HeroChat dependency");
 			pm.registerEvents(hcListener, this);
 		}
 		
+		// setup disguise craft
+		if (pm.getPlugin("DisguiseCraft") != null && PerkConfig.isDependencyEnabled("disguisecraft")) {
+			PerkUtils.DebugConsole("Disguise Craft found, setting up Disguise Craft dependency");
+			PerkUtils.disguiseCraftApi = DisguiseCraft.getAPI();
+		}
 		
+		// setup survival games 
+		if (pm.getPlugin("SurvivalGames") != null && PerkConfig.isDependencyEnabled("survivalgames")) {
+			PerkUtils.DebugConsole("Survival games found, setting up Survival Games dependency");
+			pm.registerEvents(sgListener, this);
+		}
 	}
 
 	@Override

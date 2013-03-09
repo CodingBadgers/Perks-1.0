@@ -1,12 +1,16 @@
 package uk.codingbadgers.perks.admin;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import uk.codingbadgers.perks.utils.PerkArgSet;
 import uk.codingbadgers.perks.utils.PerkPlayer;
@@ -16,13 +20,35 @@ public class PerkTime {
 
 	protected static final Pattern TWELVE_HOUR_TIME = Pattern.compile("^([0-9]+(?::[0-9]+)?)([apmAPM\\.]+)$");
 	
-	public static void setTime(long time) {
-		List<World> worlds = PerkUtils.server().getWorlds();
-		
-		for (int i = 0; i<worlds.size(); i++) {
-			
-			worlds.get(i).setTime(time);
+	private static Map<String, BukkitTask> lockedWorlds = new HashMap<String, BukkitTask>();
+	
+	public static void setTime(World world, long time) {
+		if (lockedWorlds.containsKey(world.getName())) {
+			// cancel current lock
+			lockedWorlds.get(world.getName()).cancel();
+			lockedWorlds.remove(world.getName());
 		}
+		
+		world.setTime(time);
+	}
+	
+	public static void lockTime(final World world) {
+		final long time = world.getTime();
+		
+		BukkitTask task = Bukkit.getScheduler().runTaskTimer(PerkUtils.plugin, new Runnable() {
+
+			@Override
+			public void run() {
+				world.setTime(time);
+			}
+			
+		}, 1, 1);
+		
+		lockedWorlds.put(world.getName(), task);
+	}
+
+	private static void setTime(Player player, long time, boolean lock) {
+		player.setPlayerTime(time, !lock);
 	}
 	
 	public static String getTimeString(long time) {
@@ -108,7 +134,7 @@ public class PerkTime {
         } else if (timeStr.equalsIgnoreCase("midnight")) {
             return (0 - 8 + 24) * 1000;
         } else if (timeStr.equalsIgnoreCase("s1m") || timeStr.equalsIgnoreCase("sim")) {
-        	return (7 - 8 + 24) * 1000;
+        	return 22618;
         }
         
 		return -1;
@@ -120,6 +146,16 @@ public class PerkTime {
 		if (commandLabel.equalsIgnoreCase("time")) {
 			
 			String timeStr;
+           	World world = player.getPlayer().getWorld();
+
+			if (args.size() >= 2) {
+				world = Bukkit.getWorld(args.getString(1));
+				
+				if (world == null) {
+					PerkUtils.OutputToPlayer(player, "The world " + args.getString(1) + " is not recognised on this server");
+					return true;
+				}
+			}
 			
 			if (args.size() == 0) {
                 timeStr = "current";
@@ -130,8 +166,12 @@ public class PerkTime {
             }
 			
 			boolean silent = false;
+			boolean lock = false;
+			
 			if (args.hasFlag("s"))
 				silent = true;
+			if (args.hasFlag("l"))
+				lock = true;
 			
 			// Let the player get the time
             if (timeStr.equalsIgnoreCase("current")
@@ -141,7 +181,7 @@ public class PerkTime {
                     if (!player.hasPermission("perks.time.check", true)) 
                     	return true; 
                     
-                    PerkUtils.OutputToPlayer(player, "Time: " + getTimeString(player.getPlayer().getLocation().getWorld().getTime()));
+                    PerkUtils.OutputToPlayer(player, "Time: " + getTimeString(world.getTime()));
                     return true;
                 }
             
@@ -155,11 +195,75 @@ public class PerkTime {
             	return true;
             }
             
-           	setTime(time);
+           	setTime(world, time);
 
-           	if (!silent) 
-            PerkUtils.OutputToAll(player.getPlayer().getName( )+ " set the time of all worlds to " + getTimeString(matchTime(timeStr)));
+           	if (lock) 
+           		lockTime(world);
+
+			if (!silent) 
+           		PerkUtils.OutputToAll(player.getPlayer().getName( ) + " " + (lock ? "locked" : "set") + " the time of " + world.getName() + " to " + getTimeString(matchTime(timeStr)));
             return true;
+		} else if (commandLabel.equalsIgnoreCase("playerTime")) {
+
+			String timeStr;
+           	
+			Player target = player.getPlayer();
+			
+			if (args.size() >= 2) {
+				target = Bukkit.getPlayer(args.getString(1));
+
+				if (target == null) {
+					PerkUtils.OutputToPlayer(player, "The player " + args.getString(1) + " is not recognised at this point in time on this server");
+					return true;
+				}
+			}
+			
+			if (args.size() == 0) {
+                timeStr = "current";
+                // If no world was specified, get the world from the sender, but
+                // fail if the sender isn't player
+            } else {
+                timeStr = args.getString(0);
+            }
+			
+			boolean lock = false;
+			
+			if (args.hasFlag("l"))
+				lock = true;
+			
+			// Let the player get the time
+            if (timeStr.equalsIgnoreCase("current")
+                    || timeStr.equalsIgnoreCase("cur")
+                    || timeStr.equalsIgnoreCase("now")) {
+
+            	if (!player.hasPermission("perks.player.time.check", true)) 
+            		return true; 
+                    
+                PerkUtils.OutputToPlayer(player, "Time: " + getTimeString(target.getPlayerTime()));
+                return true;
+                
+             } else if (timeStr.equalsIgnoreCase("reset")) {
+            	 target.resetPlayerTime();
+            	 PerkUtils.OutputToPlayer(player, "You have reset " + target.getName() + "'s player time to world time");
+            	 PerkUtils.OutputToPlayer(target, "Your player time has been reset by " + player.getPlayer().getName());
+               	return true;
+             }
+            
+            if (!player.hasPermission("perks.player.time.change", true))
+				return true;
+            
+            long time = matchTime(timeStr) - target.getWorld().getTime();
+            
+            if (time == -1) {
+            	PerkUtils.OutputToPlayer(player, "Time value is invaid.");
+            	return true;
+            }
+            
+           	setTime(target, time, lock);
+
+           	PerkUtils.OutputToPlayer(player, "You have " + (lock ? "locked" : "set") + " " + target.getName() + "'s player time to " + getTimeString(target.getPlayerTime()));
+           	PerkUtils.OutputToPlayer(target, "Your player time has been " + (lock ? "locked" : "set") + " to " + getTimeString(target.getPlayerTime()) + " by " + player.getPlayer().getName());
+           	return true;
 		}
 		
 		return false;

@@ -40,6 +40,16 @@ public class PerksPvpArenaListener implements Listener {
 			
 			PerkUtils.OutputToPlayer(player, "You are back while you are in the arena while you are in the arena");
 		}
+
+		if (PerkUtils.disguiseCraftApi != null) {
+			
+			if (PerkUtils.disguiseCraftApi.isDisguised(player.getPlayer())) {
+				
+				PerkUtils.disguiseCraftApi.undisguisePlayer(player.getPlayer());
+				
+				PerkUtils.OutputToPlayer(player, "You have been undisguised whilst you are in the arena");
+			}
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)

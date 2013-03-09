@@ -125,8 +125,12 @@ commands:
       
    time:
       description: changes the time
-      usage: /<command> <time> [world]
+      usage: /<command> [-ls] <time> [world]
       
+   playertime:
+      description: changes the time for a specific player
+      usage: /<command> [-l] <time> [player]
+        
    weather:
       description: changes the weather
       usage: /<command> [-s] <state> [duration] [world]

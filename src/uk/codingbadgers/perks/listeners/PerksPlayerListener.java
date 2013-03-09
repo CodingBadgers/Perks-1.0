@@ -123,7 +123,11 @@ public class PerksPlayerListener implements Listener {
 		
 		/* handle teleport moving */
 		if (PerkConfig.isPvpServer()) {
-			player.cancelTeleports("you moved");
+			if (event.getFrom().getBlockX() != event.getTo().getBlockX() ||
+					event.getFrom().getBlockY() != event.getTo().getBlockY() ||
+					event.getFrom().getBlockZ() != event.getTo().getBlockZ() ) {
+				player.cancelTeleports("You moved");
+			}
 		}
 
 		// stop the stalker moving
