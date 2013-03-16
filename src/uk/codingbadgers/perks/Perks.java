@@ -47,8 +47,8 @@ public class Perks extends JavaPlugin {
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(entityListener, this);
 		
-		loadDependencies(pm);
 		loadConfigs();
+		loadDependencies(pm);
 		
 		// Set our thread going
 		// m_thread.start();

@@ -355,12 +355,9 @@ public class PerksPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void commandPreprocess(final PlayerCommandPreprocessEvent event) {
 		
-		final String[] eventparts = event.getMessage().split(" ");
-		for (String part : eventparts) {
-			System.out.println(part);
-		}
+		final String[] args = event.getMessage().split(" ");
 		
-		final String command = eventparts[0].substring(1).toLowerCase();
+		final String command = args[0].substring(1).toLowerCase();
 		if (command.equals("plugins") || command.equals("pl")) {
 			
 			PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
@@ -382,8 +379,8 @@ public class PerksPlayerListener implements Listener {
 				return;
 			
 			String stopcommand = "restart";
-			if (eventparts.length > 1) {
-				stopcommand = stopcommand + " " + eventparts[1];	
+			if (args.length > 1) {
+				stopcommand = stopcommand + " " + args[1];	
 			}
 			
 			PerkUtils.server().dispatchCommand(player.getPlayer(), stopcommand);		
@@ -392,4 +389,5 @@ public class PerksPlayerListener implements Listener {
 		}
 		
 	}
+
 }

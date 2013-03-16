@@ -28,7 +28,6 @@ public class PerkUtils {
 	public static DynmapAPI dynmapapi = null;
 	public static PVPArena pvparena = null;
 	public static boolean vaultEnabled = false;
-	public static ArrayList<PerkWebChatPlayer> webChatPlayers = new ArrayList<PerkWebChatPlayer>();
 	public static ArrayList<String> pluginBlacklist = new ArrayList<String>();
 	public static DisguiseCraftAPI disguiseCraftApi = null;
 	
