@@ -86,7 +86,7 @@ public class PerkFun {
 				silent = true;
 			}
 		
-			double power = 10.0;		
+			double power = 6.0;		
 			target.getPlayer().setVelocity(new Vector(0, power, 0));
 			
 			if (!silent) {

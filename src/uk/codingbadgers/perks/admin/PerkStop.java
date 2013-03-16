@@ -35,12 +35,11 @@ public class PerkStop extends Thread{
 				}
 			}
 			
-			if (sender instanceof Player)
-				PerkUtils.OutputToPlayer((Player)sender, "Shutting server down in " + time + " seconds");
-			else
+			if (!(sender instanceof Player)) {
 				PerkUtils.DebugConsole("Shutting server down in " + time + " seconds");
+			}
 			
-			PerkUtils.server().getScheduler().scheduleSyncDelayedTask(PerkUtils.plugin, new Runnable() {
+			int shutdownTaskID = PerkUtils.server().getScheduler().scheduleSyncDelayedTask(PerkUtils.plugin, new Runnable() {
 
 				   public void run() {
 				       PerkUtils.shutdownServer();
@@ -48,7 +47,7 @@ public class PerkStop extends Thread{
 				   
 			}, (time + 1L) * 20L); // times 20 as we 'should' run at 20 ticks per second
 			
-			m_thread = new PerkStop(time);
+			m_thread = new PerkStop(time, shutdownTaskID);
 			m_thread.start();
 
 			return true;
@@ -88,15 +87,17 @@ public class PerkStop extends Thread{
 
 	private int m_time;
 	private boolean m_cancled;
+	private final int m_shutdownTaskID;
 
-	public PerkStop (int time) {
+	public PerkStop (int time, int shutdownTaskID) {
 		m_time = time;
 		m_cancled = false;
+		m_shutdownTaskID = shutdownTaskID;
 	}
 
 	public void run() {
 		
-		PerkUtils.OutputToAll("The Server will shutdown in " + m_time + " seconds...");
+		PerkUtils.OutputToAll("The Server will shutdown in " + PerkUtils.parseTime(m_time) + "...");
 		
 		while (m_time > 0) {
 			try {
@@ -104,22 +105,37 @@ public class PerkStop extends Thread{
 				m_time--;
 				
 				if (m_cancled) {
-					PerkUtils.OutputToAll("Shutdown Terminated");
-					return;
+					break;
 				}
 				
 				boolean showMessage = false;
-				if (m_time > 300 && m_time % 300 == 0) { // every 5 minutes
+				
+				// every 5 minutes
+				if (m_time >= 300 && m_time % 300 == 0) 
+				{ 
 					showMessage = true;
-				} if (m_time > 60 && m_time % 60 == 0) { // every minute
+					System.out.println("In 5 minute check: time = " + m_time);
+				} 
+				// every minute
+				else if (m_time < 300 && m_time >= 60 && m_time % 60 == 0) 
+				{ 
 					showMessage = true;
-				} else if (m_time % 10 == 0 && m_time != 0) { // every 10 seconds
+					System.out.println("In 1 minute check: time = " + m_time);
+				} 
+				// every 10 seconds
+				else if (m_time < 60 && m_time >= 5 && m_time % 10 == 0 && m_time != 0) 
+				{ 
 					showMessage = true;
-				} else if (m_time <= 5 && m_time != 0) { // every second
+					System.out.println("In 10 seconds check: time = " + m_time);
+				}
+				// every second
+				else if (m_time < 5 && m_time != 0) 
+				{ 
 					showMessage = true;
+					System.out.println("In 1 second check: time = " + m_time);
 				}
 				
-				if (showMessage) {
+				if (showMessage == true) {
 					PerkUtils.OutputToAll("The Server will shutdown in " + PerkUtils.parseTime(m_time) + "...");
 				}
 				
@@ -130,6 +146,7 @@ public class PerkStop extends Thread{
 		
 		if (m_cancled) {
 			PerkUtils.OutputToAll("Shutdown Terminated");
+			PerkUtils.server().getScheduler().cancelTask(m_shutdownTaskID);
 			return;
 		}
 	}

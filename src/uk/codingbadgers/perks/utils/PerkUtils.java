@@ -119,11 +119,12 @@ public class PerkUtils {
 	    String time = "";
 	    
 	    boolean showHours = !hours.equalsIgnoreCase("00");
-	    boolean showMinutes = showHours || !minutes.equalsIgnoreCase("00");
+	    boolean showMinutes = !minutes.equalsIgnoreCase("00");
+	    boolean showSeconds = !seconds.equalsIgnoreCase("00");
 	    
 	    time += showHours ? hours + " hours, " : "";
-	    time += showMinutes ? minutes + " minutes and " : "";
-	    time += seconds + " seconds";  
+	    time += showMinutes ? minutes + (showSeconds ? " minutes and " : " minutes") : "";
+	    time += showSeconds ? seconds + " seconds" : "";  
 	    return time;  
 	}
 	
