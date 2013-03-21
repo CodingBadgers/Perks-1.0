@@ -40,9 +40,9 @@ public class PerkPlayer {
 	}
 	
 	private class DeathTP {
-		public Location m_location = null;			// !< stores the death location
-		public boolean m_hasDied = false;			// !< stores whether the player has died
-		public int taskId;
+		public Location m_location = null;			//!< stores the death location
+		public boolean m_hasDied = false;			//!< stores whether the player has died
+		public int taskId = -1;						//!< 
 	}
 	
 	private class Vanish {
@@ -131,6 +131,7 @@ public class PerkPlayer {
 		
 		if (m_deathTP.taskId != -1) {
 			Bukkit.getScheduler().cancelTask(m_deathTP.taskId);
+			clearTaskIds();
 		}
 	}
 
@@ -329,6 +330,7 @@ public class PerkPlayer {
 			
 			if (m_deathTP.taskId != -1) {
 				Bukkit.getScheduler().cancelTask(m_deathTP.taskId);
+				clearTaskIds();
 			}
 			
 			m_deathTP.taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(PerkUtils.plugin, new Runnable() {
@@ -346,11 +348,10 @@ public class PerkPlayer {
 		} else {
 			m_deathTP.m_location = deathLocation;		
 			m_deathTP.m_hasDied = true;
+			clearTaskIds();
 			
 			PerkUtils.OutputToPlayer(m_player, "Use /death to be teleported back to the point where you died");
-		}
-		
-		
+		}		
 	}
 	
 	public boolean canDeathTP() {
