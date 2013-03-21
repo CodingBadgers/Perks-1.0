@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -13,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitTask;
 
 import ru.tehkode.permissions.PermissionManager;
@@ -156,6 +156,8 @@ public class PerkPlayer {
 
 		// store whether we're flying or not
 		m_fly.m_flying = flying;
+		
+		m_player.setMetadata("perks_flying", new FixedMetadataValue(PerkUtils.plugin, flying));
 		
 		// update it in database
 		DatabaseManager.setFlying(this, flying);
@@ -353,7 +355,7 @@ public class PerkPlayer {
 	
 	public boolean canDeathTP() {
 		
-		if (m_deathTP.taskId != -1) {
+		if (m_deathTP.taskId != -1 && PerkConfig.isPvpServer()) {
 			PerkUtils.OutputToPlayer(this, "You cannot death teleport yet, please wait");
 			return false;
 		}
@@ -675,6 +677,8 @@ public class PerkPlayer {
 	}
 	
 	public void setAfk(boolean afk)  {
+		m_player.setMetadata("perks_afk", new FixedMetadataValue(PerkUtils.plugin, afk));
+		
 		m_afk.afk = afk;
 	}
 

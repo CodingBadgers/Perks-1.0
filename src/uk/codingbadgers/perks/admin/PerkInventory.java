@@ -83,7 +83,7 @@ public class PerkInventory {
 			items = new ItemStack[] {itemsTemp};
 		} else if (amount > itemsTemp.getMaxStackSize()) {
 
-			// TODO fix, currently is still abit buggy
+			// FIXME currently is still abit buggy
 			int amountToGive = amount;
 			int stackSize = itemsTemp.getMaxStackSize();
 			int current = 0;
@@ -113,12 +113,38 @@ public class PerkInventory {
 		return items;
 	}
 	
-	private static String getName(String item) {		
-		return PerkItems.itemByName(item).getName();
+	private static String getName(String name) {		
+		PerkItem item = PerkItems.itemByName(name);
+		
+		String itemName;
+		
+		if (item == null) {
+			Material mat = Material.getMaterial(name);
+			
+			if (mat == null) {
+				itemName = name;
+			} else {
+				itemName = mat.toString().toLowerCase().replace('_', ' ');
+			}
+		} else {
+			itemName = item.getName();
+		}
+		
+		return itemName;
 	}
 	
-	private static String getName(ItemStack item) {		
-		return PerkItems.itemByName(item.toString().toLowerCase()).getName();
+	private static String getName(ItemStack stack) {		
+		PerkItem item = PerkItems.itemById(stack.getTypeId());
+		
+		String itemName;
+		
+		if (item == null) {
+			itemName = stack.getType().toString().toLowerCase().replace('_', ' ');
+		} else {
+			itemName = item.getName();
+		}
+		
+		return itemName;
 	}
 	
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args){
