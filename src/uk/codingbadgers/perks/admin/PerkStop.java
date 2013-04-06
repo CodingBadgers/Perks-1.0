@@ -14,14 +14,13 @@ public class PerkStop extends Thread{
 	
 	public static boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		
-		if (commandLabel.equalsIgnoreCase("restart")) {
+		if (commandLabel.equalsIgnoreCase("restartserver")) {
 			
 			if (sender instanceof Player) {
 				if (!PerkUtils.getPlayer((Player)sender).hasPermission("perks.serveradmin.restart", true))
 					return true;
 			}
-			
-			
+						
 			int time = PerkConfig.shutdownTimeout;
 			if (args.length == 1) {
 				try {
@@ -114,25 +113,21 @@ public class PerkStop extends Thread{
 				if (m_time >= 300 && m_time % 300 == 0) 
 				{ 
 					showMessage = true;
-					System.out.println("In 5 minute check: time = " + m_time);
 				} 
 				// every minute
 				else if (m_time < 300 && m_time >= 60 && m_time % 60 == 0) 
 				{ 
 					showMessage = true;
-					System.out.println("In 1 minute check: time = " + m_time);
 				} 
 				// every 10 seconds
-				else if (m_time < 60 && m_time >= 5 && m_time % 10 == 0 && m_time != 0) 
+				else if (m_time < 60 && m_time > 5 && m_time % 10 == 0 && m_time != 0) 
 				{ 
 					showMessage = true;
-					System.out.println("In 10 seconds check: time = " + m_time);
 				}
 				// every second
-				else if (m_time < 5 && m_time != 0) 
+				else if (m_time <= 5 && m_time != 0) 
 				{ 
 					showMessage = true;
-					System.out.println("In 1 second check: time = " + m_time);
 				}
 				
 				if (showMessage == true) {

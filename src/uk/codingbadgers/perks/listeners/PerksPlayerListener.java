@@ -378,7 +378,7 @@ public class PerksPlayerListener implements Listener {
 			if (player == null)
 				return;
 			
-			String stopcommand = "restart";
+			String stopcommand = "restartserver";
 			if (args.length > 1) {
 				stopcommand = stopcommand + " " + args[1];	
 			}

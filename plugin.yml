@@ -180,7 +180,7 @@ commands:
       description: shocks a player
       usage: /<command> [-s] <target>
       
-   restart:
+   restartserver:
       description: restarts the server taking an optional delay time
       usage: /<command> [time]
       
