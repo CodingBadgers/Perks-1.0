@@ -31,8 +31,9 @@ public class PerkSpawn {
 			if (args.size() == 0) {
 				target = player;
 			} else {
-				if (!player.hasPermission("perks.spawn.other", true) && PerkConfig.isPvpServer())
+				if (!player.hasPermission("perks.spawn.other", true) || PerkConfig.isPvpServer()) {
 					return true;
+				}
 				
 				target = PerkUtils.getPlayer(args.getString(0));
 			}
