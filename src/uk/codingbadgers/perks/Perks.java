@@ -27,7 +27,6 @@ public class Perks extends JavaPlugin {
     private final PerksMobAreanaListener maListener = new PerksMobAreanaListener();
     private final PerksPvpArenaListener paListener = new PerksPvpArenaListener();
     private final PerksHeroChatListener hcListener = new PerksHeroChatListener();
-    private final PerksSurvivalGamesListener sgListener = new PerksSurvivalGamesListener();
 
 	// private final PerkThread m_thread = new PerkThread(this);
 
@@ -108,12 +107,6 @@ public class Perks extends JavaPlugin {
 		if (pm.getPlugin("DisguiseCraft") != null && PerkConfig.isDependencyEnabled("disguisecraft")) {
 			PerkUtils.DebugConsole("Disguise Craft found, setting up Disguise Craft dependency");
 			PerkUtils.disguiseCraftApi = DisguiseCraft.getAPI();
-		}
-		
-		// setup survival games 
-		if (pm.getPlugin("SurvivalGames") != null && PerkConfig.isDependencyEnabled("survivalgames")) {
-			PerkUtils.DebugConsole("Survival games found, setting up Survival Games dependency");
-			pm.registerEvents(sgListener, this);
 		}
 	}
 

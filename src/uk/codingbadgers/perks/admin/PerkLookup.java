@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
+import org.bukkit.entity.Player;
 
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
@@ -117,14 +118,16 @@ public class PerkLookup {
 			
 			if (target != null) {
 				
-				group = pex.getUser(target.getPlayer()).getGroups();
-				name = target.getPlayer().getName();
-				displayName = target.getPlayer().getDisplayName();
-				health = target.getPlayer().getHealth();
-				hunger= target.getPlayer().getFoodLevel();
-				loc = target.getPlayer().getLocation();
-				op = target.getPlayer().isOp();
-				boolean banned = target.getPlayer().isBanned();
+				final Player targetplayer = target.getPlayer();
+				
+				group = pex.getUser(targetplayer).getGroups();
+				name = targetplayer.getName();
+				displayName = targetplayer.getDisplayName();
+				health = (int) targetplayer.getHealth();
+				hunger = targetplayer.getFoodLevel();
+				loc = targetplayer.getLocation();
+				op = targetplayer.isOp();
+				boolean banned = targetplayer.isBanned();
 				
 				try {
 					firstPlayed = PerkUtils.parseDate(target.getPlayer().getFirstPlayed());

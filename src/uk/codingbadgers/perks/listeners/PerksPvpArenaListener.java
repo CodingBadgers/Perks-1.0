@@ -54,14 +54,14 @@ public class PerksPvpArenaListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onArenaStartEvent(PAStartEvent event) {
-		for (ArenaPlayer player : event.getArena().getPlayers()) {
-			player.get().setGameMode(GameMode.ADVENTURE);
+		for (ArenaPlayer player : event.getArena().getEveryone()) {
+			player.get().setGameMode(GameMode.SURVIVAL);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onArenaEndEvent(PAEndEvent event) {
-		for (ArenaPlayer player : event.getArena().getPlayers()) {
+		for (ArenaPlayer player : event.getArena().getEveryone()) {
 			player.get().setGameMode(GameMode.SURVIVAL);
 		}
 	}
