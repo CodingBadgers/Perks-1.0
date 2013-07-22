@@ -221,6 +221,35 @@ public class PerksPlayerListener implements Listener {
 		if (event.getTo().getWorld().getName().equalsIgnoreCase("world_creative")) {
 			player.getPlayer().setGameMode(GameMode.CREATIVE);
 		}		
+		
+		// check sg worlds
+		if (event.getTo().getWorld().getName().startsWith("world_survival_")) {
+			
+			Player p = player.getPlayer();
+			
+			if (player.isFlying()) {
+				player.setFlying(false);
+				PerkUtils.OutputToPlayer(player,"Your fly mode has been disabled while you are in the arena");
+			}
+			
+			if (player.isVanished()) {
+				player.showPlayer(true);
+				PerkUtils.OutputToPlayer(player, "Your vanish mode has been disabled while you are in the arena");
+			}
+			
+			if (player.isAfk()) {
+				player.setAfk(false);
+				PerkUtils.OutputToPlayer(player, "You are back while you are in the arena while you are in the arena");
+			}
+			
+			if (PerkUtils.disguiseCraftApi != null) {
+				if (PerkUtils.disguiseCraftApi.isDisguised(p)) {
+					PerkUtils.disguiseCraftApi.undisguisePlayer(p);
+					PerkUtils.OutputToPlayer(player, "You have been undisguised whilst you are in the arena");
+				}
+			}
+			
+		}
 
 	}
 	
