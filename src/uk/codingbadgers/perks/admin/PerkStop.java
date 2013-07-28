@@ -73,9 +73,9 @@ public class PerkStop extends Thread{
 			m_thread.cancel();
 			
 			if (sender instanceof Player)
-				PerkUtils.OutputToPlayer((Player)sender, "Server shutdown aborted");
+				PerkUtils.OutputToPlayer((Player)sender, "Server restart aborted");
 			else
-				PerkUtils.DebugConsole("Server shutdown aborted");
+				PerkUtils.DebugConsole("Server restart aborted");
 			
 			return true;
 			
@@ -96,7 +96,7 @@ public class PerkStop extends Thread{
 
 	public void run() {
 		
-		PerkUtils.OutputToAll("The Server will shutdown in " + PerkUtils.parseTime(m_time) + "...");
+		PerkUtils.OutputToAll("The Server will restart in " + PerkUtils.parseTime(m_time) + "...");
 		
 		while (m_time > 0) {
 			try {
