@@ -35,6 +35,7 @@ public class PerkConfig {
 	public static long buildWarmUpTime;
 	public static long spawnWarmUpTime;
 	public static long deathTpDelay;
+	public static int afkKickTime;
 	
 	public static ArrayList<String> perksInfo = new ArrayList<String>();
 	
@@ -108,6 +109,7 @@ public class PerkConfig {
 		buildWarmUpTime = config.getInt("Teleport.build.warmUp", 10);
 		spawnWarmUpTime = config.getInt("Teleport.spawn.warmUp", 10);
 		deathTpDelay = config.getInt("Teleport.death.dealay", 10);
+		afkKickTime = config.getInt("Afk.KickTimeMinutes", 10);
 		
 		DATABASE.name = config.getString("database.name", "database");
 		DATABASE.user = config.getString("database.username", "username");

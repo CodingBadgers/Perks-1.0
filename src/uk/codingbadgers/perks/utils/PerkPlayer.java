@@ -51,6 +51,7 @@ public class PerkPlayer {
 	
 	private class Afk {
 		public boolean afk = false;					// !< stores whether you are afk
+		public int kickTask = -1;					// !< Id of the task used to kick the player after a given length of time
 	}
 	
 	private class PlayerKit {
@@ -679,8 +680,26 @@ public class PerkPlayer {
 	
 	public void setAfk(boolean afk)  {
 		m_player.setMetadata("perks_afk", new FixedMetadataValue(PerkUtils.plugin, afk));
-		
 		m_afk.afk = afk;
+		
+		if (afk)
+		{
+			// move to config
+			final int noofMinutes = PerkConfig.afkKickTime;
+			final int noofSeconds = 60 * noofMinutes;
+			
+			final Player player = getPlayer();
+			m_afk.kickTask = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(PerkUtils.plugin, new Runnable() {
+				public void run() {
+					player.kickPlayer("You have been AFK for " + noofMinutes + " minutes.");
+				}
+			}, 20L * noofSeconds);
+		}
+		else
+		{
+			Bukkit.getServer().getScheduler().cancelTask(m_afk.kickTask);
+		}
+		
 	}
 
 	public void usedKit(PerkKit kit) {

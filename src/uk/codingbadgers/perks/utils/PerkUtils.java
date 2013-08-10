@@ -120,10 +120,14 @@ public class PerkUtils {
 	    boolean showHours = !hours.equalsIgnoreCase("00");
 	    boolean showMinutes = !minutes.equalsIgnoreCase("00");
 	    boolean showSeconds = !seconds.equalsIgnoreCase("00");
+
+	    final String hoursStr = Integer.parseInt(hours) == 1 ? "hour" : "hours";
+	    final String minutesStr = Integer.parseInt(minutes) == 1 ? "minute" : "minutes";
+	    final String secondsStr = Integer.parseInt(seconds) == 1 ? "second" : "seconds";
 	    
-	    time += showHours ? hours + " hours, " : "";
-	    time += showMinutes ? minutes + (showSeconds ? " minutes and " : " minutes") : "";
-	    time += showSeconds ? seconds + " seconds" : "";  
+	    time += showHours ? hours + " " + hoursStr + ", " : "";
+	    time += showMinutes ? minutes + (showSeconds ? " " + minutesStr + " and " : " " + minutesStr) : "";
+	    time += showSeconds ? seconds + " " + secondsStr : "";  
 	    return time;  
 	}
 	

@@ -26,6 +26,7 @@ public class PerkAFK {
 					player.setAfk(false);
 					PerkUtils.OutputToPlayer(player, "You are back");
 					PerkUtils.OutputToAll(player.getPlayer().getName() + " is back");
+					
 				} else {
 					
 					
