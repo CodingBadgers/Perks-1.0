@@ -709,6 +709,9 @@ public class PerkPlayer {
 		else
 		{
 			Bukkit.getServer().getScheduler().cancelTask(m_afk.kickTask);
+			m_afk.lastChatCheck = -1L;
+			m_afk.lastPositionCheck = -1L;
+			checkAFK();
 		}
 		
 	}
