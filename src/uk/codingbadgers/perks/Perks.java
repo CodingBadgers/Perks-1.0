@@ -28,9 +28,10 @@ public class Perks extends JavaPlugin {
     private final PerksPvpArenaListener paListener = new PerksPvpArenaListener();
     private final PerksHeroChatListener hcListener = new PerksHeroChatListener();
 
-	// private final PerkThread m_thread = new PerkThread(this);
-
+    private AFKThread m_afkThread = null;
+    
 	public void onDisable() {
+		m_afkThread.kill();
 		DatabaseManager.Stop();
 		PerkUtils.DebugConsole("Perks version '" + getDescription().getVersion() + "' has been disabled");
 	}
@@ -49,10 +50,11 @@ public class Perks extends JavaPlugin {
 		loadConfigs();
 		loadDependencies(pm);
 		
-		// Set our thread going
-		// m_thread.start();
+		m_afkThread = new AFKThread();
+		m_afkThread.start();
 		
 		PerkUtils.DebugConsole("Perks version '" + getDescription().getVersion() + "' has been enabled");
+		
 	}
 	
 	private void loadConfigs() {

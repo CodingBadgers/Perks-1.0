@@ -1,7 +1,5 @@
 package uk.codingbadgers.perks.donator;
 
-
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 
 import uk.codingbadgers.perks.utils.PerkArgSet;
@@ -10,8 +8,7 @@ import uk.codingbadgers.perks.utils.PerkUtils;
 
 
 public class PerkAFK {
-
-	
+		
 	public static boolean onCommand(PerkPlayer player, Command cmd, String commandLabel, PerkArgSet args){
 		
 		if (commandLabel.equalsIgnoreCase("afk")) {
@@ -25,24 +22,15 @@ public class PerkAFK {
 					
 					player.setAfk(false);
 					PerkUtils.OutputToPlayer(player, "You are back");
-					PerkUtils.OutputToAll(player.getPlayer().getName() + " is back");
+					PerkUtils.OutputToAllExcluding(player.getPlayer().getName() + " is back", player.getPlayer());
 					
 				} else {
 					
 					
 					player.setAfk(true);
-                    
-                    // if a players y coord is greater than the highest block at there location, lower them
-                    double y = player.getPlayer().getWorld().getHighestBlockAt(player.getPlayer().getLocation()).getLocation().getY() + 1;
-                    if (player.getPlayer().getLocation().getY() > y) {
-                            player.teleport(new Location(player.getPlayer().getLocation().getWorld(),
-                                            player.getPlayer().getLocation().getX(), 
-                                            y, 
-                                            player.getPlayer().getLocation().getZ()));
-                    }
-                    
+                                        
                     PerkUtils.OutputToPlayer(player, "You are afk.");
-                    PerkUtils.OutputToAll(player.getPlayer().getName() + " is afk");
+                    PerkUtils.OutputToAllExcluding(player.getPlayer().getName() + " is afk", player.getPlayer());
 
 				}
 				

@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -34,7 +34,6 @@ import uk.codingbadgers.perks.donator.PerkPlugins;
 import uk.codingbadgers.perks.utils.PerkPlayer;
 import uk.codingbadgers.perks.utils.PerkUtils;
 
-@SuppressWarnings("deprecation")
 public class PerksPlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -48,6 +47,8 @@ public class PerksPlayerListener implements Listener {
 			event.setJoinMessage(null);
 			PerkUtils.OutputToStaff(ChatColor.GOLD + player.getPlayer().getName() + " has logged in using vanish");
 		}
+		
+		player.checkAFK();
 		
 		player.dynmapHide();
 	}	
@@ -341,11 +342,13 @@ public class PerksPlayerListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerChat(PlayerChatEvent event) {
+	public void onPlayerChat(AsyncPlayerChatEvent event) {
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
 		
 		if (player.isAfk()) {	
 			event.setCancelled(true);
+		} else {
+			player.playerSpoke();
 		}
 	}
 	

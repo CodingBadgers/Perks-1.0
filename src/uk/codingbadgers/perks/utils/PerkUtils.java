@@ -53,7 +53,7 @@ public class PerkUtils {
 	
 	static public void OutputToAllExcluding(String message, Player player) {
 		for (Player p : plugin.getServer().getOnlinePlayers()) {
-			if (p != player) {
+			if (!p.getName().equalsIgnoreCase(player.getName())) {
 				OutputToPlayer(p, message);
 			}
 		}

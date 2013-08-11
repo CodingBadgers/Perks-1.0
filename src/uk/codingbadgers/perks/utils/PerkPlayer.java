@@ -52,6 +52,9 @@ public class PerkPlayer {
 	private class Afk {
 		public boolean afk = false;					// !< stores whether you are afk
 		public int kickTask = -1;					// !< Id of the task used to kick the player after a given length of time
+		public Location lastPosition = null;		// !< 
+		public Long lastPositionCheck = -1L;		// !<
+		public Long lastChatCheck = -1L;			// !<
 	}
 	
 	private class PlayerKit {
@@ -684,7 +687,15 @@ public class PerkPlayer {
 		
 		if (afk)
 		{
-			// move to config
+            // if a players y coord is greater than the highest block at there location, lower them
+            double y = getPlayer().getWorld().getHighestBlockAt(getPlayer().getLocation()).getLocation().getY() + 1;
+            if (getPlayer().getLocation().getY() > y) {
+                    teleport(new Location(getPlayer().getLocation().getWorld(),
+                                    getPlayer().getLocation().getX(), 
+                                    y, 
+                                    getPlayer().getLocation().getZ()));
+            }
+			
 			final int noofMinutes = PerkConfig.afkKickTime;
 			final int noofSeconds = 60 * noofMinutes;
 			
@@ -698,6 +709,69 @@ public class PerkPlayer {
 		else
 		{
 			Bukkit.getServer().getScheduler().cancelTask(m_afk.kickTask);
+		}
+		
+	}
+	
+	public void playerSpoke() {
+		m_afk.lastChatCheck = System.currentTimeMillis();
+	}
+	
+	public void checkAFK() {
+		
+		if (m_afk.afk) {
+			return;
+		}
+		
+		if (m_afk.lastChatCheck == -1L) {
+			m_afk.lastChatCheck = System.currentTimeMillis();
+		}
+		
+		if (m_afk.lastPosition == null || m_afk.lastPositionCheck == -1L) {
+			m_afk.lastPosition = getPlayer().getLocation();
+			m_afk.lastPositionCheck = System.currentTimeMillis();
+			return;
+		}
+		
+		boolean playerMoved = true;
+		boolean playerSpoke = true;
+		
+		final Long afkCheckTime = 1L * 60L * 1000L;
+		if (System.currentTimeMillis() - m_afk.lastPositionCheck >= afkCheckTime) {
+			
+			final int oldX = m_afk.lastPosition.getBlockX();
+			final int oldY = m_afk.lastPosition.getBlockY();
+			final int oldZ = m_afk.lastPosition.getBlockZ();
+			final float oldPitch = m_afk.lastPosition.getPitch();
+			final float oldYaw = m_afk.lastPosition.getYaw();
+			
+			final Location newLocation = getPlayer().getLocation();
+			final int newX = newLocation.getBlockX();
+			final int newY = newLocation.getBlockY();
+			final int newZ = newLocation.getBlockZ();
+			final float newPitch = newLocation.getPitch();
+			final float newYaw = newLocation.getYaw();
+			
+			if (
+				oldX == newX &&
+				oldY == newY &&
+				oldZ == newZ &&
+				oldPitch == newPitch &&
+				oldYaw == newYaw 
+				) 
+			{
+				playerMoved = false;
+			}
+		}
+		
+		if (System.currentTimeMillis() - m_afk.lastChatCheck >= afkCheckTime) {
+			playerSpoke = false;
+		}
+		
+		if (!playerMoved && !playerSpoke) {
+			setAfk(true);
+			PerkUtils.OutputToPlayer(getPlayer(), "You are afk.");
+            PerkUtils.OutputToAllExcluding(getPlayer().getName() + " is afk", getPlayer());
 		}
 		
 	}
