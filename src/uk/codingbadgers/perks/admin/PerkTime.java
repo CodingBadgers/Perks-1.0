@@ -165,13 +165,9 @@ public class PerkTime {
                 timeStr = args.getString(0);
             }
 			
-			boolean silent = false;
-			boolean lock = false;
-			
-			if (args.hasFlag("s"))
-				silent = true;
-			if (args.hasFlag("l"))
-				lock = true;
+			boolean silent = args.hasFlag("s");
+			boolean lock = args.hasFlag("l");
+			boolean allWorlds = args.hasFlag("a");
 			
 			// Let the player get the time
             if (timeStr.equalsIgnoreCase("current")
@@ -195,7 +191,14 @@ public class PerkTime {
             	return true;
             }
             
-           	setTime(world, time);
+            if (!allWorlds) {
+            	setTime(world, time);
+            }
+            else {
+            	for (World currentWorld : Bukkit.getWorlds()) {
+            		setTime(currentWorld, time);
+            	}
+            }
 
            	if (lock) 
            		lockTime(world);
