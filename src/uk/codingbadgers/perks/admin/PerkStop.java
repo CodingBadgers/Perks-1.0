@@ -35,7 +35,7 @@ public class PerkStop extends Thread{
 			}
 			
 			if (!(sender instanceof Player)) {
-				PerkUtils.DebugConsole("Shutting server down in " + time + " seconds");
+				PerkUtils.DebugConsole("Restarting server down in " + time + " seconds");
 			}
 			
 			int shutdownTaskID = PerkUtils.server().getScheduler().scheduleSyncDelayedTask(PerkUtils.plugin, new Runnable() {
@@ -131,7 +131,7 @@ public class PerkStop extends Thread{
 				}
 				
 				if (showMessage == true) {
-					PerkUtils.OutputToAll("The Server will shutdown in " + PerkUtils.parseTime(m_time) + "...");
+					PerkUtils.OutputToAll("The Server will restart in " + PerkUtils.parseTime(m_time) + "...");
 				}
 				
 			} catch (InterruptedException e) {
@@ -140,7 +140,7 @@ public class PerkStop extends Thread{
 		}
 		
 		if (m_cancled) {
-			PerkUtils.OutputToAll("Shutdown Terminated");
+			PerkUtils.OutputToAll("Restart Terminated");
 			PerkUtils.server().getScheduler().cancelTask(m_shutdownTaskID);
 			return;
 		}
