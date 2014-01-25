@@ -346,11 +346,22 @@ public class PerksPlayerListener implements Listener {
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
 		
 		if (player.isAfk()) {	
+            PerkUtils.OutputToPlayer(player, "You are AFK.");
 			event.setCancelled(true);
 		} else {
 			player.playerSpoke();
 		}
 	}
+    
+    @EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        
+        PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
+        if (!player.isAfk()) {
+            player.playerSpoke();
+        }
+        
+    }
 	
 	@EventHandler (priority = EventPriority.NORMAL)
 	public void onPlayerInteraction(PlayerInteractEvent event) {

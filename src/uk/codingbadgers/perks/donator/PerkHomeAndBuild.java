@@ -41,7 +41,7 @@ public class PerkHomeAndBuild {
 			return true;
 		}
 			
-		if (cmd.getName().equalsIgnoreCase("build")) {
+		if (cmd.getName().equalsIgnoreCase("project")) {
 
 			if (!player.hasPermission("perks.build", true))
 				return true;
@@ -50,7 +50,7 @@ public class PerkHomeAndBuild {
 			return true;
 		}
 		
-		if (cmd.getName().equalsIgnoreCase("setbuild")) {
+		if (cmd.getName().equalsIgnoreCase("setproject")) {
 
 			if (!player.hasPermission("perks.build", true))
 				return true;
