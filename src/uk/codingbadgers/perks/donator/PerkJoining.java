@@ -2,11 +2,9 @@ package uk.codingbadgers.perks.donator;
 
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
-
-
 import org.bukkit.OfflinePlayer;
-
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.PermissionUser;
@@ -26,7 +24,7 @@ public class PerkJoining {
 			if (!(entry.getKey() >=  PerkConfig.forceJoinCutOff)) 
 				continue;
 			
-			PermissionUser[] users = entry.getValue().getUsers();
+			Set<PermissionUser> users = entry.getValue().getUsers();
 			for (PermissionUser user : users) {
 				OfflinePlayer player = PerkUtils.server().getOfflinePlayer(user.getName());
 				

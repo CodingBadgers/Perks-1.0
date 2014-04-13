@@ -2,30 +2,47 @@ package uk.codingbadgers.perks;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import org.dynmap.DynmapAPI;
-
-import pgDev.bukkit.DisguiseCraft.DisguiseCraft;
-
-import uk.codingbadgers.perks.admin.*;
-import uk.codingbadgers.perks.config.*;
-import uk.codingbadgers.perks.donator.*;
-import uk.codingbadgers.perks.listeners.*;
-import uk.codingbadgers.perks.utils.*;
+import uk.codingbadgers.perks.admin.PerkAdmin;
+import uk.codingbadgers.perks.admin.PerkClear;
+import uk.codingbadgers.perks.admin.PerkDebug;
+import uk.codingbadgers.perks.admin.PerkFun;
+import uk.codingbadgers.perks.admin.PerkGameMode;
+import uk.codingbadgers.perks.admin.PerkGroupSet;
+import uk.codingbadgers.perks.admin.PerkInventory;
+import uk.codingbadgers.perks.admin.PerkLookup;
+import uk.codingbadgers.perks.admin.PerkStop;
+import uk.codingbadgers.perks.admin.PerkThor;
+import uk.codingbadgers.perks.admin.PerkTime;
+import uk.codingbadgers.perks.admin.PerkTroll;
+import uk.codingbadgers.perks.admin.PerkVanish;
+import uk.codingbadgers.perks.admin.PerkWeather;
+import uk.codingbadgers.perks.config.DatabaseManager;
+import uk.codingbadgers.perks.config.PerkConfig;
+import uk.codingbadgers.perks.donator.AFKThread;
+import uk.codingbadgers.perks.donator.PerkAFK;
+import uk.codingbadgers.perks.donator.PerkDeathTP;
+import uk.codingbadgers.perks.donator.PerkFlying;
+import uk.codingbadgers.perks.donator.PerkHomeAndBuild;
+import uk.codingbadgers.perks.donator.PerkKits;
+import uk.codingbadgers.perks.donator.PerkSpawn;
+import uk.codingbadgers.perks.donator.PerkTeleport;
+import uk.codingbadgers.perks.listeners.PerksEntityListener;
+import uk.codingbadgers.perks.listeners.PerksHeroChatListener;
+import uk.codingbadgers.perks.listeners.PerksPlayerListener;
+import uk.codingbadgers.perks.utils.PerkArgSet;
+import uk.codingbadgers.perks.utils.PerkPlayer;
+import uk.codingbadgers.perks.utils.PerkUtils;
+import uk.codingbadgers.perks.utils.PerkVault;
 
 public class Perks extends JavaPlugin {
 
 	private final PerksPlayerListener playerListener = new PerksPlayerListener();
     private final PerksEntityListener entityListener = new PerksEntityListener();
-    private final PerksMobAreanaListener maListener = new PerksMobAreanaListener();
-    private final PerksPvpArenaListener paListener = new PerksPvpArenaListener();
     private final PerksHeroChatListener hcListener = new PerksHeroChatListener();
 
     private AFKThread m_afkThread = null;
@@ -79,36 +96,11 @@ public class Perks extends JavaPlugin {
 		} else {
 			PerkUtils.DebugConsole("Vault not found disabling vault stuff");
 		}
-		
-		// setup dynmap
-		if (pm.getPlugin("dynmap") != null && PerkConfig.isDependencyEnabled("dynmap")) {
-			PerkUtils.DebugConsole("Dynmap found, setting up Dynmap dependency");
-			PerkUtils.dynmapapi = (DynmapAPI)pm.getPlugin("dynmap");
-		}	
 				
-		// setup mob arena
-		if (pm.getPlugin("MobArena") != null && PerkConfig.isDependencyEnabled("mobarena")) {
-			PerkUtils.DebugConsole("MobArena found, setting up MobArena dependency");
-			pm.registerEvents(maListener, this);
-			PerkMobArena.setupMobArenaHandler();
-		}
-				
-		// setup pvparena
-		if (pm.getPlugin("pvparena") != null && PerkConfig.isDependencyEnabled("pvparena")) {
-			PerkUtils.DebugConsole("PvpArena found, setting up PvpArena dependency");
-			pm.registerEvents(paListener, this);
-		}
-								
 		// setup herochat
 		if (pm.getPlugin("Herochat") != null && PerkConfig.isDependencyEnabled("herochat")) {
 			PerkUtils.DebugConsole("HeroChat found, setting up HeroChat dependency");
 			pm.registerEvents(hcListener, this);
-		}
-		
-		// setup disguise craft
-		if (pm.getPlugin("DisguiseCraft") != null && PerkConfig.isDependencyEnabled("disguisecraft")) {
-			PerkUtils.DebugConsole("Disguise Craft found, setting up Disguise Craft dependency");
-			PerkUtils.disguiseCraftApi = DisguiseCraft.getAPI();
 		}
 	}
 
@@ -216,10 +208,6 @@ public class Perks extends JavaPlugin {
 		
 		// handles thor cmds
 		if (PerkThor.onCommnad(player, cmd, commandLabel, args))
-			return true;
-
-		// handles dynmap cmds
-		if (PerkDynmap.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		// handles trolling cmds

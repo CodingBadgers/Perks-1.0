@@ -10,12 +10,10 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-
+import org.bukkit.event.entity.EntityDeathEvent;
 import uk.codingbadgers.perks.config.PerkConfig;
 import uk.codingbadgers.perks.utils.PerkArgSet;
-import uk.codingbadgers.perks.utils.PerkMobArena;
 import uk.codingbadgers.perks.utils.PerkPlayer;
 import uk.codingbadgers.perks.utils.PerkUtils;
 
@@ -25,10 +23,7 @@ public class PerkDeathTP {
 	
 		if (!player.hasPermission("perks.deathtp", false))
 			return;
-		
-		if (PerkMobArena.maHandler != null && (PerkMobArena.maHandler.isPlayerInArena(player.getPlayer()) || PerkMobArena.maHandler.inRegion(player.getPlayer().getLocation())))
-			return;
-		
+
 		if (PerkConfig.isPvpServer() && !canDeathTpTo(player.getPlayer().getLastDamageCause())) {
 			PerkUtils.OutputToPlayer(player, "You cannot return to that death location by death teleport");
 			return;
@@ -97,11 +92,6 @@ public class PerkDeathTP {
 			
 			if (player.canDeathTP()) {
 				Location deathloc = player.getDeathLocation();
-				
-				if (PerkMobArena.maHandler != null && PerkMobArena.maHandler.inRegion(deathloc)) {
-					PerkUtils.OutputToPlayer(player, "Sorry you can't deathtp into the arena");
-					return true;
-				}
 				
 				if (player.getPlayer().getLocation().getWorld() == deathloc.getWorld())
 				{

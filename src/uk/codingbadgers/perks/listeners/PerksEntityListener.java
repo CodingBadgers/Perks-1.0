@@ -4,7 +4,6 @@ package uk.codingbadgers.perks.listeners;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fish;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
@@ -15,7 +14,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-
+import org.bukkit.projectiles.ProjectileSource;
 import uk.codingbadgers.perks.donator.PerkDeathTP;
 import uk.codingbadgers.perks.donator.PerkHunger;
 import uk.codingbadgers.perks.donator.PerkUnlimitedAir;
@@ -49,15 +48,15 @@ public class PerksEntityListener implements Listener {
 		if (event.getDamager() instanceof Player)
 			attacker = PerkUtils.getPlayer((Player)event.getDamager());
 		else if (event.getDamager() instanceof Arrow) {
-			LivingEntity shooter = ((Arrow)event.getDamager()).getShooter();
+			ProjectileSource shooter = ((Arrow)event.getDamager()).getShooter();
 			if (shooter instanceof Player)
 				attacker = PerkUtils.getPlayer((Player)shooter);
 		} else if (event.getDamager() instanceof ThrownPotion) { 
-			LivingEntity potionThrower = ((ThrownPotion)event.getDamager()).getShooter();
+			ProjectileSource potionThrower = ((ThrownPotion)event.getDamager()).getShooter();
 			if (potionThrower instanceof Player)
 				attacker = PerkUtils.getPlayer((Player)(potionThrower));
 		} else if (event.getEntityType() == EntityType.FISHING_HOOK) {
-			LivingEntity fisherMan = ((Fish)event.getDamager()).getShooter();
+			ProjectileSource fisherMan = ((Fish)event.getDamager()).getShooter();
 			if (fisherMan instanceof Player)
 				attacker = PerkUtils.getPlayer((Player)fisherMan);
 		}

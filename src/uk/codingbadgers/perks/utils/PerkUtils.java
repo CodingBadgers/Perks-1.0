@@ -5,18 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import net.slipcor.pvparena.PVPArena;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
-import org.dynmap.DynmapAPI;
-
-import pgDev.bukkit.DisguiseCraft.api.DisguiseCraftAPI;
-
 import uk.codingbadgers.perks.Perks;
 import uk.codingbadgers.perks.config.PerkConfig;
 
@@ -25,11 +18,8 @@ public class PerkUtils {
 	public static final Logger log = Logger.getLogger("minecraft");
 	static public PerkPlayerArray perkPlayers = new PerkPlayerArray();
 	static public Perks plugin = null;
-	public static DynmapAPI dynmapapi = null;
-	public static PVPArena pvparena = null;
 	public static boolean vaultEnabled = false;
 	public static ArrayList<String> pluginBlacklist = new ArrayList<String>();
-	public static DisguiseCraftAPI disguiseCraftApi = null;
 	
 	static public void DebugConsole(String message) {
 		log.log(Level.INFO, "[Perks] " + message + ".");

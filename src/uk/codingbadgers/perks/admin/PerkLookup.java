@@ -1,11 +1,11 @@
 package uk.codingbadgers.perks.admin;
 
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
-
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -106,7 +106,7 @@ public class PerkLookup {
 			PerkPlayer target = PerkUtils.getPlayer(args.getString(0));
 			PermissionManager pex = PermissionsEx.getPermissionManager();
 			
-			PermissionGroup[] group = null;
+			List<PermissionGroup> group = null;
 			String name = null;
 			String displayName = null;
 			int health = 0;
@@ -142,7 +142,7 @@ public class PerkLookup {
 			
 				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Display Name: " + ChatColor.WHITE + displayName).append("\n");
-				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
+				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group.get(0)) + group.get(0).getName()).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Op: " + ChatColor.WHITE + op).append("\n");
 				out.append(ChatColor.GOLD + "IP: " + ChatColor.WHITE + getIpAddress(target)).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Health: " + ChatColor.WHITE + represent(health)).append(ChatColor.WHITE).append("\n");
@@ -178,7 +178,7 @@ public class PerkLookup {
 				op = oTarget.isOp();
 				
 				out.append(ChatColor.GOLD + "Stats for " + name).append(ChatColor.WHITE).append("\n");
-				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group[0]) + group[0].getName()).append(ChatColor.WHITE).append("\n");
+				out.append(ChatColor.GOLD + "Rank: " + getRankColor(group.get(0)) + group.get(0).getName()).append(ChatColor.WHITE).append("\n");
 				out.append(ChatColor.GOLD + "Op: " + ChatColor.WHITE + op).append("\n");
 				out.append(ChatColor.GOLD + "First Played: " + ChatColor.WHITE + firstPlayed).append("\n");
 				out.append(ChatColor.GOLD + "Last Played: " + ChatColor.WHITE + lastPlayed).append("\n");

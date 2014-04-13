@@ -22,10 +22,8 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
-
 import uk.codingbadgers.perks.admin.PerkThor;
 import uk.codingbadgers.perks.admin.PerkVanish;
 import uk.codingbadgers.perks.config.PerkConfig;
@@ -49,8 +47,6 @@ public class PerksPlayerListener implements Listener {
 		}
 		
 		player.checkAFK();
-		
-		player.dynmapHide();
 	}	
 
 	// Not tested yet, need to max out a server to try though :P
@@ -246,13 +242,6 @@ public class PerksPlayerListener implements Listener {
 			if (player.isAfk()) {
 				player.setAfk(false);
 				PerkUtils.OutputToPlayer(player, "You are back while you are in the arena while you are in the arena");
-			}
-			
-			if (PerkUtils.disguiseCraftApi != null) {
-				if (PerkUtils.disguiseCraftApi.isDisguised(p)) {
-					PerkUtils.disguiseCraftApi.undisguisePlayer(p);
-					PerkUtils.OutputToPlayer(player, "You have been undisguised whilst you are in the arena");
-				}
 			}
 			
 		}

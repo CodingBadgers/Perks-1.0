@@ -1,7 +1,6 @@
 package uk.codingbadgers.perks.admin;
 
 import org.bukkit.command.Command;
-
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.PermissionUser;
@@ -51,8 +50,8 @@ public class PerkGroupSet {
 			}
 			
 			// ranks for each of the groups needing to be checked
-			int targetRank = target.getGroups()[0].getRank();
-			int playerRank = pex.getUser(player.getPlayer()).getGroups()[0].getRank();
+			int targetRank = target.getGroups().get(0).getRank();
+			int playerRank = pex.getUser(player.getPlayer()).getGroups().get(0).getRank();
 			int targetGroupRank = group.getRank();
 			
 			// rank checks

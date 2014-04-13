@@ -1,0 +1,8 @@
+/Perks/nbproject/private/
+/nbproject/private/
+/build/
+/dist/
+nbproject/*
+libs/*
+build.xml
+manifest.mf

@@ -3,7 +3,6 @@ package uk.codingbadgers.perks.utils;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -14,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitTask;
-
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 import uk.codingbadgers.perks.config.DatabaseManager;
@@ -122,9 +120,6 @@ public class PerkPlayer {
 		
 		
 		DatabaseManager.loadKit(this);
-		
-		if (PerkUtils.dynmapapi != null)
-			m_map.hidden = PerkUtils.dynmapapi.getPlayerVisbility(player);
 	}
 	
 	// called when a player is kicked or leaves...
@@ -604,8 +599,6 @@ public class PerkPlayer {
 			players[i].hidePlayer(m_player);
 		} 
 		
-		dynmapHide();
-		
 		if (broadcast)
 			PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " left the game.");
 		
@@ -626,9 +619,7 @@ public class PerkPlayer {
 			
 			players[i].showPlayer(m_player);
 		}
-		
-		dynmapShow();
-		
+
 		if (broadcast)
 			PerkUtils.server().broadcastMessage(ChatColor.YELLOW + m_player.getName() + " joined the game.");
 		
@@ -903,22 +894,6 @@ public class PerkPlayer {
 	
 	public int getThorAmmount() {
 		return m_thor.ammount;
-	}
-	
-	public void dynmapHide() {
-		if (PerkUtils.dynmapapi == null)
-			return;
-		
-		PerkUtils.dynmapapi.setPlayerVisiblity(m_player, false);
-		m_map.hidden = true;
-	}
-	
-	public void dynmapShow() {
-		if (PerkUtils.dynmapapi == null)
-			return;
-		
-		PerkUtils.dynmapapi.setPlayerVisiblity(m_player, true);
-		m_map.hidden = false;
 	}
 	
 	public boolean isDynmapHidden() {
