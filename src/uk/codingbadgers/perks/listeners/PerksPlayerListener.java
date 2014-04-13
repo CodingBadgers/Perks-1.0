@@ -11,7 +11,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -223,28 +222,6 @@ public class PerksPlayerListener implements Listener {
 		if (event.getTo().getWorld().getName().equalsIgnoreCase("world_creative")) {
 			player.getPlayer().setGameMode(GameMode.CREATIVE);
 		}		
-		
-		// check sg worlds
-		if (event.getTo().getWorld().getName().startsWith("world_survival_")) {
-			
-			Player p = player.getPlayer();
-			
-			if (player.isFlying()) {
-				player.setFlying(false);
-				PerkUtils.OutputToPlayer(player,"Your fly mode has been disabled while you are in the arena");
-			}
-			
-			if (player.isVanished()) {
-				player.showPlayer(true);
-				PerkUtils.OutputToPlayer(player, "Your vanish mode has been disabled while you are in the arena");
-			}
-			
-			if (player.isAfk()) {
-				player.setAfk(false);
-				PerkUtils.OutputToPlayer(player, "You are back while you are in the arena while you are in the arena");
-			}
-			
-		}
 
 	}
 	
@@ -357,13 +334,13 @@ public class PerksPlayerListener implements Listener {
 		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
 		PerkThor.onPlayerInteract(player, event);		
 		
-		if (player != null && (player.isFlying() || player.isVanished())) {
+		if (player != null && (player.isVanished())) {
 			
 			Player p = player.getPlayer();			
 			if (p.getItemInHand().getType() == Material.LAVA_BUCKET || 
 				p.getItemInHand().getType() == Material.FLINT_AND_STEEL ||
 				p.getItemInHand().getType().getId() == 385) {	
-				PerkUtils.OutputToPlayer(player, player.isFlying() ? "You can't start fires whilst flying" : "You can't start fires whilst vanished");
+				PerkUtils.OutputToPlayer(player, "You can't start fires whilst vanished");
 				event.setCancelled(true);	
 				return;
 			}
@@ -377,16 +354,6 @@ public class PerksPlayerListener implements Listener {
 		if (player.isVanished())
 			event.setCancelled(true);
 		
-	}
-	
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerChangeGamemode(PlayerGameModeChangeEvent event) {
-		PerkPlayer player = PerkUtils.getPlayer(event.getPlayer());
-		
-		if (event.getNewGameMode() != GameMode.SURVIVAL)
-			return;
-		
-		player.setFlying(false);
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)

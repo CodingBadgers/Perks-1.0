@@ -26,7 +26,6 @@ import uk.codingbadgers.perks.config.PerkConfig;
 import uk.codingbadgers.perks.donator.AFKThread;
 import uk.codingbadgers.perks.donator.PerkAFK;
 import uk.codingbadgers.perks.donator.PerkDeathTP;
-import uk.codingbadgers.perks.donator.PerkFlying;
 import uk.codingbadgers.perks.donator.PerkHomeAndBuild;
 import uk.codingbadgers.perks.donator.PerkSpawn;
 import uk.codingbadgers.perks.donator.PerkTeleport;
@@ -136,11 +135,7 @@ public class Perks extends JavaPlugin {
 		}
 		
 		PerkArgSet args = new PerkArgSet(parsedArgs, flags);
-		
-		// handle fly commands
-		if (PerkFlying.onCommand(player, cmd, commandLabel, args))
-			return true;
-		
+
 		// handle teleport commands
 		if (PerkTeleport.onCommand(player, cmd, commandLabel, args))
 			return true;

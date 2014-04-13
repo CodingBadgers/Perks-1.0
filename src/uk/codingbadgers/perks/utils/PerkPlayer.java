@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,10 +20,6 @@ import uk.codingbadgers.perks.config.PerkConfig;
 public class PerkPlayer {
 
 	private Player m_player = null;					//!< store the bukkit player
-	
-	private class Flying {
-		public boolean m_flying = false;				//!< is the player flying?
-	}
 	
 	private class Hunger {
 		public float m_hungerRate = PerkConfig.hungerRate;				//!< means hunger goes down at 1/4 the normal rate <- Loads from config
@@ -83,7 +78,6 @@ public class PerkPlayer {
 		protected int counter;
 	}
 	
-	private Flying m_fly = null;
 	private Hunger m_hunger = null;
 	private TP m_tp = null;
 	private Vanish m_vanish = null;
@@ -98,8 +92,7 @@ public class PerkPlayer {
 	
 	public PerkPlayer(Player player) {
 		m_player = player;
-		
-		m_fly = new Flying();
+
 		m_hunger = new Hunger();
 		m_tp = new TP();
 		m_deathTP = new DeathTP();
@@ -127,34 +120,6 @@ public class PerkPlayer {
 	// returns the bukkit player
 	public Player getPlayer() {
 		return m_player;
-	}
-
-	public void setFlying(boolean flying) {
-		
-		// new bukkit stuff, is creative and works. WIN!
-		if (m_player.getGameMode() != GameMode.CREATIVE) {
-			m_player.setAllowFlight(flying);	
-			m_player.setFlying(flying);
-		}
-				
-		// output a message to the user
-		if (flying) {
-			PerkUtils.OutputToPlayer(this, "Fly mode is now enabled");
-		} else {
-			PerkUtils.OutputToPlayer(this, "Fly mode is now disabled");
-		}
-
-		// store whether we're flying or not
-		m_fly.m_flying = flying;
-		
-		m_player.setMetadata("perks_flying", new FixedMetadataValue(PerkUtils.plugin, flying));
-		
-		// update it in database
-		DatabaseManager.setFlying(this, flying);
-	}
-
-	public boolean isFlying() {
-		return m_fly.m_flying;
 	}
 
 	// checks whether a player has permission to do something or not

@@ -62,9 +62,9 @@ public class PerksEntityListener implements Listener {
 		}
 		
 		// don't allow attacking whilst flying or in vanish
-		if (attacker != null &&  (attacker.isFlying() || attacker.isVanished())) {
+		if (attacker != null &&  (attacker.isVanished())) {
 			event.setCancelled(true);
-			PerkUtils.OutputToPlayer(attacker, attacker.isFlying() ? "You cannot attack whist flying!" : "You cannot attack whist vanished!");
+			PerkUtils.OutputToPlayer(attacker, "You cannot attack whist vanished!");
 		}
 	}
 	
