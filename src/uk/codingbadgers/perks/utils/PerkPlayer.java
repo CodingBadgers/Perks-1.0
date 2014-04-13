@@ -713,6 +713,10 @@ public class PerkPlayer {
 	
 	public void checkAFK() {
 		
+		if (this.hasPermission("perks.afk.check.ignore", false)) {
+			return;
+		}
+		
 		if (m_afk.afk) {
 			return;
 		}
