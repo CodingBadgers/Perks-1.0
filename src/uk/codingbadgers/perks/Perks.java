@@ -28,7 +28,6 @@ import uk.codingbadgers.perks.donator.PerkAFK;
 import uk.codingbadgers.perks.donator.PerkDeathTP;
 import uk.codingbadgers.perks.donator.PerkFlying;
 import uk.codingbadgers.perks.donator.PerkHomeAndBuild;
-import uk.codingbadgers.perks.donator.PerkKits;
 import uk.codingbadgers.perks.donator.PerkSpawn;
 import uk.codingbadgers.perks.donator.PerkTeleport;
 import uk.codingbadgers.perks.listeners.PerksEntityListener;
@@ -172,10 +171,6 @@ public class Perks extends JavaPlugin {
 		
 		// handles afk cmds
 		if (PerkAFK.onCommand(player, cmd, commandLabel, args))
-			return true;
-		
-		// handles kit cmds
-		if (PerkKits.onCommand(player, cmd, commandLabel, args))
 			return true;
 		
 		// handles time cmds

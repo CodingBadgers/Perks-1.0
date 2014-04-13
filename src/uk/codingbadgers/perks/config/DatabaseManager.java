@@ -5,20 +5,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-
-import uk.codingbadgers.perks.donator.PerkKits;
-import uk.codingbadgers.perks.utils.PerkKit;
 import uk.codingbadgers.perks.utils.PerkPlayer;
 import uk.codingbadgers.perks.utils.PerkUtils;
 import uk.codingbadgers.perks.utils.PerkWorldSpawn;
+import uk.thecodingbadgers.bDatabaseManager.Database.BukkitDatabase;
 import uk.thecodingbadgers.bDatabaseManager.bDatabaseManager;
 import uk.thecodingbadgers.bDatabaseManager.bDatabaseManager.DatabaseType;
-import uk.thecodingbadgers.bDatabaseManager.Database.BukkitDatabase;
 
 
 public class DatabaseManager {
@@ -508,56 +503,6 @@ public class DatabaseManager {
 		
 		m_perksDB.freeResult(result);
 		return vanished;
-	}
-	
-	public static void addKit(PerkPlayer player, PerkKit kit, Long time) {
-		
-		String query = "INSERT INTO `perks_kit` " +
-				"(`player`,`kitname`,`time`) VALUES (" + 
-				"'" + player.getPlayer().getName() + "'," +
-				"'" + kit.getName() + "'," +
-				"'" + time + 
-				"');";
-		
-		m_perksDB.query(query, true);
-		
-	}
-	
-	public static void deleteKit(PerkPlayer player, PerkKit kit) {
-		
-		String query = "DELETE FROM `perks_kit` " +
-				"WHERE player=" + 
-				"'" + player.getPlayer().getName() +
-				"' AND kitname=" +
-				"'" + kit.getName() +
-				"';";
-		
-		m_perksDB.query(query, true);
-		
-	}
-	
-	public static void loadKit(PerkPlayer player) {
-		
-		String query = "SELECT * FROM `perks_kit` WHERE player = '" + player.getPlayer().getName() + "'";
-		ResultSet result = m_perksDB.queryResult(query);
-		
-		if (result == null)
-			return;
-		
-		try {
-			// while we have another result, read in the data
-			while (result.next()) {
-	            String kitName = result.getString("kitname");
-	            Long time = result.getLong("time");
-	            
-	            PerkKits.load(player, kitName, time);
-	        }
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		}		
-		
-		m_perksDB.freeResult(result);
 	}
 	
 	public static boolean isFlying(PerkPlayer player) {

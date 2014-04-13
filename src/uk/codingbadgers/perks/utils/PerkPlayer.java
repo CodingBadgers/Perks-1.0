@@ -55,11 +55,6 @@ public class PerkPlayer {
 		public Long lastChatCheck = -1L;			// !<
 	}
 	
-	private class PlayerKit {
-		private ArrayList<PerkKit> usedKit = new ArrayList<PerkKit>();  // !< stores what kit you used
-		private ArrayList<Long> usedTime = new ArrayList<Long>(); 		// !< store the remaining time
-	}
-	
 	private class Inventory {
 		public ItemStack[] inv = null;			// !< stores the players inventory
 		public ItemStack[] armour;
@@ -94,7 +89,6 @@ public class PerkPlayer {
 	private Vanish m_vanish = null;
 	private DeathTP m_deathTP = null;
 	private Afk m_afk = null;
-	private PlayerKit m_kits = null;
 	private Inventory m_inv = null;
 	private Spectate m_spec = null;
 	private Thor m_thor = null;
@@ -111,15 +105,11 @@ public class PerkPlayer {
 		m_deathTP = new DeathTP();
 		m_vanish = new Vanish();
 		m_afk = new Afk();
-		m_kits = new PlayerKit();
 		m_inv = new Inventory();
 		m_spec = new Spectate();
 		m_thor = new Thor();
 		m_map = new Dynmap();
 		m_pvp = new Pvp();
-		
-		
-		DatabaseManager.loadKit(this);
 	}
 	
 	// called when a player is kicked or leaves...
@@ -772,54 +762,6 @@ public class PerkPlayer {
             PerkUtils.OutputToAllExcluding(getPlayer().getName() + " is afk", getPlayer());
 		}
 		
-	}
-
-	public void usedKit(PerkKit kit) {
-		m_kits.usedKit.add(kit);
-		Calendar cal = Calendar.getInstance();
-		
-		Long time = cal.getTimeInMillis();
-		m_kits.usedTime.add(time);
-		
-		DatabaseManager.addKit(this, kit, time);
-		
-	}
-	
-	public void usedKit(PerkKit kit, Long time) {
-		m_kits.usedKit.add(kit);
-		m_kits.usedTime.add(time);
-	}
-	
-	public boolean canUseKit(PerkKit requestedKit) {
-		
-		for (int i = 0; i < m_kits.usedKit.size(); ++i) {
-
-			if (requestedKit.getName().equalsIgnoreCase(m_kits.usedKit.get(i).getName())) {
-				
-				Calendar cal = Calendar.getInstance();
-				Long timeDifference = (long) ((cal.getTimeInMillis() - m_kits.usedTime.get(i)) * 0.001);
-					
-				if (timeDifference > m_kits.usedKit.get(i).getTimeout()) {
-					
-					m_kits.usedKit.remove(i);
-					m_kits.usedTime.remove(i);
-					
-					DatabaseManager.deleteKit(this, requestedKit);
-					
-					return true;
-				}
-				
-				long timeTillNext = (m_kits.usedKit.get(i).getTimeout() - timeDifference) + 1;
-				String timeString = PerkUtils.parseTime(timeTillNext);
-				PerkUtils.OutputToPlayer(this, "You can't use kit '" + requestedKit.getName() + "' for another " + timeString);
-				
-				return false;
-			}
-			
-		}
-		
-		// if we are here then we have never used the requested kit before
-		return true;
 	}
 	
 	// Spectating 
